@@ -14,6 +14,11 @@
 
 int main(void)
 {
-	printf("%-20s", "this is a test");
+	int a;
+
+	a = 1;
+	printf("%s%i", "this is a test", i);
+	i--;
+	printf("%s%i", "this is a test", i);
 	return(0);
 }
