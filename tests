@@ -1,0 +1,107 @@
+/*               _     _                       
+**  _ __   _ _  (_) __| | ___  __ _  _  _  ___ 
+** | '  \ | ' \ | |/ _` |/ _ \/ _` || || |/ -_)
+** |_|_|_||_||_||_|\__,_|\___/\__, | \_,_|\___|
+**                               |_|           
+**
+**   THIS SIMPLE TESTS JUST FOR FUN
+**
+*/
+
+//Tests with no specifiers
+"hello, world!"
+""
+"\t\n\r\v\f\n"
+"hello" + "world"
+"he" + " is alive"
+"is alive" + " he"
+
+//%% Tests
+"%%"
+"%5%"
+"%-5%"
+"%05%"
+"%-05%"
+
+//Null specifier tests
+"%"
+"%5"
+"%05"
+"%-05"
+"%-5"
+
+//String specifiers - no modifiers
+"hello, %s.", "gavin"
+"%s", "testing testing"
+"%s%s", "hello", "world"
+"..%s stuff %s", "a", "b"
+"this %s is empty", ""
+"this %s is %s", "hello", ""
+"this %s is %s", "", "hello"
+"%s%s%s", "1", "2", "3's a charm"
+//String specifiers with field_width, space- or zero-padded
+"%32s", "abc"
+"%16s", "nark nark"
+"%5s", "goes over"
+//String specifiers with field_width, space- or zero-padded, left-justified
+"%-32s", "abc"
+"%-16s", "nark nark"
+"%-5s", "goes over"
+//String specifiers with precision
+"%.7s", "hello"
+"%.3s", "hello"
+"%.s", "hello"
+"%.0s", "hello"
+"%.3s%.2s", "holla", "bitch"
+"%.2s%.7s", "hello", "world"
+"%.7s%.2s", "hello", "world"
+"%.5s%7s", "yo", "boi"
+//String specifiers with both precision and field width
+"%7.5s", "yolo"
+"%7.5s", "bombastic"
+"%-7.5s", "yolo"
+"%-7.5s", "tubular"
+"%7.7s%7.7s", "hello", "world"
+"%3.7s%7.7s", "hello", "world"
+"%7.7s%3.7s", "hello", "world"
+"%3.7s%3.7s", "hello", "world"
+"%7.3s%7.7s", "hello", "world"
+"%3.3s%7.7s", "hello", "world"
+"%7.3s%3.7s", "hello", "world"
+"%3.3s%3.7s", "hello", "world"
+"%7.7s%7.3s", "hello", "world"
+"%3.7s%7.3s", "hello", "world"
+"%7.7s%3.3s", "hello", "world"
+"%3.7s%3.3s", "hello", "world"
+"%7.3s%7.3s", "hello", "world"
+"%3.3s%7.3s", "hello", "world"
+"%7.3s%3.3s", "hello", "world"
+"%3.3s%3.3s", "hello", "world"
+"%3s%3s", "hello", "world"
+//String specifiers, other tests
+"%-7s%5s", "hello", "world"
+"%7s%-5s", "hello", "world"
+//String specifiers - NULL strings
+"hello, %s.", NULL
+"%s", NULL
+"%32s", NULL
+"%2s", NULL
+"%-32s", NULL
+"%-16s", NULL
+"%-3s", NULL
+//String specifiers with precision
+"%.9s", "NULL"
+"%.3s", "NULL"
+"%.s", "NULL"
+"%.0s", "NULL"
+
+/*
+**
+**   .d888b.  db      .d8888.  .o88b. db   db  .d88b.   .d88b.  db      
+**   VP  `8D o88      88'  YP d8P  Y8 88   88 .8P  Y8. .8P  Y8. 88      
+**      odD'  88      `8bo.   8P      88ooo88 88    88 88    88 88      
+**    .88'    88        `Y8b. 8b      88~~~88 88    88 88    88 88      
+**   j88.     88      db   8D Y8b  d8 88   88 `8b  d8' `8b  d8' 88booo. 
+**   888888D  VP      `8888Y'  `Y88P' YP   YP  `Y88P'   `Y88P'  Y88888P 
+**
+*/
