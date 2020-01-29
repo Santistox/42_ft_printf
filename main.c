@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/01/28 18:05:09 by mnidoque         ###   ########.fr       */
+/*   Updated: 2020/01/29 17:08:44 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	checker(t_env *env, va_list args)
 	printf("unicode_error     |%i|\n", env->unicode_error);
 	printf("first_char_pos    |%i|\n", env->first_char_pos);
 	printf("percent_pos       |%i|\n", env->percent_pos);
+	printf("res               |%i|\n", env->res);
 	printf("_____________________________________\n");
 }
 
@@ -189,8 +190,13 @@ void	find_flag(t_env  *env, va_list args)
 		env->offset -= 1;
 	else
 		env->offset -= env->space;
-	checker(env, args);
+//	checker(env, args);
 	// here code of calling flags functions
+	if (env->str[env->count] == 'i')
+		flag_i(env, args);
+	else if (env->str[env->count] == 'o')
+		flag_o(env, args);	
+//	checker(env, args);
 }
 
 /*
@@ -234,6 +240,7 @@ void	to_buff_block(t_env *env)
 	{
 		to_buff_char(env->str[env->count], env);
 		env->count++;
+		env->res++;
 	}
 	if (env->str[env->count] == '%')
 		env->percent_pos = env->count;
@@ -254,6 +261,7 @@ t_env	*malloc_env(char *str)
 	env->buf = ft_memalloc(sizeof(char *));
 	env->str = str;
 	env->count = 0;
+	env->res = 0;
 	return (env);
 }
 
@@ -280,6 +288,7 @@ int ft_printf(const char *line, ...)
 			break ;
 		env->count++;
 	}
+	print(env);
 	return(rez);
 }
 
@@ -289,9 +298,21 @@ int main(void)
 
 	e=2.718281828;
 
-	// test here
-	printf("20%i%20i%i%i%i%i\n", 1,2,3,4,5,6);
+	// tests here
+	
+	printf("Hello world %05o %05o %05o\n", 0, 233, 5556);
+	ft_printf("Hello world %05o %05o %05o", 0, 233, 5556);
+
+	/*
+	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);
 	ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
+	*/
+/*
+ *
+ * Sanya, please check out the order of the inner flags
+ *									- rlintill
+ *
+ * */	
 	return(0);
 }
 

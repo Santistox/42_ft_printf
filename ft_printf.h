@@ -23,6 +23,7 @@ typedef struct	s_env
 	int			unicode_error;   // unicode error
 	int			first_char_pos;  // first char position from start/prev%
 	int			percent_pos;     // position of %
+	int			res;
 }				t_env;
 
 int		ft_printf(const char *line, ...);
@@ -36,5 +37,10 @@ void	set_def(t_env *env);
 void	check_preflag(t_env *env);
 void	set_precision(int init_index, t_env *env);
 void	set_offset(int init_index, t_env *env);
+
+void	flag_i(t_env *env, va_list args);
+void	flag_o(t_env *env, va_list args);
+char	*ft_itoa_o(int n);
+void	print(t_env *env);
 
 #endif
