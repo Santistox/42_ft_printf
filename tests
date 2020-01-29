@@ -1,0 +1,249 @@
+/*               _     _                       
+**  _ __   _ _  (_) __| | ___  __ _  _  _  ___ 
+** | '  \ | ' \ | |/ _` |/ _ \/ _` || || |/ -_)
+** |_|_|_||_||_||_|\__,_|\___/\__, | \_,_|\___|
+**                               |_|           
+**
+**   THIS SIMPLE TESTS JUST FOR FUN
+**
+*/
+
+//Tests with no specifiers
+"hello, world!"
+""
+"\t\n\r\v\f\n"
+"hello" + "world"
+"he" + " is alive"
+"is alive" + " he"
+
+//%% Tests
+"%%"
+"%5%"
+"%-5%"
+"%05%"
+"%-05%"
+
+//Null specifier tests
+"%"
+"%5"
+"%05"
+"%-05"
+"%-5"
+
+//String specifiers - no modifiers
+"hello, %s.", "gavin"
+"%s", "testing testing"
+"%s%s", "hello", "world"
+"..%s stuff %s", "a", "b"
+"this %s is empty", ""
+"this %s is %s", "hello", ""
+"this %s is %s", "", "hello"
+"%s%s%s", "1", "2", "3's a charm"
+//String specifiers with field_width, space- or zero-padded
+"%32s", "abc"
+"%16s", "nark nark"
+"%5s", "goes over"
+//String specifiers with field_width, space- or zero-padded, left-justified
+"%-32s", "abc"
+"%-16s", "nark nark"
+"%-5s", "goes over"
+//String specifiers with precision
+"%.7s", "hello"
+"%.3s", "hello"
+"%.s", "hello"
+"%.0s", "hello"
+"%.3s%.2s", "holla", "bitch"
+"%.2s%.7s", "hello", "world"
+"%.7s%.2s", "hello", "world"
+"%.5s%7s", "yo", "boi"
+//String specifiers with both precision and field width
+"%7.5s", "yolo"
+"%7.5s", "bombastic"
+"%-7.5s", "yolo"
+"%-7.5s", "tubular"
+"%7.7s%7.7s", "hello", "world"
+"%3.7s%7.7s", "hello", "world"
+"%7.7s%3.7s", "hello", "world"
+"%3.7s%3.7s", "hello", "world"
+"%7.3s%7.7s", "hello", "world"
+"%3.3s%7.7s", "hello", "world"
+"%7.3s%3.7s", "hello", "world"
+"%3.3s%3.7s", "hello", "world"
+"%7.7s%7.3s", "hello", "world"
+"%3.7s%7.3s", "hello", "world"
+"%7.7s%3.3s", "hello", "world"
+"%3.7s%3.3s", "hello", "world"
+"%7.3s%7.3s", "hello", "world"
+"%3.3s%7.3s", "hello", "world"
+"%7.3s%3.3s", "hello", "world"
+"%3.3s%3.3s", "hello", "world"
+"%3s%3s", "hello", "world"
+//String specifiers, other tests
+"%-7s%5s", "hello", "world"
+"%7s%-5s", "hello", "world"
+//String specifiers - NULL strings
+"hello, %s.", NULL
+"%s", NULL
+"%32s", NULL
+"%2s", NULL
+"%-32s", NULL
+"%-16s", NULL
+"%-3s", NULL
+//String specifiers with precision
+"%.9s", "NULL"
+"%.3s", "NULL"
+"%.s", "NULL"
+"%.0s", "NULL"
+
+
+/*
+**
+** FLAG %i
+**
+*/
+
+//Signed integers - no modifers
+"this %i number", 17
+"this %i number", -267
+"this %i number", 0
+"%i", 3
+"%i", -1
+"%i", 0
+"this %d number", 17
+"this %d number", -267
+"this %d number", 0
+"%i",  2147483647
+"%i", (int)(-2147483678)
+//Signed integers  allsign ('+')
+"%+i", 5
+"%+i", -7
+"%+i", 2147483647
+//Signed integers  field width
+"%7i", 33
+"%7i", -14
+"%3i", 0
+"%5i", 52625
+"%5i", -2562
+"%4i", 94827
+"%4i", -2464
+"%-7i", 33
+"%-7i", -14
+"%-3i", 0
+"%-5i", 52625
+"%-5i", -2562
+"%-4i", 94827
+"%-4i", -2464
+//signed integers  field width and allsign
+"%+5i", 35
+"%+7i", 0
+"%+24i", 2147483647
+//signed integers with precision
+"%.5i", 2
+"%.6i", -3
+"%.3i", 0
+"%.4i", 5263
+"%.4i", -2372
+"%.3i", 13862
+"%.3i",-23646
+"%+.7i", 234
+"%+.7i", -446
+"%+.3i", 3723
+//Signed integers with zero field width padding
+"%05i", 43
+"%07i", -54
+"%03i", 0
+"%03i", 634
+"%04i", -532
+"%04i", -4825
+"%+05i", 432
+"%+04i", 0
+//Signed integers with field width and precision
+"%8.5i", 34
+"%10.5i", -216
+"%8.5i", 0
+"%8.3i", 8375
+"%8.3i", -8473
+"%3.7i", 3267
+"%3.7i", -2375
+"%3.3i", 6983
+"%3.3i", -8462
+//Signed integers with field width and precision, left-justified
+"%-8.5i", 34
+"%-10.5i", -216
+"%-8.5i", 0
+"%-8.3i", 8375
+"%-8.3i", -8473
+"%-3.7i", 3267
+"%-3.7i", -2375
+"%-3.3i", 6983
+"%-3.3i", -8462
+//Signed integers with field width and precision with allsign
+"%+8.5i", 34
+"%+10.5i", -216
+"%+8.5i", 0
+"%+8.3i", 8375
+"%+8.3i", -8473
+"%+3.7i", 3267
+"%+3.7i", -2375
+"%+3.3i", 6983
+"%+3.3i", -8462
+//Signed integers with field width and precision, left-justified with allsign
+"%+-8.5i", 34
+"%+-10.5i", -216
+"%+-8.5i", 0
+"%+-8.3i", 8375
+"%+-8.3i", -8473
+"%+-3.7i", 3267
+"%+-3.7i", -2375
+"%+-3.3i", 6983
+"%+-3.3i", -8462
+//Signed integers with field width and precision with zeropadding
+"%08.5i", 34
+"%010.5i", -216
+"%08.5i", 0
+"%08.3i", 8375
+"%08.3i", -8473
+"%03.7i", 3267
+"%03.7i", -2375
+"%03.3i", 6983
+"%03.3i", -8462
+//Signed integers with field width and precision, left-justified with zeropadding
+"%0-8.5i", 34
+"%0-10.5i", -216
+"%0-8.5i", 0
+"%0-8.3i", 8375
+"%0-8.3i", -8473
+"%0-3.7i", 3267
+"%0-3.7i", -2375
+"%0-3.3i", 6983
+"%0-3.3i", -8462
+//Signed integers with field width and precision with allsign with zeropadding
+"%0+8.5i", 34
+"%0+10.5i", -216
+"%0+8.5i", 0
+"%0+8.3i", 8375
+"%0+8.3i", -8473
+"%0+3.7i", 3267
+"%0+3.7i", -2375
+"%0+3.3i", 6983
+"%0+3.3i", -8462
+//Signed integers with field width and precision, left-justified with allsign with zeropadding
+"%0+-8.5i", 34
+"%0+-10.5i", -216
+"%0+-8.5i", 0
+"%0+-8.3i", 8375
+"%0+-8.3i", -8473
+"%0+-3.7i", 3267
+"%0+-3.7i", -2375
+"%0+-3.3i", 6983
+"%0+-3.3i", -8462
+/*
+**
+**   .d888b.  db      .d8888.  .o88b. db   db  .d88b.   .d88b.  db      
+**   VP  `8D o88      88'  YP d8P  Y8 88   88 .8P  Y8. .8P  Y8. 88      
+**      odD'  88      `8bo.   8P      88ooo88 88    88 88    88 88      
+**    .88'    88        `Y8b. 8b      88~~~88 88    88 88    88 88      
+**   j88.     88      db   8D Y8b  d8 88   88 `8b  d8' `8b  d8' 88booo. 
+**   888888D  VP      `8888Y'  `Y88P' YP   YP  `Y88P'   `Y88P'  Y88888P 
+**
+*/
