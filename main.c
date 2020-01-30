@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/01/29 17:08:44 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/30 12:11:33 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,8 +192,8 @@ void	find_flag(t_env  *env, va_list args)
 		env->offset -= env->space;
 //	checker(env, args);
 	// here code of calling flags functions
-	if (env->str[env->count] == 'i')
-		flag_i(env, args);
+	if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
+		flag_di(env, args);
 	else if (env->str[env->count] == 'o')
 		flag_o(env, args);	
 //	checker(env, args);
@@ -300,8 +300,8 @@ int main(void)
 
 	// tests here
 	
-	printf("Hello world %05o %05o %05o\n", 0, 233, 5556);
-	ft_printf("Hello world %05o %05o %05o", 0, 233, 5556);
+	printf("Hello world %05d %05d %05d\n", 0, 233, 5556);
+	ft_printf("Hello world %05d %05d %05d", 0, 233, 5556);
 
 	/*
 	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);

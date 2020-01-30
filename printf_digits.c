@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:41:57 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/29 17:35:52 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/30 12:12:43 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	leng(int n)
  *	- norme
  *
  * */
-
+/*
 void flag_i(t_env *env, va_list args)
 {
 	int		num;
@@ -110,11 +110,11 @@ void flag_i(t_env *env, va_list args)
 		ft_memdel((void*)&offset);
 	env->res += len;
 }
-
+*/
 void	flag_o(t_env *env, va_list args)
 {
 	int		num;
-	char	*res;
+		char	*res;
 
 	num = va_arg(args, int);
 	res = ft_itoa_o(num);
@@ -125,4 +125,32 @@ void	flag_o(t_env *env, va_list args)
 void print(t_env *env)
 {
 	write(0, env->buf, env->res);
+}
+
+void	flag_di(t_env *env, va_list args)
+{
+	int		num;
+	char	*res;
+	int		zero_minus;
+
+	zero_minus = 0;
+	num = va_arg(args, int);
+	if (env->is_precision && num < 0)
+		env->res++;
+	if ((env->zero || env->is_precision) && num < 0)
+	{
+		zero_minus = 1;
+		num *= -1;
+	}
+	env->res += leng(num);
+	res = ft_itoa(num);
+	plus_minus(env, &res, zero_minus, num);
+	if (env->is_precision)
+		res = precision(env, res, zero_minus);
+	else if (env->zero)
+		res = zero_offset(env, res, zero_minus);
+	else if (env->offset)
+		res = space_offset(env, res, zero_minus);
+	space(env, &res, num);
+	env->buf = ft_strjoin(env->buf, res);
 }

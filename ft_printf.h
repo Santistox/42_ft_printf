@@ -38,9 +38,14 @@ void	check_preflag(t_env *env);
 void	set_precision(int init_index, t_env *env);
 void	set_offset(int init_index, t_env *env);
 
-void	flag_i(t_env *env, va_list args);
+void	flag_di(t_env *env, va_list args);
 void	flag_o(t_env *env, va_list args);
 char	*ft_itoa_o(int n);
 void	print(t_env *env);
 
+char	*space_offset(t_env *env, char *res, int minus);
+char	*zero_offset(t_env *env, char *res, int minus);
+char	*precision(t_env *env, char *res, int minus);
+void	plus_minus(t_env *env, char **res, int minus, int num);
+void	space(t_env *env, char **res, int num);
 #endif
