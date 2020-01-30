@@ -239,6 +239,60 @@
 
 /*
 **
+** FLAG %u
+**
+*/
+
+//Unsigned integers - no modifers
+"this %u number", 17
+"this %u number", 0
+"%u", 3
+"%u", 4294967295u
+//Unsigned integers with field width
+"%7u", 33
+"%3u", 0
+"%5u", 52625
+"%4u", 94827
+"%-7u", 33
+"%-3u", 0
+"%-5u", 52625
+"%-4u", 94827
+//unsigned integers with precision
+"%.5u", 2
+"%.3u", 0
+"%.4u", 5263
+"%.3u", 13862
+//Unsigned integers with zero field width padding
+"%05u", 43
+"%03u", 0
+"%03u", 634
+//Unsigned integers with field width and precision
+"%8.5u", 34
+"%8.5u", 0
+"%8.3u", 8375
+"%3.7u", 3267
+"%3.3u", 6983
+//Unsigned integers with field width and precision, left-justified
+"%-8.5u", 34
+"%-8.5u", 0
+"%-8.3u", 8375
+"%-3.7u", 3267
+"%-3.3u", 6983
+//Unsigned integers with field width and precision with zeropadding
+"%08.5u", 34
+"%08.5u", 0
+"%08.3u", 8375
+"%03.7u", 3267
+"%03.3u", 6983
+//Unsigned integers with field width and precision, left-justified with zeropadding
+"%0-8.5u", 34
+"%0-8.5u", 0
+"%0-8.3u", 8375
+"%0-3.7u", 3267
+"%0-3.3u", 6983
+
+/*
+**
 **   .d888b.  db      .d8888.  .o88b. db   db  .d88b.   .d88b.  db      
 **   VP  `8D o88      88'  YP d8P  Y8 88   88 .8P  Y8. .8P  Y8. 88      
 **      odD'  88      `8bo.   8P      88ooo88 88    88 88    88 88      

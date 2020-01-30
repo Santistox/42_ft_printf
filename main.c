@@ -197,7 +197,14 @@ void	find_flag(t_env  *env, va_list args)
 	else if (env->str[env->count] == 'o')
 		flag_o(env, args);
 	else if (env->str[env->count] == 'u')
-		flag_u(env, args);	
+		flag_u(env, args);
+
+	/*
+	else if (env->str[env->count] == 's' || env->str[env->count] == 'S')
+		flag_sS(env, args);
+	else if (env->str[env->count] == 'c' || env->str[env->count] == 'C')
+		flag_cC(env, args);
+	*/
 	//checker(env, args);
 }
 
