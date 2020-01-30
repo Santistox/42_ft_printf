@@ -6,20 +6,20 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:56:56 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/29 17:06:03 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/30 16:53:30 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	power(int n)
+int	power(long long int n)
 {
 	int	res;
-	int	i;
+	long long int	i;
 
 	i = 1;
 	res = 0;
-	while (i < n)
+	while (i < 1037741825 && i < n)
 	{
 		res++;
 		i *= 8;
@@ -27,7 +27,7 @@ int	power(int n)
 	return (res - 1);
 }
 
-char	*ft_itoa_o(int n)
+char	*ft_itoa_o(long long int n)
 {
 	int	i;
 	int res;

@@ -6,13 +6,13 @@
 /*   By: mnidoque <mnidoque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 12:31:29 by mnidoque          #+#    #+#             */
-/*   Updated: 2019/09/19 20:14:20 by mnidoque         ###   ########.fr       */
+/*   Updated: 2020/01/30 14:02:56 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		leng(int n, int minus)
+static int		leng(long long	int n, int minus)
 {
 	int numlen;
 
@@ -22,12 +22,12 @@ static int		leng(int n, int minus)
 	return (numlen + minus);
 }
 
-char			*ft_itoa(int n)
+char			*ft_itoa(long long int n)
 {
-	char	*num;
-	int		minus;
-	int		dig;
-	int		len;
+	char			*num;
+	int				minus;
+	long long int	dig;
+	int				len;
 
 	dig = 0;
 	minus = ((n < 0) ? 1 : 0);

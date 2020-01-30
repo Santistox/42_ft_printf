@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 17:19:37 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/30 12:04:26 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/30 17:06:12 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ char	*space_offset(t_env *env, char *res, int minus)
 	return (res);
 }
 
-char	*zero_offset(t_env *env, char *res, int minus)
+char	*zero_offset(t_env *env, char *res, int minus, int flag)
 {
 	char	*offset;
 	int		leng;
 
 	offset = NULL;
 	leng = ft_strlen(res);
-	if (minus)
+	if (minus || (env->zero && flag))
 		leng += 1;
 	if (env->offset - leng > 0)
 	{
@@ -70,13 +70,12 @@ char	*precision(t_env *env, char *res, int minus)
 
 	offset = NULL;
 	leng = ft_strlen(res);
-	if (env->offset - leng > 0)
+	if (env->precision - leng > 0)
 	{
-		offset = ft_memalloc((size_t)(env->offset - leng));
-		offset = ft_memset(offset, '0', env->offset - leng);
-		if (!env->minus)
-			res = ft_strjoin(offset, res);
-		env->res += (env->offset - leng);
+		offset = ft_memalloc((size_t)(env->precision - leng));
+		offset = ft_memset(offset, '0', env->precision - leng);
+		res = ft_strjoin(offset, res);
+		env->res += (env->precision - leng);
 	}
 	if (minus)
 	{

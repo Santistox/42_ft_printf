@@ -6,18 +6,24 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:41:57 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/30 12:12:43 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/30 17:06:10 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	leng(int n)
+void	error_mes(void)
+{
+	ft_putstr("error: combination is not allowed\n");
+	exit(EXIT_FAILURE);
+}
+
+static int	leng(long long int n)
 {
 	int numlen;
 
 	numlen = (n < 0) ? 2 : 1;
-	while ((n /= 10))
+	while ((n /= 10) > 0)
 		numlen++;
 	return (numlen);
 }
@@ -111,15 +117,58 @@ void flag_i(t_env *env, va_list args)
 	env->res += len;
 }
 */
+
+
+
+
+/*
+ *
+ *	Eto govno vse eshe ne rabotaet s otricatelnimi chislami poshlo wse na hhhhhh
+ *																-rlintill
+ *
+ * */
+
+
+
+
 void	flag_o(t_env *env, va_list args)
 {
+	/*
 	int		num;
-		char	*res;
+	char	*res;
+	int		minus;
 
+	if (env->space || env->plus)
+		error_mes();
 	num = va_arg(args, int);
+	minus = (num < 0) ? 1 : 0;
 	res = ft_itoa_o(num);
+	if (num < 0)
+		num *= -1;
+	if (env->is_precision)
+		res = precision(env, res, minus);	
+	else if (env->zero)
+		res = zero_offset(env, res, minus, 0);
+	else if (env->offset)
+		res = space_offset(env, res, minus);
 	env->buf = ft_strjoin(env->buf, res);
 	env->res += ft_strlen(res);
+	*/
+	unsigned int	num;
+	char			*res;
+
+	if (env->space || env->plus)
+		error_mes();
+	num = va_arg(args, unsigned int);
+	res = ft_itoa_o(num);
+	env->res += ft_strlen(res);
+	if (env->is_precision)
+		res = precision(env, res, 0);	
+	else if (env->zero)
+		res = zero_offset(env, res, 0,  0);
+	else if (env->offset)
+		res = space_offset(env, res, 0);
+	env->buf = ft_strjoin(env->buf, res);
 }
 
 void print(t_env *env)
@@ -144,13 +193,42 @@ void	flag_di(t_env *env, va_list args)
 	}
 	env->res += leng(num);
 	res = ft_itoa(num);
-	plus_minus(env, &res, zero_minus, num);
+	if (!(env->is_precision) && !(env->zero))
+		plus_minus(env, &res, zero_minus, num);
 	if (env->is_precision)
 		res = precision(env, res, zero_minus);
 	else if (env->zero)
-		res = zero_offset(env, res, zero_minus);
+		res = zero_offset(env, res, zero_minus, 1);
 	else if (env->offset)
 		res = space_offset(env, res, zero_minus);
+	if (env->is_precision || env->zero)
+		plus_minus(env, &res, zero_minus, num);
 	space(env, &res, num);
+	env->buf = ft_strjoin(env->buf, res);
+}
+
+void	flag_u(t_env *env, va_list args)
+{
+	unsigned int	num;
+	char			*res;
+
+/*
+ *
+ *	Why there are error with zero&minus? Question to Sanya
+ *									- rlintill
+ *
+ * */
+
+	if (env->space || env->plus || (env->minus && env->zero))
+		error_mes();
+	num = va_arg(args, unsigned int);
+	res = ft_itoa(num);
+	if (env->is_precision)
+		res = precision(env, res, 0);	
+	else if (env->zero)
+		res = zero_offset(env, res, 0,  0);
+	else if (env->offset)
+		res = space_offset(env, res, 0);
+	env->res += leng(num);
 	env->buf = ft_strjoin(env->buf, res);
 }
