@@ -42,8 +42,10 @@ void	flag_di(t_env *env, va_list args);
 void	flag_o(t_env *env, va_list args);
 void	flag_u(t_env *env, va_list args);
 void	flag_x(t_env *env, va_list args);
+void	flag_x_up(t_env *env, va_list args);
 char	*ft_itoa_o(unsigned int n);
 char	*ft_itoa_x(unsigned int n);
+char	*ft_itoa_x_up(unsigned int n);
 void	print(t_env *env);
 
 char	*space_offset(t_env *env, char *res, int minus);

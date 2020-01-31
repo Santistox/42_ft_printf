@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 17:19:37 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/30 18:01:27 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/31 15:04:32 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ char	*space_offset(t_env *env, char *res, int minus)
 		leng++;
 	if (env->offset - leng > 0)
 	{
-		offset = ft_memalloc((size_t)(env->offset - leng));
+		offset = ft_memalloc((size_t)(env->offset - leng + 1));
 		offset = ft_memset(offset, ' ', env->offset - leng);
+		offset[env->offset - leng + 1] = '\0';
 		if (!env->minus)
 			res = ft_strjoin(offset, res);
 		else

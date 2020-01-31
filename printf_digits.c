@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:41:57 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/31 11:48:20 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/31 17:11:22 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	flag_o(t_env *env, va_list args)
 	env->res += ft_strlen(res);
 	if (env->is_precision)
 		res = precision(env, res, 0);	
-	else if (env->zero)
+	if (env->zero)
 		res = zero_offset(env, res, 0,  0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);
@@ -173,7 +173,8 @@ void	flag_o(t_env *env, va_list args)
 
 void print(t_env *env)
 {
-	write(0, env->buf, env->res);
+	ft_putstr(env->buf);
+	//write(0, env->buf, env->res);
 }
 
 void	flag_di(t_env *env, va_list args)
@@ -197,7 +198,7 @@ void	flag_di(t_env *env, va_list args)
 		plus_minus(env, &res, zero_minus, num);
 	if (env->is_precision)
 		res = precision(env, res, zero_minus);
-	else if (env->zero)
+	if (env->zero)
 		res = zero_offset(env, res, zero_minus, 1);
 	else if (env->offset)
 		res = space_offset(env, res, zero_minus);
@@ -223,13 +224,14 @@ void	flag_u(t_env *env, va_list args)
 		error_mes();
 	num = va_arg(args, unsigned int);
 	res = ft_itoa(num);
+	env->res += ft_strlen(res);
 	if (env->is_precision)
 		res = precision(env, res, 0);	
-	else if (env->zero)
+	if (env->zero)
 		res = zero_offset(env, res, 0,  0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);
-	env->res += leng(num);
+//	env->res += leng(num);
 	env->buf = ft_strjoin(env->buf, res);
 }
 
@@ -249,16 +251,40 @@ void	flag_x(t_env *env, va_list args)
 		error_mes();
 	num = va_arg(args, unsigned int);
 	res = ft_itoa_x(num);
-	printf("RES FOR REAL IS %s\n", res);
+	env->res += ft_strlen(res);
 	if (env->is_precision)
 		res = precision(env, res, 0);	
-	else if (env->zero)
+	if (env->zero)
 		res = zero_offset(env, res, 0,  0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);
-	env->res += leng(num);
-	printf("RES FOR this time REAL REAL IS %s\n", res);
 	env->buf = ft_strjoin(env->buf, res);
-	printf("RES FOR REAL REAL IS %s\n", res);
+
+}
+
+void	flag_x_up(t_env *env, va_list args)
+{
+	unsigned int	num;
+	char			*res;
+
+/*
+ *
+ *	Why there are error with zero&minus? Question to Sanya
+ *									- rlintill
+ *
+ * */
+
+	if (env->space || env->plus || (env->minus && env->zero))
+		error_mes();
+	num = va_arg(args, unsigned int);
+	res = ft_itoa_x_up(num);
+	env->res += ft_strlen(res);
+	if (env->is_precision)
+		res = precision(env, res, 0);	
+	if (env->zero)
+		res = zero_offset(env, res, 0,  0);
+	else if (env->offset)
+		res = space_offset(env, res, 0);
+	env->buf = ft_strjoin(env->buf, res);
 
 }

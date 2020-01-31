@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/01/31 11:43:02 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/31 16:47:31 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,9 @@ void	find_flag(t_env  *env, va_list args)
 		flag_u(env, args);
 	else if (env->str[env->count] == 'x')
 		flag_x(env, args);
+	else if (env->str[env->count] == 'X')
+		flag_x_up(env, args);
+	
 	/*
 	else if (env->str[env->count] == 's' || env->str[env->count] == 'S')
 		flag_sS(env, args);
@@ -310,8 +313,8 @@ int main(void)
 
 	// tests here
 	
-	printf("%6x\n", 5556);
-	ft_printf("%6x", 5556);
+	printf("%5.4o\n", 556);
+	ft_printf("%5.4o", 556);
 
 	/*
 	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);

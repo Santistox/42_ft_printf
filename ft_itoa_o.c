@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:56:56 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/31 11:43:53 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/31 16:15:57 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ char	*ft_itoa_o(unsigned int n)
 
 char	*ft_itoa_x(unsigned int n)
 {
+	char	*temp;
 	char	*res;
 	int		rem;
 	int		i;
@@ -138,6 +139,7 @@ char	*ft_itoa_x(unsigned int n)
 	i = 0;
 	rem = 0;
 	res = NULL;
+	temp = NULL;
 	if (n == 0)
 	{
 		res = ft_strjoin(res, "0");
@@ -149,16 +151,56 @@ char	*ft_itoa_x(unsigned int n)
 	 *								- rlintill	
 	 *
 	 * */
-	res = ft_memalloc(sizeof(char) * 30);
+	temp = ft_memalloc(sizeof(char) * 30);
 	while (n > 0)
 	{
 		rem = n % 16;
-		res[i] = (rem > 9) ? ((rem - 10) + 'a') : (rem + '0');
+		temp[i] = (rem > 9) ? ((rem - 10) + 'a') : (rem + '0');
 		n = n / 16;
 		i++;
 	}
-	res[i] = '\0';
-	ft_reverse(&res);
-	printf("RES IS %s\n", res); 
+	temp[i] = '\0';
+	ft_reverse(&temp);
+	res = ft_strdup(temp);
+	if (temp != NULL)
+		ft_memdel((void*)&temp);
+	return (res);
+}
+
+char	*ft_itoa_x_up(unsigned int n)
+{
+	char	*temp;
+	char	*res;
+	int		rem;
+	int		i;
+
+	i = 0;
+	rem = 0;
+	res = NULL;
+	temp = NULL;
+	if (n == 0)
+	{
+		res = ft_strjoin(res, "0");
+		return (res);
+	}
+	/*
+	 *
+	 *	I'm not sure about the malloc, help pls
+	 *								- rlintill	
+	 *
+	 * */
+	temp = ft_memalloc(sizeof(char) * 30);
+	while (n > 0)
+	{
+		rem = n % 16;
+		temp[i] = (rem > 9) ? ((rem - 10) + 'A') : (rem + '0');
+		n = n / 16;
+		i++;
+	}
+	temp[i] = '\0';
+	ft_reverse(&temp);
+	res = ft_strdup(temp);
+	if (temp != NULL)
+		ft_memdel((void*)&temp);
 	return (res);
 }
