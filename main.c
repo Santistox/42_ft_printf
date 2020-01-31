@@ -192,21 +192,21 @@ void	find_flag(t_env  *env, va_list args)
 		env->offset -= env->space;
 	checker(env, args);
 	// here code of calling flags functions
-	// if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
-	// 	flag_di(env, args);
-	// else if (env->str[env->count] == 'o')
-	// 	flag_o(env, args);
-	// else if (env->str[env->count] == 'u')
-	// 	flag_u(env, args);
-	// else if (env->str[env->count] == 'x')
-	// 	flag_x(env, args);
-	// else if (env->str[env->count] == 'X')
-	// 	flag_x_up(env, args);
+	if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
+		flag_di(env, args);
+	else if (env->str[env->count] == 'o')
+		flag_o(env, args);
+	else if (env->str[env->count] == 'u')
+		flag_u(env, args);
+	else if (env->str[env->count] == 'x')
+		flag_x(env, args);
+	else if (env->str[env->count] == 'X')
+		flag_x_up(env, args);
 	
 	
-	if (env->str[env->count] == 's' || env->str[env->count] == 'S')
-		flag_s(env, args);
-	env->res = ft_strlen(env->buf);
+	//if (env->str[env->count] == 's' || env->str[env->count] == 'S')
+	//	flag_s(env, args);
+	//env->res = ft_strlen(env->buf);
 	//print(env);
 	//else if (env->str[env->count] == 'c' || env->str[env->count] == 'C')
 	//	flag_c(env, args);
@@ -303,17 +303,31 @@ int ft_printf(const char *line, ...)
 			break ;
 		env->count++;
 	}
-	write(1, env->buf, ft_strlen(env->buf));
+	write(1, env->buf, ft_strlen(env->buf));  // print buffer on screen
+	free(env->buf); // clear buffer
+	free(env);      // clear all struct
+	va_end(args);   // stop reading arguments
 	return(rez);
 }
 
 int main(void)
 {
 	// tests here
+	int i = 0;
+
+    // poor test
+	//printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);
+	//ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
+
+
 	printf("%3.3s%3.3s\n", "hello", "world");
-	ft_printf("%3.3s%3.3s", "hello", "world");
+	ft_printf("%3.3s%3.3s\n", "hello", "world");
+	//scanf("%i", &i); // for leak test
 	return(0);
 }
 
-//compile with:
-// gcc main.c ft_printf.h libft/libft.h libft/*.c
+// simple compile with:
+// gcc main.c ft_itoa_o.c ft_util.c printf_digits.c printf_string.c ft_printf.h libft/libft.h libft/*.c
+
+// compline with make file:
+// gcc main.c libftprintf.a -I includes/

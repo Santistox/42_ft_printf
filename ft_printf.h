@@ -28,9 +28,15 @@ typedef struct	s_env
 
 int		ft_printf(const char *line, ...);
 t_env	*malloc_env(char *str);
+
+/*
+** buffer functions
+*/
 void	to_buff_block(t_env *env);
 void	to_buff_char(char c, t_env *env);
 void	to_buff_str(char *str, t_env *env);
+void	to_buff_offset(t_env *env);
+
 void	find_flag(t_env  *env, va_list args);
 int		check_flag(char c);
 void	set_def(t_env *env);
@@ -38,13 +44,22 @@ void	check_preflag(t_env *env);
 void	set_precision(int init_index, t_env *env);
 void	set_offset(int init_index, t_env *env);
 
+/*
+** num flags
+*/
 void	flag_di(t_env *env, va_list args);
 void	flag_o(t_env *env, va_list args);
 void	flag_u(t_env *env, va_list args);
 void	flag_x(t_env *env, va_list args);
+void	flag_x_up(t_env *env, va_list args);
 char	*ft_itoa_o(unsigned int n);
 char	*ft_itoa_x(unsigned int n);
 void	print(t_env *env);
+
+/*
+** num flags
+*/
+void	flag_s(t_env *env, va_list arg);
 
 char	*space_offset(t_env *env, char *res, int minus);
 char	*zero_offset(t_env *env, char *res, int minus, int flag);
@@ -52,6 +67,4 @@ char	*precision(t_env *env, char *res, int minus);
 void	plus_minus(t_env *env, char **res, int minus, int num);
 void	space(t_env *env, char **res, int num);
 
-
-void	flag_s(t_env *env, va_list arg);
 #endif

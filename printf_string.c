@@ -53,3 +53,8 @@ void	flag_s(t_env *env, va_list arg)
 	if (env->minus)
 		to_buff_offset(env);
 }
+
+void	flag_c(t_env *env, va_list arg)
+{
+	//something went wrong
+}
