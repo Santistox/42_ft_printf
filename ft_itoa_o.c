@@ -6,12 +6,14 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:56:56 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/30 16:53:30 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/31 11:43:53 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+
+/*
 int	power(long long int n)
 {
 	int	res;
@@ -19,7 +21,7 @@ int	power(long long int n)
 
 	i = 1;
 	res = 0;
-	while (i < 1037741825 && i < n)
+	while (i < n)
 	{
 		res++;
 		i *= 8;
@@ -34,12 +36,8 @@ char	*ft_itoa_o(long long int n)
 	int j;
 	int lim;
 	int	dec;
-//	int	min;
 
 	res = 0;
-//	min = ((n < 0) ? 1 : 0);
-//	if (min)
-//		n *= -1;
 	lim = power(n);
 	i = 1;
 	j = 0;
@@ -63,7 +61,104 @@ char	*ft_itoa_o(long long int n)
 		i /= 8;
 		lim--;
 	}
-//	if (min)
-//		res = 37777777778;
 	return (ft_itoa(res));
+} 
+*/
+
+void	ft_swap(char *i, char *j)
+{
+	char	temp;
+
+	temp = *i;
+	*i = *j;
+	*j = temp;
+}
+
+void	ft_reverse(char **num)
+{
+	int i;
+	int	end;
+	char	*temp;
+
+	i = 0;
+	temp = ft_strdup(*num);
+	end = ft_strlen(*num) - 1;
+	while (i < end)
+	{
+		ft_swap(&temp[i], &temp[end]);
+		i++;
+		end--;
+	}
+	if (temp != NULL)
+		ft_memdel((void*)num);
+	*num = ft_strdup(temp);
+	if (temp != NULL)
+		ft_memdel((void*)&temp);
+}
+
+char	*ft_itoa_o(unsigned int n)
+{
+	char	*res;
+	int		rem;
+	int		i;
+
+	i = 0;
+	rem = 0;
+	res = NULL;
+	if (n == 0)
+	{
+		res = ft_strjoin(res, "0");
+		return (res);
+	}
+	/*
+	 *
+	 *	I'm not sure about the malloc, help pls
+	 *								- rlintill	
+	 *
+	 * */
+	res = ft_memalloc(sizeof(char) * 30);
+	while (n > 0)
+	{
+		rem = n % 8;
+		res[i] = (rem > 9) ? ((rem - 10) + 'a') : (rem + '0');
+		n = n/8;
+		i++;
+	}
+	res[i] = '\0';
+	ft_reverse(&res);
+	return (res);
+}
+
+char	*ft_itoa_x(unsigned int n)
+{
+	char	*res;
+	int		rem;
+	int		i;
+
+	i = 0;
+	rem = 0;
+	res = NULL;
+	if (n == 0)
+	{
+		res = ft_strjoin(res, "0");
+		return (res);
+	}
+	/*
+	 *
+	 *	I'm not sure about the malloc, help pls
+	 *								- rlintill	
+	 *
+	 * */
+	res = ft_memalloc(sizeof(char) * 30);
+	while (n > 0)
+	{
+		rem = n % 16;
+		res[i] = (rem > 9) ? ((rem - 10) + 'a') : (rem + '0');
+		n = n / 16;
+		i++;
+	}
+	res[i] = '\0';
+	ft_reverse(&res);
+	printf("RES IS %s\n", res); 
+	return (res);
 }

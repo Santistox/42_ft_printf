@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:41:57 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/30 17:06:10 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/31 11:48:20 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,4 +231,34 @@ void	flag_u(t_env *env, va_list args)
 		res = space_offset(env, res, 0);
 	env->res += leng(num);
 	env->buf = ft_strjoin(env->buf, res);
+}
+
+void	flag_x(t_env *env, va_list args)
+{
+	unsigned int	num;
+	char			*res;
+
+/*
+ *
+ *	Why there are error with zero&minus? Question to Sanya
+ *									- rlintill
+ *
+ * */
+
+	if (env->space || env->plus || (env->minus && env->zero))
+		error_mes();
+	num = va_arg(args, unsigned int);
+	res = ft_itoa_x(num);
+	printf("RES FOR REAL IS %s\n", res);
+	if (env->is_precision)
+		res = precision(env, res, 0);	
+	else if (env->zero)
+		res = zero_offset(env, res, 0,  0);
+	else if (env->offset)
+		res = space_offset(env, res, 0);
+	env->res += leng(num);
+	printf("RES FOR this time REAL REAL IS %s\n", res);
+	env->buf = ft_strjoin(env->buf, res);
+	printf("RES FOR REAL REAL IS %s\n", res);
+
 }
