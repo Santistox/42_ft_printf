@@ -4,24 +4,27 @@
 
 // GOVNOCODE!
 
-void	put_offset_to_buf(t_env *env)
+void	to_buff_offset(t_env *env)
 {
 	char	*offset;
 
 
-	if (!(offset = ft_memalloc(sizeof(char) * env->offset + 1)))
+	if (env->offset > 0)
 	{
-		ft_putstr("error: Malloc failed\n");
-		exit(EXIT_FAILURE);
+		if (!(offset = ft_memalloc(sizeof(char) * env->offset + 1)))
+		{
+			ft_putstr("error: Malloc failed\n");
+			exit(EXIT_FAILURE);
+		}
+		if (env->zero == 1)
+			ft_memset(offset, '0', env->offset);
+		else
+			ft_memset(offset, ' ', env->offset);
+		to_buff_str(offset, env);
 	}
-	if (env->zero == 1)
-		ft_memset(offset, '0', env->offset);
-	else
-		ft_memset(offset, ' ', env->offset);
-	to_buff_str(offset, env);
 }
 
-void	flag_sS(t_env *env, va_list arg)
+void	flag_s(t_env *env, va_list arg)
 {
 	char	*next_arg;
 	int		arg_size;
@@ -44,12 +47,9 @@ void	flag_sS(t_env *env, va_list arg)
 		env->offset -= arg_size;
 		precise_str = ft_strdup(next_arg);
 	}
-	if (env->offset > 0)
-	{
-		if (!env->minus)
-			put_offset_to_buf(env);
-		to_buff_str(precise_str, env);
-		if (env->minus)
-			put_offset_to_buf(env);
-	}
+	if (!env->minus)
+		to_buff_offset(env);
+	to_buff_str(precise_str, env);
+	if (env->minus)
+		to_buff_offset(env);
 }

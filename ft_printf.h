@@ -51,4 +51,7 @@ char	*zero_offset(t_env *env, char *res, int minus, int flag);
 char	*precision(t_env *env, char *res, int minus);
 void	plus_minus(t_env *env, char **res, int minus, int num);
 void	space(t_env *env, char **res, int num);
+
+
+void	flag_s(t_env *env, va_list arg);
 #endif

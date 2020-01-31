@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/01/31 11:43:02 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/01/31 16:47:31 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,22 +190,27 @@ void	find_flag(t_env  *env, va_list args)
 		env->offset -= 1;
 	else
 		env->offset -= env->space;
-	//checker(env, args);
+	checker(env, args);
 	// here code of calling flags functions
-	if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
-		flag_di(env, args);
-	else if (env->str[env->count] == 'o')
-		flag_o(env, args);
-	else if (env->str[env->count] == 'u')
-		flag_u(env, args);
-	else if (env->str[env->count] == 'x')
-		flag_x(env, args);
-	/*
-	else if (env->str[env->count] == 's' || env->str[env->count] == 'S')
-		flag_sS(env, args);
-	else if (env->str[env->count] == 'c' || env->str[env->count] == 'C')
-		flag_cC(env, args);
-	*/
+	// if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
+	// 	flag_di(env, args);
+	// else if (env->str[env->count] == 'o')
+	// 	flag_o(env, args);
+	// else if (env->str[env->count] == 'u')
+	// 	flag_u(env, args);
+	// else if (env->str[env->count] == 'x')
+	// 	flag_x(env, args);
+	// else if (env->str[env->count] == 'X')
+	// 	flag_x_up(env, args);
+	
+	
+	if (env->str[env->count] == 's' || env->str[env->count] == 'S')
+		flag_s(env, args);
+	env->res = ft_strlen(env->buf);
+	//print(env);
+	//else if (env->str[env->count] == 'c' || env->str[env->count] == 'C')
+	//	flag_c(env, args);
+	
 	//checker(env, args);
 }
 
@@ -298,31 +303,15 @@ int ft_printf(const char *line, ...)
 			break ;
 		env->count++;
 	}
-	print(env);
+	write(1, env->buf, ft_strlen(env->buf));
 	return(rez);
 }
 
 int main(void)
 {
-	float e;
-
-	e=2.718281828;
-
 	// tests here
-	
-	printf("%6x\n", 5556);
-	ft_printf("%6x", 5556);
-
-	/*
-	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);
-	ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
-	*/
-/*
- *
- * Sanya, please check out the order of the inner flags
- *									- rlintill
- *
- * */	
+	printf("%3.3s%3.3s\n", "hello", "world");
+	ft_printf("%3.3s%3.3s", "hello", "world");
 	return(0);
 }
 
