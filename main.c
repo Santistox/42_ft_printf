@@ -190,7 +190,9 @@ void	find_flag(t_env  *env, va_list args)
 		env->offset -= 1;
 	else
 		env->offset -= env->space;
+	
 	//checker(env, args);
+
 	// here code of calling flags functions
 	if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
 		flag_di(env, args);
@@ -202,14 +204,8 @@ void	find_flag(t_env  *env, va_list args)
 		flag_x(env, args);
 	else if (env->str[env->count] == 'X')
 		flag_x_up(env, args);
-	
-	/*
-	else if (env->str[env->count] == 's' || env->str[env->count] == 'S')
-		flag_sS(env, args);
-	else if (env->str[env->count] == 'c' || env->str[env->count] == 'C')
-		flag_cC(env, args);
-	*/
-	//checker(env, args);
+	else if (env->str[env->count] == 's')
+		flag_s(env, args);
 }
 
 /*
@@ -301,33 +297,34 @@ int ft_printf(const char *line, ...)
 			break ;
 		env->count++;
 	}
-	print(env);
+	write(1, env->buf, ft_strlen(env->buf));  // print buffer on screen
+	free(env->buf); // clear buffer
+	free(env);      // clear all struct
+	va_end(args);   // stop reading arguments
 	return(rez);
 }
 
 int main(void)
 {
-	float e;
-
-	e=2.718281828;
-
 	// tests here
-	
-	printf("%5.4o\n", 556);
-	ft_printf("%5.4o", 556);
+	int i = 0; // for leak test
 
-	/*
+	printf("%5.4o\n", 556);
+	ft_printf("%5.4o\n", 556);
+
+	printf("%3.3s%3.3s\n", "hello", "world");
+	ft_printf("%3.3s%3.3s\n", "hello", "world");
+
 	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);
 	ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
-	*/
-/*
- *
- * Sanya, please check out the order of the inner flags
- *									- rlintill
- *
- * */	
+
+
+	//scanf("%i", &i); // for leak test
 	return(0);
 }
 
-//compile with:
-// gcc main.c ft_printf.h libft/libft.h libft/*.c
+// simple compile with:
+// gcc main.c ft_itoa_o.c ft_util.c printf_digits.c printf_string.c ft_printf.h libft/libft.h libft/*.c
+
+// compline with make file:
+// gcc main.c libftprintf.a -I includes/
