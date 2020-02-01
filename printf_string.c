@@ -20,10 +20,7 @@ void	to_buff_offset(t_env *env)
 	if (env->offset > 0)
 	{
 		if (!(offset = ft_memalloc(sizeof(char) * env->offset + 1)))
-		{
-			ft_putstr("error: Malloc failed\n");
-			exit(EXIT_FAILURE);
-		}
+			error(403);
 		if (env->zero == 1)
 			ft_memset(offset, '0', env->offset);
 		else
@@ -32,22 +29,19 @@ void	to_buff_offset(t_env *env)
 	}
 }
 
-void	flag_s(t_env *env, va_list arg)
+void	flag_s(t_env *env, va_list args)
 {
 	char	*next_arg;
 	int		arg_size;
 	char	*precise_str;
 
-	next_arg = va_arg(arg, char *);
+	next_arg = va_arg(args, char *);
 	arg_size = ft_strlen(next_arg);
 	if (env->precision < arg_size && env->is_precision == 1)
 	{
 		env->offset -= env->precision;
 		if (!(precise_str = ft_memalloc(sizeof(char) * env->precision + 1)))
-		{
-			ft_putstr("error: Malloc failed\n");
-			exit(EXIT_FAILURE);
-		}
+			error(403);
 		ft_memcpy(precise_str, next_arg, env->precision);
 	}
 	else
@@ -62,7 +56,21 @@ void	flag_s(t_env *env, va_list arg)
 		to_buff_offset(env);
 }
 
-void	flag_c(t_env *env, va_list arg)
+void	flag_c(t_env *env, int offset)
 {
-	//something went wrong
+	if (offset == 1)
+		env->offset--;
+	if (!env->minus && offset == 1)
+		to_buff_offset(env);
+	if (!env->cont)
+	{
+		env->count_2 += ft_strlen(env->buf) + 1;
+		to_buff_char('\0', env);
+		write(0, env->buf, ft_strlen(env->buf) + 1);
+		ft_memdel((void*)&env->buf);
+		env->buf = ft_memalloc(sizeof(char));
+	}
+	to_buff_char(env->cont, env);
+	if (env->minus && offset == 1)
+		to_buff_offset(env);
 }
