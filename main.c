@@ -82,6 +82,7 @@ void	set_def(t_env *env)
 	env->plus = 0;
 	env->minus = 0;
 	env->space = 0;
+	env->zero = 0;
 	env->is_unicode = 0;
 }
 
@@ -206,6 +207,8 @@ void	find_flag(t_env  *env, va_list args)
 		flag_x_up(env, args);
 	else if (env->str[env->count] == 's')
 		flag_s(env, args);
+
+	//checker(env, args);
 }
 
 /*
@@ -309,14 +312,14 @@ int main(void)
 	// tests here
 	int i = 0; // for leak test
 
-	printf("%5.4o\n", 556);
-	ft_printf("%5.4o\n", 556);
+	printf("%05x\n", 556);
+	ft_printf("%05x\n", 556);
 
-	printf("%3.3s%3.3s\n", "hello", "world");
-	ft_printf("%3.3s%3.3s\n", "hello", "world");
+//	printf("%3.3s%3.3s\n", "hello", "world");
+//	ft_printf("%3.3s%3.3s\n", "hello", "world");
 
-	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);
-	ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
+//	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);
+//	ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
 
 
 	//scanf("%i", &i); // for leak test

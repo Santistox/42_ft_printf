@@ -48,8 +48,9 @@ char	*zero_offset(t_env *env, char *res, int minus, int flag)
 		leng += 1;
 	if (env->offset - leng > 0)
 	{
-		offset = ft_memalloc((size_t)(env->offset - leng));
+		offset = ft_memalloc((size_t)(env->offset - leng + 1));
 		offset = ft_memset(offset, '0', env->offset - leng);
+		offset[env->offset - leng + 1] = '\0';
 		if (!env->minus)
 			res = ft_strjoin(offset, res);
 		env->res += (env->offset - leng);
@@ -73,8 +74,9 @@ char	*precision(t_env *env, char *res, int minus)
 	leng = ft_strlen(res);
 	if (env->precision - leng > 0)
 	{
-		offset = ft_memalloc((size_t)(env->precision - leng));
+		offset = ft_memalloc((size_t)(env->precision - leng + 1));
 		offset = ft_memset(offset, '0', env->precision - leng);
+		offset[env->precision - leng + 1] = '\0';
 		res = ft_strjoin(offset, res);
 		env->res += (env->precision - leng);
 	}

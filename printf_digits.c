@@ -199,7 +199,7 @@ void	flag_di(t_env *env, va_list args)
 	if (env->is_precision)
 		res = precision(env, res, zero_minus);
 	if (env->zero)
-		res = zero_offset(env, res, zero_minus, 1);
+		res = zero_offset(env, res, zero_minus,0/* 1*/);
 	else if (env->offset)
 		res = space_offset(env, res, zero_minus);
 	if (env->is_precision || env->zero)
