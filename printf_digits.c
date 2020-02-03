@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:41:57 by rlintill          #+#    #+#             */
-/*   Updated: 2020/01/31 17:11:22 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/03 11:08:29 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void	flag_o(t_env *env, va_list args)
 	if (env->is_precision)
 		res = precision(env, res, 0);	
 	if (env->zero)
-		res = zero_offset(env, res, 0,  0);
+		res = zero_offset(env, res, 0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);
 	env->buf = ft_strjoin(env->buf, res);
@@ -199,7 +199,7 @@ void	flag_di(t_env *env, va_list args)
 	if (env->is_precision)
 		res = precision(env, res, zero_minus);
 	if (env->zero)
-		res = zero_offset(env, res, zero_minus,0/* 1*/);
+		res = zero_offset(env, res, zero_minus);
 	else if (env->offset)
 		res = space_offset(env, res, zero_minus);
 	if (env->is_precision || env->zero)
@@ -228,7 +228,7 @@ void	flag_u(t_env *env, va_list args)
 	if (env->is_precision)
 		res = precision(env, res, 0);	
 	if (env->zero)
-		res = zero_offset(env, res, 0,  0);
+		res = zero_offset(env, res, 0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);
 //	env->res += leng(num);
@@ -255,7 +255,7 @@ void	flag_x(t_env *env, va_list args)
 	if (env->is_precision)
 		res = precision(env, res, 0);	
 	if (env->zero)
-		res = zero_offset(env, res, 0,  0);
+		res = zero_offset(env, res, 0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);
 	env->buf = ft_strjoin(env->buf, res);
@@ -282,7 +282,7 @@ void	flag_x_up(t_env *env, va_list args)
 	if (env->is_precision)
 		res = precision(env, res, 0);	
 	if (env->zero)
-		res = zero_offset(env, res, 0,  0);
+		res = zero_offset(env, res, 0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);
 	env->buf = ft_strjoin(env->buf, res);

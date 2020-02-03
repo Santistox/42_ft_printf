@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/01/31 16:47:31 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/03 11:36:21 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,8 +312,8 @@ int main(void)
 	// tests here
 	int i = 0; // for leak test
 
-	printf("%05x\n", 556);
-	ft_printf("%05x\n", 556);
+	printf("%0+8.3d\n", 1234);
+	ft_printf("%0+8.3d\n", 1234);
 
 //	printf("%3.3s%3.3s\n", "hello", "world");
 //	ft_printf("%3.3s%3.3s\n", "hello", "world");
