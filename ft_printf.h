@@ -3,7 +3,7 @@
 
 # include <stdio.h> // library to work with standard prinft
 # include <stdarg.h> // library to work with indefinite number of arguments
-# include "libft/libft.h" // personal library
+# include "../libft/libft.h" // personal library
 # include <wchar.h> // library for using wchar_t type
 # include <wchar.h>
 # include <unistd.h>
