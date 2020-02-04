@@ -3,7 +3,11 @@
 
 # include <stdio.h> // library to work with standard prinft
 # include <stdarg.h> // library to work with indefinite number of arguments
-# include "libft/libft.h" // personal library
+# include "../libft/libft.h" // personal library
+# include <wchar.h> // library for using wchar_t type
+# include <wchar.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 typedef struct	s_env
 {
@@ -24,10 +28,14 @@ typedef struct	s_env
 	int			first_char_pos;  // first char position from start/prev%
 	int			percent_pos;     // position of %
 	int			res;
+	uintmax_t	cont;            // container help program contain big numbers
+	int 		count_2;          // backup count variable value
 }				t_env;
 
 int		ft_printf(const char *line, ...);
 t_env	*malloc_env(char *str);
+void	error(int error_id);
+void	flag_s(t_env *env, va_list args);
 
 /*
 ** buffer functions
@@ -60,7 +68,8 @@ void	print(t_env *env);
 /*
 ** num flags
 */
-void	flag_s(t_env *env, va_list arg);
+void	flag_s(t_env *env, va_list args);
+void	flag_c(t_env *env, int offset);
 
 char	*space_offset(t_env *env, char *res, int minus);
 char	*zero_offset(t_env *env, char *res, int minus);
