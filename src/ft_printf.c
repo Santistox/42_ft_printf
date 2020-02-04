@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/04 12:59:19 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/04 15:09:14 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,7 @@ void	find_flag(t_env  *env, va_list args)
 	else if (env->str[env->count] == 's')
 		flag_s(env, args);
 	else if (env->str[env->count] == 'c')
-		flag_c(env, 1);
+		flag_c(env, args);
 }
 
 /*

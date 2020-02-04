@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/04 12:53:58 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/04 15:28:15 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	flag_s(t_env *env, va_list args)
 	if (env->minus)
 		to_buff_offset(env);
 }
-
+/*
 void	flag_c(t_env *env, int offset)
 {
 	if (offset == 1)
@@ -73,4 +73,18 @@ void	flag_c(t_env *env, int offset)
 	to_buff_char(env->cont, env);
 	if (env->minus && offset == 1)
 		to_buff_offset(env);
+}*/
+
+void flag_c(t_env *env, va_list args)
+{
+	char c;
+	char *res;
+
+	c = va_arg(args, unsigned int);
+	res = ft_memalloc(sizeof(char) + 1);
+	res[0] = c;
+	res[1] = '\0';
+	if (env->offset)
+		res = space_offset(env, res, 0);
+	env->buf = ft_strjoin(env->buf, res);
 }

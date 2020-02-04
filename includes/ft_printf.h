@@ -69,7 +69,8 @@ void	print(t_env *env);
 ** num flags
 */
 void	flag_s(t_env *env, va_list args);
-void	flag_c(t_env *env, int offset);
+// void	flag_c(t_env *env, int offset);
+void	flag_c(t_env *env, va_list args);
 
 char	*space_offset(t_env *env, char *res, int minus);
 char	*zero_offset(t_env *env, char *res, int minus);

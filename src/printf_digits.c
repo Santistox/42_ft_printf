@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:41:57 by rlintill          #+#    #+#             */
-/*   Updated: 2020/02/04 11:53:02 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/04 15:31:20 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ void	flag_u(t_env *env, va_list args)
 		error_mes();
 	num = va_arg(args, unsigned int);
 	res = ft_itoa(num);
-	env->res += ft_strlen(res);
+//	env->res += ft_strlen(res);
 	if (env->is_precision)
 		res = precision(env, res, 0);	
 	if (env->zero && !env->is_precision)
@@ -251,7 +251,7 @@ void	flag_x(t_env *env, va_list args)
 		error_mes();
 	num = va_arg(args, unsigned int);
 	res = ft_itoa_x(num);
-	env->res += ft_strlen(res);
+//	env->res += ft_strlen(res);
 	if (env->is_precision)
 		res = precision(env, res, 0);	
 	if (env->zero)
@@ -278,7 +278,7 @@ void	flag_x_up(t_env *env, va_list args)
 		error_mes();
 	num = va_arg(args, unsigned int);
 	res = ft_itoa_x_up(num);
-	env->res += ft_strlen(res);
+//	env->res += ft_strlen(res);
 	if (env->is_precision)
 		res = precision(env, res, 0);	
 	if (env->zero)
