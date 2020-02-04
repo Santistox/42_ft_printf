@@ -77,4 +77,22 @@ char	*precision(t_env *env, char *res, int minus);
 void	plus_minus(t_env *env, char **res, int minus, int num);
 void	space(t_env *env, char **res, int num);
 
+/*
+ *	Libft files
+ */
+
+void	*ft_memset(void *b, int c, size_t len);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(const char *s1);
+char	*ft_strncat(char *s1, const char *s2, size_t n);
+int		ft_atoi(const char *str);
+int		ft_isdigit(int c);
+void	*ft_memalloc(size_t size);
+void	ft_memdel(void **ap);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_itoa(long long int n);
+void	ft_putstr(char const *s);
+char	*ft_strnew(size_t size);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 10:41:57 by rlintill          #+#    #+#             */
-/*   Updated: 2020/02/03 11:08:29 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/04 11:53:02 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	flag_o(t_env *env, va_list args)
 	env->res += ft_strlen(res);
 	if (env->is_precision)
 		res = precision(env, res, 0);	
-	if (env->zero)
+	if (env->zero && !env->is_precision)
 		res = zero_offset(env, res, 0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);
@@ -198,7 +198,7 @@ void	flag_di(t_env *env, va_list args)
 		plus_minus(env, &res, zero_minus, num);
 	if (env->is_precision)
 		res = precision(env, res, zero_minus);
-	if (env->zero)
+	if (env->zero && !env->is_precision)
 		res = zero_offset(env, res, zero_minus);
 	else if (env->offset)
 		res = space_offset(env, res, zero_minus);
@@ -227,7 +227,7 @@ void	flag_u(t_env *env, va_list args)
 	env->res += ft_strlen(res);
 	if (env->is_precision)
 		res = precision(env, res, 0);	
-	if (env->zero)
+	if (env->zero && !env->is_precision)
 		res = zero_offset(env, res, 0);
 	else if (env->offset)
 		res = space_offset(env, res, 0);

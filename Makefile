@@ -9,14 +9,27 @@ OBJ_DIR = obj/
 INC_DIR = includes/
 
 SRC_DIR = src/
-SRC_FILES =		ft_printf.c \
+SRC_FILES =	 ft_printf.c \
 				printf_digits.c \
 				printf_string.c \
 				ft_util.c \
 				ft_itoa_o.c \
+				ft_itoa.c \
+				ft_isdigit.c \
+				ft_atoi.c \
+				ft_memalloc.c \
+				ft_memcpy.c \
+				ft_memdel.c \
+				ft_memset.c \
+				ft_putstr.c \
+				ft_strdup.c \
+				ft_strjoin.c \
+				ft_strlen.c \
+				ft_strncat.c \
+				ft_strnew.c \
 
-LIBFT_DIR = libft/
-LIBFT_FILES = ft_memset.c\
+# LIBFT_DIR = libft/
+# LIBFT_FILES = ft_memset.c\
               ft_bzero.c\
               ft_memcpy.c\
               ft_memccpy.c\
@@ -47,12 +60,12 @@ LIBFT_FILES = ft_memset.c\
               ft_memalloc.c\
               ft_memdel.c\
               ft_strnew.c\
-              ft_strdel.c\
+   #           ft_strdel.c\
               ft_strclr.c\
               ft_striter.c\
               ft_striteri.c\
               ft_strmap.c\
-              ft_strmapi.c\
+  #            ft_strmapi.c\
               ft_strequ.c\
               ft_strnequ.c\
               ft_strsub.c\
@@ -70,7 +83,7 @@ LIBFT_FILES = ft_memset.c\
               ft_putnbr_fd.c
 
 
-HEADERS = $(INC_DIR)ft_printf.h $(LIBFT_DIR)libft.h
+HEADERS = $(INC_DIR)ft_printf.h #$(LIBFT_DIR)libft.h
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -78,7 +91,7 @@ SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-INC = -I $(INC_DIR) -I $(LIBFT_DIR)
+INC = -I $(INC_DIR) # -I $(LIBFT_DIR)
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/01/31 16:47:31 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/04 12:59:19 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ void	find_flag(t_env  *env, va_list args)
 		env->offset -= env->space;
 	
 	//checker(env, args);
-	length_flags(env, args); // converts the container to the format for this flag
+	//length_flags(env, args); // converts the container to the format for this flag
 
 	// here code of calling flags functions
 	if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
@@ -417,6 +417,7 @@ int ft_printf(const char *line, ...)
 			break ;
 		env->count++;
 	}
+	rez = ft_strlen(env->buf); 
 	write(1, env->buf, ft_strlen(env->buf));  // print buffer on screen
 	free(env->buf); // clear buffer
 	free(env);      // clear all struct
