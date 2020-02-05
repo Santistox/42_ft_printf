@@ -9,11 +9,14 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+# define BUFF_SIZE 1024
+
 typedef struct	s_env
 {
 	char		*buf;            // buffer
 	char		*str;			 // input line
-	int			count;           // line cursor
+	int			count;           // line cursor str
+	int			count_buf;       // line cursor buf
 	int			offset;			 // number of offsets
 	int			precision;       // number of precision
 	int			is_precision;    // if there is precision
@@ -29,7 +32,8 @@ typedef struct	s_env
 	int			percent_pos;     // position of %
 	int			res;
 	uintmax_t	cont;            // container help program contain big numbers
-	int 		count_2;          // backup count variable value
+	int 		count_2;         // backup count variable value
+	int 		fd;				 // file descriptor
 }				t_env;
 
 int		ft_printf(const char *line, ...);
@@ -51,6 +55,13 @@ void	find_flag(t_env  *env, va_list args);
 void	check_preflag(t_env *env);
 int		check_flag(char c);
 
+
+/*
+** output.c
+*/
+void	sputstr(t_env *env, char *str, int n);
+void	sputchar(t_env *env, char c);
+void	sprint_buff(t_env *env);
 
 void	set_def(t_env *env);
 
