@@ -1,0 +1,51 @@
+/*               _     _                       
+**  _ __   _ _  (_) __| | ___  __ _  _  _  ___ 
+** | '  \ | ' \ | |/ _` |/ _ \/ _` || || |/ -_)
+** |_|_|_||_||_||_|\__,_|\___/\__, | \_,_|\___|
+**                               |_|           
+**
+**   THIS IS SIMPLE PRINTF JUST FOR FUN
+**
+*/
+
+/*
+**
+** flag format
+**
+*/
+
+// %[flags][min field width][precision][length]conversion specifier
+//   -----  ---------------  ---------  ------ -------------------
+//    \             #,*        .#, .*     /             \
+//     \                                 /               \
+//    #,0,-,+, ,',I                 hh,h,l,ll,j,z,L    c,d,u,x,X,e,f,g,s,p,%
+//    -------------                 ---------------    -----------------------
+//    # | Alternate,                 hh | char,           c | unsigned char,
+//    0 | zero pad,                   h | short,          d | signed int,
+//    - | left align,                 l | long,           u | unsigned int,
+//    + | explicit + - sign,         ll | long long,      x | unsigned hex int,
+//      | space for + sign,           j | [u]intmax_t,    X | unsigned HEX int,
+//    ' | locale thousands grouping,  z | size_t,         e | [-]d.ddde±dd double,
+//    I | Use locale's alt digits     t | ptrdiff_t,      E | [-]d.dddE±dd double,
+//                                    L | long double,  ---------=====
+//    if no precision   => 6 decimal places            /  f | [-]d.ddd double,
+//    if precision = 0  => 0 decimal places      _____/   g | e|f as appropriate,
+//    if precision = #  => # decimal places               G | E|F as appropriate,
+//    if flag = #       => always show decimal point      s | string,
+//                                              ..............------
+//                                             /          p | pointer,
+//    if precision      => max field width    /           % | %
+
+// compline with make file:
+// gcc main.c libftprintf.a -I includes/
+
+/*
+**
+**   .d888b.  db      .d8888.  .o88b. db   db  .d88b.   .d88b.  db      
+**   VP  `8D o88      88'  YP d8P  Y8 88   88 .8P  Y8. .8P  Y8. 88      
+**      odD'  88      `8bo.   8P      88ooo88 88    88 88    88 88      
+**    .88'    88        `Y8b. 8b      88~~~88 88    88 88    88 88      
+**   j88.     88      db   8D Y8b  d8 88   88 `8b  d8' `8b  d8' 88booo. 
+**   888888D  VP      `8888Y'  `Y88P' YP   YP  `Y88P'   `Y88P'  Y88888P 
+**
+*/

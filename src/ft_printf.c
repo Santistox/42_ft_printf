@@ -163,37 +163,7 @@ void 	length_flags(t_env *env, va_list args)
 		}
 	}
 }
-/*
- *  find and validate modifications of flag
- */
-void	check_preflag(t_env *env)
-{
-	char c;
-	c = env->str[env->count];
-	while (c == '#' || c == '0' || c == '-' || c == ' ' || c == '+' || c == '.')
-	{
-		if (env->str[env->count] == '#')
-			env->grille= 1;
-		else if (env->str[env->count] == '0' && env->str[env->count + 1] != '.')
-			env->zero = 1;
-		else if (env->str[env->count] == '-')
-			env->minus = 1;
-		else if (env->str[env->count] == ' ')
-			env->space = 1;
-		else if (env->str[env->count] == '+')
-			env->plus = 1;
-		else if (env->str[env->count] == '.')
-		{
-			env->zero = 0;
-			env->dot = 1;
-			env->is_precision = 1;
-			env->count++;
-			break ;
-		}
-		env->count++;
-		c = env->str[env->count];
-	}
-}
+
 
 /*
  *  reset variables of structure
@@ -209,19 +179,6 @@ void	set_def(t_env *env)
 	env->minus = 0;
 	env->space = 0;
 	env->is_unicode = 0;
-}
-
-/*
- *  flag validation
- */
-int		check_flag(char c)
-{
-	if (ft_isdigit(c) || c == 's' || c == 'S' || c == 'p' || c == 'd' || c == 'D' ||
-		c == 'o' || c == 'O' || c == 'u' || c == 'U' || c == 'x' || c == 'X' ||
-		c == 'c' || c == 'C' || c == '.' || c == '%' || c == 'h' || c == 'l' ||
-		c == 'i' || c == 'j' || c == 'z')
-		return (1);
-	return (0);
 }
 
 /*
@@ -282,56 +239,6 @@ void	set_offset(int init_index, t_env *env)
 }
 
 /*
- *  find flag e.g. %s %c
- */
-void	find_flag(t_env  *env, va_list args)
-{
-	set_def(env);
-	check_preflag(env);
-	if (!check_flag(env->str[env->count]))
-	{
-		env->count--;
-		return ;
-	}
-	if (env->plus == 1 && env->space == 1)
-		env->space = 0;
-	else
-		env->space = env->space;
-	if (env->zero == 1 && env->minus)
-		env->zero = 0;
-	else
-		env->zero = env->zero;
-
-	if (env->dot == 0 || env->zero != 0)
-		set_offset(env->count, env);
-	set_precision(env->count, env);
-
-	if(env->space == 1 && env->offset != 0)
-		env->offset -= 1;
-	else
-		env->offset -= env->space;
-	
-	//checker(env, args);
-	//length_flags(env, args); // converts the container to the format for this flag
-
-	// here code of calling flags functions
-	if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
-		flag_di(env, args);
-	else if (env->str[env->count] == 'o')
-		flag_o(env, args);
-	else if (env->str[env->count] == 'u')
-		flag_u(env, args);
-	else if (env->str[env->count] == 'x')
-		flag_x(env, args);
-	else if (env->str[env->count] == 'X')
-		flag_x_up(env, args);
-	else if (env->str[env->count] == 's')
-		flag_s(env, args);
-	else if (env->str[env->count] == 'c')
-		flag_c(env, args);
-}
-
-/*
  *  move string line to buffer
  */
 void	to_buff_str(char *str, t_env *env)
@@ -387,7 +294,7 @@ t_env	*malloc_env(char *str)
 
 	if (!(env = ft_memalloc(sizeof(t_env))))
 		error(403);
-	env->buf = ft_memalloc(sizeof(char *));
+	env->buf = (char *)malloc(sizeof(char *));
 	env->str = str;
 	env->count = 0;
 	env->res = 0;
@@ -418,67 +325,9 @@ int ft_printf(const char *line, ...)
 		env->count++;
 	}
 	rez = ft_strlen(env->buf); 
-	write(1, env->buf, ft_strlen(env->buf));  // print buffer on screen
-	free(env->buf); // clear buffer
-	free(env);      // clear all struct
-	va_end(args);   // stop reading arguments
+	write(1, env->buf, rez);
+	free(env->buf);
+	free(env);
+	va_end(args);
 	return(rez);
 }
-/*
-int main(void)
-{
-	// tests here
-	int i = 0; // for leak test
-
-	printf("%5.4o\n", 556);
-	ft_printf("%5.4o\n", 556);
-
-	printf("%3.3s%3.3s\n", "hello", "world");
-	ft_printf("%3.3s%3.3s\n", "hello", "world");
-
-	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);
-	ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
-
-	printf("ASCII value = %d, Character = %c\n", 76, 76);
-	ft_printf("ASCII value = %d, Character = %c\n", 76, 76);
-
-	printf("%c\n", 'k');
-	ft_printf("%c\n", 'k');
-	//scanf("%i", &i); // for leak test
-	return(0);
-} */
-
-/*
-**
-** flag format
-**
-*/
-
-// %[flags][min field width][precision][length]conversion specifier
-//   -----  ---------------  ---------  ------ -------------------
-//    \             #,*        .#, .*     /             \
-//     \                                 /               \
-//    #,0,-,+, ,',I                 hh,h,l,ll,j,z,L    c,d,u,x,X,e,f,g,s,p,%
-//    -------------                 ---------------    -----------------------
-//    # | Alternate,                 hh | char,           c | unsigned char,
-//    0 | zero pad,                   h | short,          d | signed int,
-//    - | left align,                 l | long,           u | unsigned int,
-//    + | explicit + - sign,         ll | long long,      x | unsigned hex int,
-//      | space for + sign,           j | [u]intmax_t,    X | unsigned HEX int,
-//    ' | locale thousands grouping,  z | size_t,         e | [-]d.ddde±dd double,
-//    I | Use locale's alt digits     t | ptrdiff_t,      E | [-]d.dddE±dd double,
-//                                    L | long double,  ---------=====
-//    if no precision   => 6 decimal places            /  f | [-]d.ddd double,
-//    if precision = 0  => 0 decimal places      _____/   g | e|f as appropriate,
-//    if precision = #  => # decimal places               G | E|F as appropriate,
-//    if flag = #       => always show decimal point      s | string,
-//                                              ..............------
-//                                             /          p | pointer,
-//    if precision      => max field width    /           % | %
-
-
-// simple compile with:
-// gcc main.c ft_itoa_o.c ft_util.c printf_digits.c printf_string.c ft_printf.h libft/libft.h libft/*.c
-
-// compline with make file:
-// gcc main.c libftprintf.a -I includes/

@@ -55,25 +55,6 @@ void	flag_s(t_env *env, va_list args)
 	if (env->minus)
 		to_buff_offset(env);
 }
-/*
-void	flag_c(t_env *env, int offset)
-{
-	if (offset == 1)
-		env->offset--;
-	if (!env->minus && offset == 1)
-		to_buff_offset(env);
-	if (!env->cont)
-	{
-		env->count_2 += ft_strlen(env->buf) + 1;
-		to_buff_char('\0', env);
-		write(0, env->buf, ft_strlen(env->buf) + 1);
-		ft_memdel((void*)&env->buf);
-		env->buf = ft_memalloc(sizeof(char));
-	}
-	to_buff_char(env->cont, env);
-	if (env->minus && offset == 1)
-		to_buff_offset(env);
-}*/
 
 void flag_c(t_env *env, va_list args)
 {

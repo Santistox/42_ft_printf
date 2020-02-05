@@ -35,7 +35,6 @@ typedef struct	s_env
 int		ft_printf(const char *line, ...);
 t_env	*malloc_env(char *str);
 void	error(int error_id);
-void	flag_s(t_env *env, va_list args);
 
 /*
 ** buffer functions
@@ -45,10 +44,16 @@ void	to_buff_char(char c, t_env *env);
 void	to_buff_str(char *str, t_env *env);
 void	to_buff_offset(t_env *env);
 
+/*
+** flags.c
+*/
 void	find_flag(t_env  *env, va_list args);
-int		check_flag(char c);
-void	set_def(t_env *env);
 void	check_preflag(t_env *env);
+int		check_flag(char c);
+
+
+void	set_def(t_env *env);
+
 void	set_precision(int init_index, t_env *env);
 void	set_offset(int init_index, t_env *env);
 
