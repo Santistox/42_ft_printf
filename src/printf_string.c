@@ -66,6 +66,20 @@ void flag_c(t_env *env, va_list args)
 	res[0] = c;
 	res[1] = '\0';
 	if (env->offset)
-		res = space_offset(env, res, 0);
+		res = space_offset(env, res, 0, 1);
+	env->buf = ft_strjoin(env->buf, res);
+}
+
+void flag_per(t_env *env)
+{
+	char *res;
+
+	res = ft_memalloc(sizeof(char) + 1);
+	res[0] = '%';
+	res[1] = '\0';
+	if (env->zero)
+		res = zero_offset(env, res, 0);
+	else if (env->offset)
+		res = space_offset(env, res, 0, 1);
 	env->buf = ft_strjoin(env->buf, res);
 }

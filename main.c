@@ -16,23 +16,23 @@ int main(void)
 {
 	// tests here
 	
-	int i = 0; // for leak test
+//	int i = 0; // for leak test
 
-//	printf("%08.3d\n", 1234);
-//	ft_printf("%08.3d\n", 1234);
+	printf("{% 3.3d}\n", 8462);
+	ft_printf("{% 3.3d}\n", 8462);
 
 //	printf("%3.3s%3.3s\n", "hello", "world");
 //	ft_printf("%3.3s%3.3s\n", "hello", "world");
 
  //	printf("20%02i%20i%i%i%i%i\n", 1,2,3,4,5,6);
-	ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
+//	ft_printf("20%02i%20i%i%i%i%i", 1,2,3,4,5,6);
 	
 //	printf("ASCII value = %-5c, Character = %c\n", 'a', 76);
 //	ft_printf("ASCII value = %-5c, Character = %c\n", 'a', 76);
 
 //	printf("%c\n", 'k');
 //	ft_printf("%c\n", 'k');
-	scanf("%i", &i); // for leak test
+//	scanf("%i", &i); // for leak test
 	return(0);
 }
 

@@ -12,13 +12,15 @@
 
 #include "ft_printf.h"
 
-char	*space_offset(t_env *env, char *res, int minus)
+char	*space_offset(t_env *env, char *res, int minus, int flag_char)
 {
 	char	*offset;
 	int		leng;
 
 	offset = NULL;
 	leng = ft_strlen(res);
+	if (flag_char)
+		leng = 1;
 	if (minus && !env->is_precision)
 		leng++;
 	if (env->offset - leng > 0)
@@ -99,9 +101,9 @@ void	plus_minus(t_env *env, char **res, int minus, int num)
 	}
 }
 
-void	space(t_env *env, char **res, int num)
+void	space(t_env *env, char **res, int minus)
 {
-	if (env->space && num >= 0)
+	if (env->space && !minus)
 	{
 		*res = ft_strjoin(" ", *res);
 		env->res++;

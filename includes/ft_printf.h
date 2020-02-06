@@ -87,12 +87,13 @@ void	print(t_env *env);
 void	flag_s(t_env *env, va_list args);
 // void	flag_c(t_env *env, int offset);
 void	flag_c(t_env *env, va_list args);
+void	flag_per(t_env *env);
 
-char	*space_offset(t_env *env, char *res, int minus);
+char	*space_offset(t_env *env, char *res, int minus, int flag_char);
 char	*zero_offset(t_env *env, char *res, int minus);
 char	*precision(t_env *env, char *res, int minus);
 void	plus_minus(t_env *env, char **res, int minus, int num);
-void	space(t_env *env, char **res, int num);
+void	space(t_env *env, char **res, int zero);
 
 /*
  *	Libft files

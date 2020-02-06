@@ -49,6 +49,8 @@ void	find_flag(t_env  *env, va_list args)
 		flag_s(env, args);
 	else if (env->str[env->count] == 'c')
 		flag_c(env, args);
+	else if (env->str[env->count] == '%')
+		flag_per(env);
 }
 
 /*
