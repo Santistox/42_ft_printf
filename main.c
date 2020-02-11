@@ -18,8 +18,8 @@ int main(void)
 	
 //	int i = 0; // for leak test
 
-	printf("{% 3.3d}\n", 8462);
-	ft_printf("{% 3.3d}\n", 8462);
+	printf("{%#o}\n", 123);
+	ft_printf("{%#o}\n", 123);
 
 //	printf("%3.3s%3.3s\n", "hello", "world");
 //	ft_printf("%3.3s%3.3s\n", "hello", "world");

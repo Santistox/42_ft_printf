@@ -43,15 +43,39 @@ void	flag_o(t_env *env, va_list args)
 		if (env->precision == 0 &&  num == 0)
 		{
 			free(res);
+				if (env->grille)
+				{
+					env->buf = ft_strjoin(env->buf, "0");
+					return ;
+				}
 			res = ft_strdup("");
 		}
 		else
 			res = precision(env, res, 0);
 	}
+	if (env->zero && env->grille && num != 0)
+		env->offset = (env->offset > 0) ? env->offset - 1 : env->offset;
 	if (env->zero && !env->is_precision)
+	{
+		res = zero_offset(env, res, 0);
+		if (env->grille && num != 0)
+			res = ft_strjoin("0", res);
+	
+	}
+	else if (env->offset)
+	{
+		if (env->grille && num != 0)
+			res = ft_strjoin("0", res);
+		res = space_offset(env, res, 0, 0);
+	}
+/*if (env->zero && !env->is_precision)
 		res = zero_offset(env, res, 0);
 	else if (env->offset)
 		res = space_offset(env, res, 0, 0);
+	if (env->grille)
+		res = ft_strjoin("0", res);*/
+	if (!env->zero && !env->offset && env->grille && num != 0)
+		res = ft_strjoin("0", res);
 	env->buf = ft_strjoin(env->buf, res);
 }
 
@@ -119,7 +143,7 @@ void	flag_u(t_env *env, va_list args)
  *
  * */
 
-	if (env->space || env->plus || (env->minus && env->zero))
+	if (env->minus && env->zero)
 		error_mes();
 	num = va_arg(args, unsigned int);
 	res = ft_itoa(num);
@@ -169,10 +193,23 @@ void	flag_x(t_env *env, va_list args)
 		else
 			res = precision(env, res, 0);
 	}
+	if (env->zero && env->grille && num != 0)
+		env->offset = (env->offset > 0) ? env->offset - 2 : env->offset;
 	if (env->zero)
+	{
 		res = zero_offset(env, res, 0);
+		if (env->grille && num != 0)
+			res = ft_strjoin("0x", res);
+	
+	}
 	else if (env->offset)
+	{
+		if (env->grille && num != 0)
+			res = ft_strjoin("0x", res);
 		res = space_offset(env, res, 0, 0);
+	}
+	if (!env->zero && !env->offset && env->grille && num != 0)
+		res = ft_strjoin("0x", res);
 	env->buf = ft_strjoin(env->buf, res);
 
 }
@@ -204,10 +241,23 @@ void	flag_x_up(t_env *env, va_list args)
 		else
 			res = precision(env, res, 0);
 	}
+	if (env->zero && env->grille && num != 0)
+		env->offset = (env->offset > 0) ? env->offset - 2 : env->offset;
 	if (env->zero)
+	{
 		res = zero_offset(env, res, 0);
+		if (env->grille && num != 0)
+			res = ft_strjoin("0X", res);
+	
+	}
 	else if (env->offset)
+	{
+		if (env->grille && num != 0)
+			res = ft_strjoin("0X", res);
 		res = space_offset(env, res, 0, 0);
+	}
+	if (!env->zero && !env->offset && env->grille && num != 0)
+		res = ft_strjoin("0X", res);
 	env->buf = ft_strjoin(env->buf, res);
 
 }

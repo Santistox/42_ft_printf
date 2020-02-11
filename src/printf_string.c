@@ -58,7 +58,7 @@ void	flag_s(t_env *env, va_list args)
 
 void flag_c(t_env *env, va_list args)
 {
-	char c;
+	wchar_t c;
 	char *res;
 
 	c = va_arg(args, unsigned int);
