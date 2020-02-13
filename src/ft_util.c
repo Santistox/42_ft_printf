@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 17:19:37 by rlintill          #+#    #+#             */
-/*   Updated: 2020/02/04 15:39:35 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/13 13:38:39 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*space_offset(t_env *env, char *res, int minus, int flag_char)
 		env->res += (env->offset - leng);
 	}
 	if (offset != NULL)
-		free(offset);
+		ft_memdel((void*)&offset);
 	return (res);
 }
 
@@ -89,7 +89,7 @@ char	*precision(t_env *env, char *res, int minus)
 	}
 	if (offset != NULL)
 		ft_memdel((void*)&offset);
-	return (res);	
+	return (res);
 }
 
 void	plus_minus(t_env *env, char **res, int minus, int num)

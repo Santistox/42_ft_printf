@@ -1,6 +1,6 @@
 NAME = libftprintf.a
 
-RED_COLOR     := \x1B[31m
+CYAN_COLOR     := \x1b[36m
 GRN_COLOR     := \x1b[32;01m
 HEAD_COLOR   := \x1b[32;01m
 SILENT_COLOR := \x1b[30;01m
@@ -10,7 +10,6 @@ INC_DIR = includes/
 
 SRC_DIR = src/
 SRC_FILES =	ft_printf.c \
-		printf_digits.c \
               flags.c \
 		printf_string.c \
 		ft_util.c \
@@ -28,6 +27,10 @@ SRC_FILES =	ft_printf.c \
 		ft_strlen.c \
 		ft_strncat.c \
 		ft_strnew.c \
+		flag_x.c\
+		flag_o.c\
+		flag_di.c\
+		flag_u.c\
 
 
 HEADERS = $(INC_DIR)ft_printf.h
@@ -43,7 +46,7 @@ INC = -I $(INC_DIR)
 all: $(NAME)
 
 $(NAME): $(HEADERS) $(OBJ_DIR) $(OBJ)
-	@printf "$(RED_COLOR) HAM PIZDA\n"
+	@printf "$(CYAN_COLOR) ZATSHIM!\n"
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 

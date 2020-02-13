@@ -6,15 +6,16 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/04 15:09:14 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/02/13 14:51:54 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 /*
- *  test correctly functionality
- */
+**  test correctly functionality
+*/
+
 void	checker(t_env *env)
 {
 	printf("\n_____________________________________\n");
@@ -35,7 +36,7 @@ void	checker(t_env *env)
 	printf("first_char_pos    |%i|\n", env->first_char_pos);
 	printf("percent_pos       |%i|\n", env->percent_pos);
 	printf("res               |%i|\n", env->res);
-	//printf("cont              |%i|\n", env->cont); this shit doesn't work as i want
+//	printf("cont              |%i|\n", env->cont); this shit doesn't work as i want
 	printf("_____________________________________\n");
 }
 
@@ -48,17 +49,7 @@ void	error(int error_id)
 	}
 }
 
-/*
-**
-** Ublyudok, mat' tvoyu, a nu idi syuda govno sobach'e,
-** reshil ko mne lezt'? Ty, zasranec vonyuchij, mat' tvoyu, a?
-** Nu idi syuda, poprobuj menya trahnut', ya tebya sam trahnu
-** ublyudok, onanist chertov, bud' ty proklyat, idi idiot, trahat'
-** tebya i vsyu sem'yu, govno sobach'e, zhlob vonyuchij, der'mo,
-** suka, padla, idi syuda, merzavec, negodyaj, gad, idi syuda ty - govno, ZHOPA!
-**
-*/
-void 	length_flags(t_env *env, va_list args)
+void	length_flags(t_env *env, va_list args)
 {
 	int	temp_count;
 
@@ -164,10 +155,10 @@ void 	length_flags(t_env *env, va_list args)
 	}
 }
 
-
 /*
- *  reset variables of structure
- */
+**  reset variables of structure
+*/
+
 void	set_def(t_env *env)
 {
 	env->offset = 0;
@@ -182,8 +173,9 @@ void	set_def(t_env *env)
 }
 
 /*
- *  count precision
- */
+**  count precision
+*/
+
 void	set_precision(int init_index, t_env *env)
 {
 	char	*num;
@@ -211,8 +203,9 @@ void	set_precision(int init_index, t_env *env)
 }
 
 /*
- *  count offset
- */
+**  count offset
+*/
+
 void	set_offset(int init_index, t_env *env)
 {
 	char	*num;
@@ -239,8 +232,9 @@ void	set_offset(int init_index, t_env *env)
 }
 
 /*
- *  move string line to buffer
- */
+**  move string line to buffer
+*/
+
 void	to_buff_str(char *str, t_env *env)
 {
 	char *temp;
@@ -252,12 +246,13 @@ void	to_buff_str(char *str, t_env *env)
 }
 
 /*
- *  move 1 char from line to buffer
- */
+**  move 1 char from line to buffer
+*/
+
 void	to_buff_char(char c, t_env *env)
 {
 	char	*ch;
-	char    *temp;
+	char	*temp;
 
 	if (!(ch = ft_memalloc(sizeof(char) * 2)))
 		exit(EXIT_FAILURE);
@@ -270,8 +265,9 @@ void	to_buff_char(char c, t_env *env)
 }
 
 /*
- *  move line before % to buffer
- */
+**  move line before % to buffer
+*/
+
 void	to_buff_block(t_env *env)
 {
 	env->first_char_pos = env->count;
@@ -286,8 +282,9 @@ void	to_buff_block(t_env *env)
 }
 
 /*
- *  create struct
- */
+**  create struct
+*/
+
 t_env	*malloc_env(char *str)
 {
 	t_env	*env;
@@ -302,9 +299,10 @@ t_env	*malloc_env(char *str)
 }
 
 /*
- *  main function of ft_printf
- */
-int ft_printf(const char *line, ...)
+**  main function of ft_printf
+*/
+
+int		ft_printf(const char *line, ...)
 {
 	int		rez;
 	va_list	args;
@@ -324,10 +322,10 @@ int ft_printf(const char *line, ...)
 			break ;
 		env->count++;
 	}
-	rez = ft_strlen(env->buf); 
+	rez = ft_strlen(env->buf);
 	write(1, env->buf, rez);
 	free(env->buf);
 	free(env);
 	va_end(args);
-	return(rez);
+	return (rez);
 }
