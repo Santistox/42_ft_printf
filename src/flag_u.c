@@ -18,7 +18,7 @@ void	flag_u(t_env *env, va_list args)
 	char			*res;
 
 	if (env->minus && env->zero)
-		error_mes();
+		error(404);
 	num = va_arg(args, unsigned int);
 	res = ft_itoa(num);
 	if (env->is_precision)

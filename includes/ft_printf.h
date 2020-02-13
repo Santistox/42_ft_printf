@@ -78,40 +78,75 @@ typedef struct	s_env
 	int			fd;
 }				t_env;
 
-int				ft_printf(const char *line, ...);
-t_env			*malloc_env(char *str);
-void			error(int error_id);
-
 /*
-** buffer functions
+** ft_printf.c
 */
 
-void			to_buff_block(t_env *env);
-void			to_buff_char(char c, t_env *env);
-void			to_buff_str(char *str, t_env *env);
+void			error(int error_id);
+void			set_def(t_env *env);
+t_env			*malloc_env(char *str);
+int				ft_printf(const char *line, ...);
+
+/*
+** buffun.c
+*/
+
 void			to_buff_offset(t_env *env);
+void			to_buff_str(char *str, t_env *env);
+void			to_buff_char(char c, t_env *env);
+void			to_buff_block(t_env *env);
 
 /*
 ** flags.c
 */
 
-void			find_flag(t_env *env, va_list args);
 void			find_flag_continue(t_env *env, va_list args);
-void			check_preflag(t_env *env);
+void			find_flag(t_env *env, va_list args);
 int				check_flag(char c);
+void			check_preflag(t_env *env);
 
 /*
-** output.c
+** offpre.c
 */
-
-void			sputstr(t_env *env, char *str, int n);
-void			sputchar(t_env *env, char c);
-void			sprint_buff(t_env *env);
-
-void			set_def(t_env *env);
 
 void			set_precision(int init_index, t_env *env);
 void			set_offset(int init_index, t_env *env);
+
+/*
+** flag_size.c
+*/
+
+void			length_flags(t_env *env, va_list args);
+
+/*
+** util.c
+*/
+
+char			*space_offset(t_env *env, char *res, int minus, int flag_char);
+char			*zero_offset(t_env *env, char *res, int minus);
+char			*precision(t_env *env, char *res, int minus);
+void			plus_minus(t_env *env, char **res, int minus, int num);
+void			space(t_env *env, char **res, int zero);
+
+/*
+** stringfun.c
+*/
+
+size_t			ft_strlen(const char *s);
+char			*ft_strdup(const char *s1);
+char			*ft_strncat(char *s1, const char *s2, size_t n);
+char			*ft_strjoin(char const *s1, char const *s2);
+void			ft_putstr(char const *s);
+char			*ft_strnew(size_t size);
+
+/*
+** memfun.c
+*/
+
+void			*ft_memset(void *b, int c, size_t len);
+void			*ft_memcpy(void *dst, const void *src, size_t n);
+void			*ft_memalloc(size_t size);
+void			ft_memdel(void **ap);
 
 /*
 ** num flags
@@ -137,29 +172,12 @@ void			flag_s(t_env *env, va_list args);
 void			flag_c(t_env *env, va_list args);
 void			flag_per(t_env *env);
 
-void			error_mes();
-char			*space_offset(t_env *env, char *res, int minus, int flag_char);
-char			*zero_offset(t_env *env, char *res, int minus);
-char			*precision(t_env *env, char *res, int minus);
-void			plus_minus(t_env *env, char **res, int minus, int num);
-void			space(t_env *env, char **res, int zero);
-
 /*
 ** Libft files
 */
 
-void			*ft_memset(void *b, int c, size_t len);
-void			*ft_memcpy(void *dst, const void *src, size_t n);
-size_t			ft_strlen(const char *s);
-char			*ft_strdup(const char *s1);
-char			*ft_strncat(char *s1, const char *s2, size_t n);
 int				ft_atoi(const char *str);
 int				ft_isdigit(int c);
-void			*ft_memalloc(size_t size);
-void			ft_memdel(void **ap);
-char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_itoa(long long int n);
-void			ft_putstr(char const *s);
-char			*ft_strnew(size_t size);
 
 #endif

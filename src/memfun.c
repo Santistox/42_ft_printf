@@ -1,16 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnidoque <mnidoque@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/14 10:49:38 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/04 12:08:53 by rlintill         ###   ########.fr       */
+/*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
+/*   Updated: 2020/02/13 14:51:54 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	unsigned char *temp;
+
+	temp = (unsigned char *)b;
+	while (len--)
+		*temp++ = (unsigned char)c;
+	return (b);
+}
+
+void	ft_memdel(void **ap)
+{
+	if (ap && *ap)
+	{
+		free(*ap);
+		*ap = NULL;
+	}
+}
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
@@ -29,4 +48,23 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 		i++;
 	}
 	return (temp_1);
+}
+
+void		*ft_memalloc(size_t size)
+{
+	void	*temp;
+	int		i;
+	int		n;
+
+	i = 0;
+	n = size;
+	if (!(temp = (void *)malloc(size)))
+		return (NULL);
+	while (n > 0)
+	{
+		((unsigned char *)temp)[i] = 0;
+		n--;
+		i++;
+	}
+	return (temp);
 }

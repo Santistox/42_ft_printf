@@ -2,35 +2,28 @@ NAME = libftprintf.a
 
 CYAN_COLOR     := \x1b[36m
 GRN_COLOR     := \x1b[32;01m
-HEAD_COLOR   := \x1b[32;01m
-SILENT_COLOR := \x1b[30;01m
 
 OBJ_DIR = obj/
 INC_DIR = includes/
 
 SRC_DIR = src/
 SRC_FILES =	ft_printf.c \
-              flags.c \
-		printf_string.c \
-		ft_util.c \
+            flags.c \
+			flag_x.c\
+			flag_o.c\
+			flag_di.c\
+			flag_u.c\
+			flag_s.c\
+			flag_c.c\
+			util.c \
+			buffun.c \
+			offpre.c \
+			stringfun.c \
+			memfun.c \
 		ft_itoa_o.c \
 		ft_itoa.c \
 		ft_isdigit.c \
 		ft_atoi.c \
-		ft_memalloc.c \
-		ft_memcpy.c \
-		ft_memdel.c \
-		ft_memset.c \
-		ft_putstr.c \
-		ft_strdup.c \
-		ft_strjoin.c \
-		ft_strlen.c \
-		ft_strncat.c \
-		ft_strnew.c \
-		flag_x.c\
-		flag_o.c\
-		flag_di.c\
-		flag_u.c\
 
 
 HEADERS = $(INC_DIR)ft_printf.h

@@ -44,7 +44,7 @@ void	flag_x(t_env *env, va_list args)
 	char			*res;
 
 	if (env->space || env->plus || (env->minus && env->zero))
-		error_mes();
+		error(404);
 	if (env->zero && env->precision > 0)
 		env->zero = 0;
 	num = va_arg(args, unsigned int);
@@ -73,7 +73,7 @@ void	flag_x_up(t_env *env, va_list args)
 	char			*res;
 
 	if (env->space || env->plus || (env->minus && env->zero))
-		error_mes();
+		error(404);
 	if (env->zero && env->precision > 0)
 		env->zero = 0;
 	num = va_arg(args, unsigned int);

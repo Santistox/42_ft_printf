@@ -49,3 +49,27 @@
 **   888888D  VP      `8888Y'  `Y88P' YP   YP  `Y88P'   `Y88P'  Y88888P 
 **
 */
+
+void	checker(t_env *env)
+{
+	printf("\n_____________________________________\n");
+	printf("buf               |%s|\n", env->buf);
+	printf("str               |%s|\n", env->str);
+	printf("count             |%i|\n", env->count);
+	printf("offset            |%i|\n", env->offset);
+	printf("precision         |%i|\n", env->precision);
+	printf("is_precision      |%i|\n", env->is_precision);
+	printf("dot               |%i|\n", env->dot);
+	printf("grille            |%i|\n", env->grille);
+	printf("plus              |%i|\n", env->plus);
+	printf("minus             |%i|\n", env->minus);
+	printf("space             |%i|\n", env->space);
+	printf("zero              |%i|\n", env->zero);
+	printf("is_unicode        |%i|\n", env->is_unicode);
+	printf("unicode_error     |%i|\n", env->unicode_error);
+	printf("first_char_pos    |%i|\n", env->first_char_pos);
+	printf("percent_pos       |%i|\n", env->percent_pos);
+	printf("res               |%i|\n", env->res);
+//	printf("cont              |%i|\n", env->cont); this shit doesn't work as i want
+	printf("_____________________________________\n");
+}

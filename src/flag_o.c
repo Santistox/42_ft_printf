@@ -44,7 +44,7 @@ void	flag_o(t_env *env, va_list args)
 	char			*res;
 
 	if (env->space || env->plus)
-		error_mes();
+		error(404);
 	if (env->zero && env->precision > 0)
 		env->zero = 0;
 	num = va_arg(args, unsigned int);

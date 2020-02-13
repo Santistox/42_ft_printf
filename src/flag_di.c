@@ -12,12 +12,6 @@
 
 #include "ft_printf.h"
 
-void	error_mes(void)
-{
-	ft_putstr("error: combination is not allowed\n");
-	exit(EXIT_FAILURE);
-}
-
 int		leng(long long int n)
 {
 	int numlen;
