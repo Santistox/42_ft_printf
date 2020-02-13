@@ -29,11 +29,11 @@ void	flag_o_second(t_env *env, char **res, unsigned int num)
 	}
 	else if (env->offset)
 	{
-		if (env->grille && num != 0)
+		if (env->grille && num != 0 && *res[0] != '0')
 			*res = ft_strjoin("0", *res);
 		*res = space_offset(env, *res, 0, 0);
 	}
-	if (!env->zero && !env->offset && env->grille && num != 0)
+	if (!env->zero && !env->offset && env->grille && num != 0 && *res[0] != '0')
 		*res = ft_strjoin("0", *res);
 	env->buf = ft_strjoin(env->buf, *res);
 }
@@ -45,6 +45,8 @@ void	flag_o(t_env *env, va_list args)
 
 	if (env->space || env->plus)
 		error_mes();
+	if (env->zero && env->precision > 0)
+		env->zero = 0;
 	num = va_arg(args, unsigned int);
 	res = ft_itoa_o(num);
 	env->res += ft_strlen(res);
@@ -55,7 +57,10 @@ void	flag_o(t_env *env, va_list args)
 			free(res);
 			if (env->grille)
 			{
-				env->buf = ft_strjoin(env->buf, "0");
+				res = ft_strdup("0");
+				if (env->offset)
+					res = space_offset(env, res, 0, 0);
+				env->buf = ft_strjoin(env->buf, res);
 				return ;
 			}
 			res = ft_strdup("");

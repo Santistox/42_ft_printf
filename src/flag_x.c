@@ -45,6 +45,8 @@ void	flag_x(t_env *env, va_list args)
 
 	if (env->space || env->plus || (env->minus && env->zero))
 		error_mes();
+	if (env->zero && env->precision > 0)
+		env->zero = 0;
 	num = va_arg(args, unsigned int);
 	res = ft_itoa_x(num);
 	flag_x_help(env, num, &res);
@@ -72,6 +74,8 @@ void	flag_x_up(t_env *env, va_list args)
 
 	if (env->space || env->plus || (env->minus && env->zero))
 		error_mes();
+	if (env->zero && env->precision > 0)
+		env->zero = 0;
 	num = va_arg(args, unsigned int);
 	res = ft_itoa_x_up(num);
 	flag_x_help(env, num, &res);
