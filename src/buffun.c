@@ -48,17 +48,13 @@ void	to_buff_str(char *str, t_env *env)
 
 void	to_buff_char(char c, t_env *env)
 {
-	char	*ch;
-	char	*temp;
+	char	*str_c;
 
-	if (!(ch = ft_memalloc(sizeof(char) * 2)))
-		exit(EXIT_FAILURE);
-	ft_strncat(ch, &c, 1);
-	ft_strncat(ch, "\0", 2);
-	temp = env->buf;
-	env->buf = ft_strjoin(env->buf, ch);
-	ft_memdel((void*)&temp);
-	ft_memdel((void*)&ch);
+	if (!(str_c = ft_memalloc(sizeof(char) * 2)))
+		error(403);
+	str_c[0] = c;
+	str_c[1] = '\0';
+	to_buff_str(str_c, env);
 }
 
 /*

@@ -15,15 +15,22 @@
 void	flag_c(t_env *env, va_list args)
 {
 	wchar_t	c;
-	char	*res;
 
+	env->offset--;
+	if (!env->minus)
+		to_buff_offset(env);
 	c = va_arg(args, unsigned int);
-	res = ft_memalloc(sizeof(char) + 1);
-	res[0] = c;
-	res[1] = '\0';
-	if (env->offset)
-		res = space_offset(env, res, 0, 1);
-	env->buf = ft_strjoin(env->buf, res);
+	if (c == 0)
+	{
+		env->count_2 += ft_strlen(env->buf) + 1;
+		to_buff_char('\0', env);
+		write(1, env->buf, ft_strlen(env->buf) + 1);
+		free(env->buf);
+		env->buf = ft_memalloc(sizeof(char));
+	}
+	to_buff_char(c, env);
+	if (env->minus)
+		to_buff_offset(env);
 }
 
 void	flag_per(t_env *env)

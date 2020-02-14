@@ -56,6 +56,7 @@ t_env	*malloc_env(char *str)
 	env->buf = (char *)malloc(sizeof(char *));
 	env->str = str;
 	env->count = 0;
+	env->count_2 = 0;
 	env->res = 0;
 	return (env);
 }
@@ -84,8 +85,8 @@ int		ft_printf(const char *line, ...)
 			break ;
 		env->count++;
 	}
-	rez = ft_strlen(env->buf);
-	write(1, env->buf, rez);
+	rez = ft_strlen(env->buf) + env->count_2;
+	write(1, env->buf, ft_strlen(env->buf));
 	free(env->buf);
 	free(env);
 	va_end(args);

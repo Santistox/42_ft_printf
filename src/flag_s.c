@@ -19,6 +19,8 @@ void	flag_s(t_env *env, va_list args)
 	char	*precise_str;
 
 	next_arg = va_arg(args, char *);
+	if (!next_arg)
+		next_arg = "(null)";
 	arg_size = ft_strlen(next_arg);
 	if (env->precision < arg_size && env->is_precision == 1)
 	{
