@@ -15,6 +15,7 @@ SRC_FILES =	ft_printf.c \
 			flag_u.c\
 			flag_s.c\
 			flag_c.c\
+			flag_size.c\
 			util.c \
 			buffun.c \
 			offpre.c \

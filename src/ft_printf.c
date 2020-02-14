@@ -42,6 +42,7 @@ void	set_def(t_env *env)
 	env->space = 0;
 	env->is_unicode = 0;
 }
+
 /*
 **  create struct
 */

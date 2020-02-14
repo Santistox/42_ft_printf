@@ -22,7 +22,6 @@
 
 # include <stdio.h>
 # include <stdarg.h>
-# include "../libft/libft.h"
 # include <wchar.h>
 # include <wchar.h>
 # include <unistd.h>

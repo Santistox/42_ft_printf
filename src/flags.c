@@ -60,7 +60,7 @@ void	find_flag(t_env *env, va_list args)
 		env->offset -= 1;
 	else
 		env->offset -= env->space;
-//	length_flags(env, args);
+	//length_flags(env, args);
 	find_flag_continue(env, args);
 }
 

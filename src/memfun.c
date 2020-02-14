@@ -50,7 +50,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (temp_1);
 }
 
-void		*ft_memalloc(size_t size)
+void	*ft_memalloc(size_t size)
 {
 	void	*temp;
 	int		i;
