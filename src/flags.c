@@ -34,6 +34,8 @@ void	find_flag_continue(t_env *env, va_list args)
 		flag_c(env, args);
 	else if (env->str[env->count] == '%')
 		flag_per(env);
+	else if (env->str[env->count] == 'f')
+		flag_f(env, args);
 }
 
 void	find_flag(t_env *env, va_list args)
@@ -76,7 +78,7 @@ int		check_flag(char c)
 		c == 'U' || c == 'x' || c == 'X' ||
 		c == 'c' || c == 'C' || c == '.' ||
 		c == '%' || c == 'h' || c == 'l' ||
-		c == 'i' || c == 'j' || c == 'z')
+		c == 'i' || c == 'j' || c == 'z' || c == 'f')
 		return (1);
 	return (0);
 }

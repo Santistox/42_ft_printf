@@ -151,6 +151,7 @@ void			ft_memdel(void **ap);
 ** num flags
 */
 
+void			flag_f(t_env *env, va_list args);
 void			flag_di(t_env *env, va_list args);
 void			flag_di_help(t_env *env, int num, char **res, int zero_minus);
 void			flag_o(t_env *env, va_list args);

@@ -10,6 +10,7 @@ SRC_DIR = src/
 SRC_FILES =	ft_printf.c \
             flags.c \
 			flag_x.c\
+			flag_f.c\
 			flag_o.c\
 			flag_di.c\
 			flag_u.c\
