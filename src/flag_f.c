@@ -1,8 +1,25 @@
 #include "ft_printf.h"
 
-long	ft_pow(double n, int pow)
+double	ft_pow(double n, int pow)
 {
 	return (pow ? n * ft_pow(n, pow - 1) : 1);
+}
+
+int		ft_first(double n)
+{
+	int		i;
+	long	num;
+
+	//printf(" + %f\n", n);
+	num = (long)n;
+	i = 1;
+	while (num > 0l)
+	{
+		//printf(" - %ld\n", num);
+		i = num % 10;
+		num /= 10;
+	}
+	return (i);
 }
 
 void	flag_f(t_env *env, va_list args)
@@ -13,7 +30,8 @@ void	flag_f(t_env *env, va_list args)
 	char		*res;
 	int			i;
 	int			dig;
-	long		rest;
+	double		rest;
+	double		rest_before;
 	int			minus;
 
 	leng = 1;
@@ -36,7 +54,8 @@ void	flag_f(t_env *env, va_list args)
 	while (i++ < (leng + env->precision - 1))
 		res[i] = '0';
 	res[i] = '\0';
-	res[leng - 1] = '.';
+//	res[leng - 1] = '.';
+	res[leng - 1] = (env->precision > 0) ? '.' : (env->offset - leng > 1 && env->minus) ? ' ' : '\0';
 	i = leng - 2;
 	tmp = (long)num;
 	while (i >= 0)
@@ -45,13 +64,24 @@ void	flag_f(t_env *env, va_list args)
 		res[i--] = dig + '0';
 		tmp /= 10;
 	}
+	//printf("%f\n", (num - (long)num)* ft_pow(10, env->precision + 1));
 	rest = (num - (long)num) * ft_pow(10, env->precision + 1);
-	rest = (rest % 10 > 4) ? (rest) / 10 + 1 : rest / 10;
+	//printf("%f\n", rest);
+	rest_before = rest;
+	rest = ((int)rest % 10 > 4) ? (rest) / 10 + 1 : rest / 10;
+	if (ft_first(rest_before) > ft_first(rest) && ft_first(rest_before) > 4)
+	{
+		res[leng - 2] += 1;
+		if (!ft_isdigit(res[leng - 2]))
+			res[leng - 2] = '0';
+		// сделать функцию - иттеративно прохожу по числу и увеличиваю по условию ifdigit
+	}
+	//printf("%f\n", rest);
+	//printf("%d %d\n", ft_first(rest_before), ft_first(rest));
 	i = leng + env->precision - 1;
-	
 	while (i > leng - 1)
 	{
-		dig = rest % 10;
+		dig = (int)rest % 10;
 		res[i--] = dig + '0';
 		rest /= 10;
 	}
@@ -69,9 +99,9 @@ void	flag_f(t_env *env, va_list args)
 	}
 	if (minus && res[0] != '-' && res[env->offset - leng - env->precision - 1] != '-')
 		res = ft_strjoin("-", res);
-	if (env->space && minus == 1 && env->minus)
-		res = ft_strjoin(res, " ");
-	else if (env->space)
+	//if (env->space && !minus && env->minus)
+	//	res = ft_strjoin(res, " ");
+	if (env->space && !minus)
 		res = ft_strjoin(" ", res);
 	env->buf = ft_strjoin(env->buf, res);
 }
