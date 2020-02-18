@@ -14,7 +14,7 @@
 
 int main(void)
 {
-	printf("{%#0-2.7o}\n", 3267);
-	ft_printf("{%#0-2.7o}", 3267);
+	printf("{%.9f}\n", -875.000001);
+	ft_printf("{%.9f}\n", -875.000001);
 	return(0);
 }
