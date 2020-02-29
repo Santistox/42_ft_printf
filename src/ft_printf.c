@@ -62,10 +62,10 @@ t_env	*malloc_env(char *str)
 }
 
 /*
-**  main function of ft_printf
+**  printf to file
 */
 
-int		ft_printf(const char *line, ...)
+int		ft_printf_fd(int fd, const char *line, ...)
 {
 	int		rez;
 	va_list	args;
@@ -73,6 +73,7 @@ int		ft_printf(const char *line, ...)
 
 	rez = 0;
 	env = malloc_env((char*)line);
+	env->fd = fd;
 	va_start(args, line);
 	while (env->str[env->count])
 	{
@@ -86,7 +87,40 @@ int		ft_printf(const char *line, ...)
 		env->count++;
 	}
 	rez = ft_strlen(env->buf) + env->count_2;
-	write(1, env->buf, ft_strlen(env->buf));
+	write(env->fd, env->buf, ft_strlen(env->buf));
+	free(env->buf);
+	free(env);
+	va_end(args);
+	return (rez);
+}
+
+/*
+**  main function of ft_printf 
+*/
+
+int		ft_printf(const char *line, ...)
+{
+	int		rez;
+	va_list	args;
+	t_env	*env;
+
+	rez = 0;
+	env = malloc_env((char*)line);
+	env->fd = 1;
+	va_start(args, line);
+	while (env->str[env->count])
+	{
+		to_buff_block(env);
+		if (!env->str[env->count])
+			break ;
+		env->count++;
+		find_flag(env, args);
+		if (env->unicode_error == 1)
+			break ;
+		env->count++;
+	}
+	rez = ft_strlen(env->buf) + env->count_2;
+	write(env->fd, env->buf, ft_strlen(env->buf));
 	free(env->buf);
 	free(env);
 	va_end(args);

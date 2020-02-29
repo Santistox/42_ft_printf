@@ -87,6 +87,7 @@ typedef struct	s_env
 void			error(int error_id);
 void			set_def(t_env *env);
 t_env			*malloc_env(char *str);
+int				ft_printf_fd(int fd, const char *line, ...);
 int				ft_printf(const char *line, ...);
 
 /*

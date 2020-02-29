@@ -24,7 +24,7 @@ void	flag_c(t_env *env, va_list args)
 	{
 		env->count_2 += ft_strlen(env->buf) + 1;
 		to_buff_char('\0', env);
-		write(1, env->buf, ft_strlen(env->buf) + 1);
+		write(env->fd, env->buf, ft_strlen(env->buf) + 1);
 		free(env->buf);
 		env->buf = ft_memalloc(sizeof(char));
 	}
