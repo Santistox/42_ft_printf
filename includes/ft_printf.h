@@ -150,6 +150,14 @@ void			*ft_memset(void *b, int c, size_t len);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
+int				ft_memcmp(const void *s1, const void *s2, size_t n);
+
+/*
+** flag_color.c
+*/
+
+int				paint(t_env *env, char *color, char *color_id);
+void			flag_color(t_env *env);
 
 /*
 ** num flags  !!! NEED NORME !!!

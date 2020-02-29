@@ -66,9 +66,14 @@ void	to_buff_block(t_env *env)
 	env->first_char_pos = env->count;
 	while (env->str[env->count] && env->str[env->count] != '%')
 	{
-		to_buff_char(env->str[env->count], env);
-		env->count++;
-		env->res++;
+		if (env->str[env->count] == '{')
+			flag_color(env);
+		else
+		{
+			to_buff_char(env->str[env->count], env);
+			env->count++;
+			env->res++;
+		}
 	}
 	if (env->str[env->count] == '%')
 		env->percent_pos = env->count;
