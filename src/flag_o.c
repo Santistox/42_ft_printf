@@ -12,61 +12,54 @@
 
 #include "ft_printf.h"
 
-char	*ft_itoa_o(unsigned int n)
-{
-	return (base_ft_itoa(n, 'a', 8));
-}
+/*
+** convert DEC to OCT and return as string
+*/
 
-void	flag_o_second(t_env *env, char **res, unsigned int num)
+char	*flag_o_help(t_env *env)
 {
-	if (env->zero && env->grille && num != 0)
-		env->offset = (env->offset > 0) ? env->offset - 1 : env->offset;
-	if (env->zero && !env->is_precision)
-	{
-		*res = zero_offset(env, *res, 0);
-		if (env->grille && num != 0)
-			*res = ft_strjoin("0", *res);
-	}
-	else if (env->offset)
-	{
-		if (env->grille && num != 0 && *res[0] != '0')
-			*res = ft_strjoin("0", *res);
-		*res = space_offset(env, *res, 0, 0);
-	}
-	if (!env->zero && !env->offset && env->grille && num != 0 && *res[0] != '0')
-		*res = ft_strjoin("0", *res);
-	env->buf = ft_strjoin(env->buf, *res);
-}
-
-void	flag_o(t_env *env, va_list args)
-{
-	unsigned int	num;
+	int				nb_digit;
 	char			*res;
+	int				char_ref;
 
-	if (env->space || env->plus)
-		error(404);
-	if (env->zero && env->precision > 0)
-		env->zero = 0;
-	num = va_arg(args, unsigned int);
-	res = ft_itoa_o(num);
-	env->res += ft_strlen(res);
-	if (env->is_precision)
+	char_ref = env->caps == 1 ? 55 : 87;
+	set_nb_digit(env);
+	nb_digit = env->nb_digit;
+	if (!(res = (char*)ft_memalloc(sizeof(char) * nb_digit + 1)))
+		error(403);
+	res[nb_digit] = '\0';
+	while (nb_digit--)
 	{
-		if (env->precision == 0 && num == 0)
-		{
-			free(res);
-			if (env->grille)
-			{
-				res = ft_strdup("0");
-				if (env->offset)
-					res = space_offset(env, res, 0, 0);
-				env->buf = ft_strjoin(env->buf, res);
-				return ;
-			}
-			res = ft_strdup("");
-		}
-		else
-			res = precision(env, res, 0);
+		if ((env->cont % 8 >= 10 || env->cont % 8 <= 15))
+			res[nb_digit] = char_ref + (env->cont % 8);
+		if (env->cont % 8 < 10)
+			res[nb_digit] = env->cont % 8 + '0';
+		env->cont /= 8;
 	}
-	flag_o_second(env, &res, num);
+	return (res);
+}
+
+/*
+** handling o and O flag with additions
+*/
+
+void	flag_o(t_env *env)
+{
+	int	print_zero;
+
+	env->zero = (env->str[env->count] == 'O' || env->str[env->count] == 'o') && (env->precision == 0) && ((env->is_precision == 1) ? 0 : env->zero);
+	print_zero = (env->grille == 1) && (env->precision == 0) && ((env->is_precision) ? 1 : 0);
+	env->grille = (env->grille == 1) && ((env->cont == 0) ? 0 : env->grille);
+	env->offset -= ((env->precision > env->nb_digit) ? env->precision : env->nb_digit);
+	env->offset -= ((env->precision > env->nb_digit) ? 0 : env->grille);
+	if (env->grille && env->precision <= env->nb_digit && env->cont)
+		env->precision += env->nb_digit - env->precision + 1;
+	env->offset += (env->cont == 0) && (env->precision == 0) && ((env->is_precision == 1) ? 1 : 0);
+	if (!env->minus)
+		to_buff_offset(env);
+	put_precision(env, env->nb_digit);
+	if (!(!env->cont && !env->precision && env->is_precision && !print_zero))
+		to_buff_str(flag_o_help(env), env);
+	if (env->minus)
+		to_buff_offset(env);
 }

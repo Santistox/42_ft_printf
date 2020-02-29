@@ -75,6 +75,9 @@ typedef struct	s_env
 	uintmax_t	cont;
 	int			count_2;
 	int			fd;
+	int 		caps;
+	int			base;
+	int			nb_digit;
 }				t_env;
 
 /*
@@ -98,7 +101,7 @@ void			to_buff_block(t_env *env);
 /*
 ** flags.c
 */
-
+void			set_nb_digit(t_env *env);
 void			find_flag_continue(t_env *env, va_list args);
 void			find_flag(t_env *env, va_list args);
 int				check_flag(char c);
@@ -148,21 +151,22 @@ void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
 
 /*
-** num flags
+** num flags  !!! NEED NORME !!!
 */
 
 void			flag_f(t_env *env, va_list args);
-void			flag_di(t_env *env, va_list args);
-void			flag_di_help(t_env *env, int num, char **res, int zero_minus);
-void			flag_o(t_env *env, va_list args);
-void			flag_o_second(t_env *env, char **res, unsigned int num);
-void			flag_u(t_env *env, va_list args);
-void			flag_x(t_env *env, va_list args);
-void			flag_x_up(t_env *env, va_list args);
-char			*base_ft_itoa(unsigned int n, char c, int base);
-char			*ft_itoa_o(unsigned int n);
-char			*ft_itoa_x(unsigned int n);
-char			*ft_itoa_x_up(unsigned int n);
+
+
+void			put_precision(t_env *env, int arg_size);
+void			put_zero(t_env *env);
+void			flag_di(t_env *env);
+char			*flag_di_help(t_env *env);
+
+void			flag_x(t_env *env);
+char			*flag_x_help(t_env *env);
+
+void			flag_o(t_env *env);
+char			*flag_o_help(t_env *env);
 
 /*
 ** num flags

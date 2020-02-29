@@ -99,11 +99,9 @@ static void	length_flags_d_u_o(t_env *env, va_list args)
 	int	temp_count;
 
 	temp_count = env->count;
-	while (env->str[temp_count] == 'h' || env->str[temp_count] == 'l' ||
-			env->str[temp_count] == 'j' || env->str[temp_count] == 'z')
+	while ((env->str[temp_count] == 'h') || (env->str[temp_count] == 'l') || (env->str[temp_count] == 'j') || (env->str[temp_count] == 'z'))
 		temp_count++;
-	if (env->str[temp_count] == 'D' || env->str[temp_count] == 'U' ||
-		env->str[temp_count] == 'O')
+	if ((env->str[temp_count] == 'D') || (env->str[temp_count] == 'U') || (env->str[temp_count] == 'O'))
 		env->count = temp_count;
 	if (env->str[env->count] == 'D')
 		env->cont = (long int)va_arg(args, uintmax_t);
@@ -116,19 +114,18 @@ void		length_flags(t_env *env, va_list args)
 	length_flags_d_u_o(env, args);
 	if (env->str[env->count] == 'C')
 		env->cont = (wchar_t)va_arg(args, uintmax_t);
-	else if (env->str[env->count] == 'd' || env->str[env->count] == 'i')
+	else if ((env->str[env->count] == 'd') || (env->str[env->count] == 'i'))
 		env->cont = (int)va_arg(args, uintmax_t);
 	else if (env->str[env->count] == 'p')
 		env->cont = (unsigned long long int)va_arg(args, uintmax_t);
 	else if (env->str[env->count] == 'c')
 		env->cont = (unsigned char)va_arg(args, uintmax_t);
-	else if (env->str[env->count] == 'u' || env->str[env->count] == 'o' ||
-				env->str[env->count] == 'X' || env->str[env->count] == 'x')
+	else if ((env->str[env->count] == 'u') || (env->str[env->count] == 'o') || (env->str[env->count] == 'X') || (env->str[env->count] == 'x'))
 		env->cont = (unsigned int)va_arg(args, uintmax_t);
 	else if (env->str[env->count] == 'h')
 		length_flags_h_hh(env, args);
 	else if (env->str[env->count] == 'l')
 		length_flags_l_ll(env, args);
-	else if (env->str[env->count] == 'z' || env->str[env->count] == 'j')
+	else if ((env->str[env->count] == 'z') || (env->str[env->count] == 'j'))
 		length_flags_z_j(env, args);
 }

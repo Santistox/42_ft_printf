@@ -12,62 +12,94 @@
 
 #include "ft_printf.h"
 
-int		leng(long long int n)
-{
-	int numlen;
+/*
+** processing the maximum and minimum values
+*/
 
-	numlen = (n < 0) ? 2 : 1;
-	while ((n /= 10) > 0)
-		numlen++;
-	return (numlen);
+char	*flag_di_help(t_env *env)
+{
+	int			nb_digit;
+	char		*res;
+
+	if ((unsigned long int)env->cont == -9223372036854775808U)
+		return (ft_strdup("9223372036854775808"));
+	if ((intmax_t)env->cont < 0 && env->str[env->count] != 'u' && env->str[env->count] != 'U')
+		env->cont = -env->cont;
+	set_nb_digit(env);
+	nb_digit = env->nb_digit;
+	if (!(res = (char*)ft_memalloc(sizeof(char) * nb_digit + 1)))
+		error(403);
+	res[nb_digit] = '\0';
+	while (nb_digit--)
+	{
+		res[nb_digit] = env->cont % env->base + '0';
+		env->cont /= env->base;
+	}
+	return (res);
 }
 
-void	flag_di_help(t_env *env, int num, char **res, int zero_minus)
+/*
+** set precision of value
+*/
+
+void	put_precision(t_env *env, int arg_size)
 {
-	env->res += leng(num);
-	*res = ft_itoa(num);
-	if (!(env->is_precision) && !(env->zero))
-		plus_minus(env, res, zero_minus, num);
-	if (env->is_precision)
+	char	*prec;
+
+	if (env->precision > arg_size)
 	{
-		if (env->precision == 0 && num == 0)
-		{
-			free(*res);
-			*res = ft_strdup("");
-		}
-		else
-			*res = precision(env, *res, zero_minus);
-		plus_minus(env, res, zero_minus, num);
+		if (!(prec = ft_memalloc(sizeof(char) * env->precision - arg_size + 1)))
+			error(403);
+		ft_memset(prec, '0', env->precision - arg_size);
+		to_buff_str(prec, env);
 	}
-	if (env->zero && !env->is_precision)
-	{
-		*res = zero_offset(env, *res, zero_minus);
-		plus_minus(env, res, zero_minus, num);
-	}
-	else if (env->offset)
-		*res = space_offset(env, *res, zero_minus, 0);
 }
 
-void	flag_di(t_env *env, va_list args)
-{
-	int		num;
-	char	*res;
-	int		zero_minus;
-	int		minus;
+/*
+** put 0 to buffer
+*/
 
-	minus = 0;
-	zero_minus = 0;
-	num = va_arg(args, int);
-	if (num < 0)
-		minus = 1;
-	if (env->is_precision && num < 0)
-		env->res++;
-	if ((env->zero || env->is_precision) && num < 0)
+void	put_zero(t_env *env)
+{
+	char	*zero;
+
+	if (env->offset > 0)
 	{
-		zero_minus = 1;
-		num *= -1;
+		if (!(zero = ft_memalloc(sizeof(char) * env->offset + 1)))
+			error(403);
+		ft_memset(zero, '0', env->offset);
+		to_buff_str(zero, env);
 	}
-	flag_di_help(env, num, &res, zero_minus);
-	space(env, &res, minus);
-	env->buf = ft_strjoin(env->buf, res);
+	env->offset = 0;
+}
+
+/*
+** handling d and i flag with additions
+*/
+
+void	flag_di(t_env *env)
+{
+	env->offset -= env->precision > env->nb_digit ? env->precision : env->nb_digit;
+	env->plus = env->str[env->count] == 'u' || env->str[env->count] == 'U' ? 0 : env->plus;
+	env->offset -= env->plus && (intmax_t)env->cont >= 0 ? 1 : 0;
+	if ((intmax_t)env->cont < 0 && env->zero)
+		to_buff_char('-', env);
+	env->offset -= (intmax_t)env->cont < 0 ? 1 : 0;
+	if (!env->minus && !env->zero)
+		to_buff_offset(env);
+	if (env->plus && (intmax_t)env->cont >= 0)
+		to_buff_char('+', env);
+	if ((intmax_t)env->cont < 0 && !env->zero && env->str[env->count] != 'u' &&
+			env->str[env->count] != 'U')
+		to_buff_char('-', env);
+	if ((env->str[env->count] == 'd' || env->str[env->count] == 'i' || env->str[env->count] == 'D')
+			&& (intmax_t)env->cont >= 0 && env->space && !env->plus)
+		to_buff_char(' ', env);
+	if (env->zero)
+		put_zero(env);
+	put_precision(env, env->nb_digit);
+	if (!(env->cont == 0 && env->precision == 0 && env->is_precision))
+		to_buff_str(flag_di_help(env), env);
+	if (env->minus)
+		to_buff_offset(env);
 }

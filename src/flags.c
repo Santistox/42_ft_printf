@@ -13,29 +13,88 @@
 #include "ft_printf.h"
 
 /*
+** set base of number
+*/
+
+void	set_base(t_env *env)
+{
+	if (env->str[env->count] == 'u' || env->str[env->count] == 'U' || env->str[env->count] == 'd' ||
+			env->str[env->count] == 'D' || env->str[env->count] == 'i')
+		env->base = 10;
+	if (env->str[env->count] == 'X' || env->str[env->count] == 'x' || env->str[env->count] == 'p')
+		env->base = 16;
+	if (env->str[env->count] == 'o' || env->str[env->count] == 'O')
+		env->base = 8;
+}
+
+/*
+** number of digit in final base
+*/
+
+void	set_nb_digit(t_env *env)
+{
+	int			nb_digit;
+	uintmax_t	nbr_cp;
+
+	nbr_cp = env->cont;
+	nb_digit = 0;
+	if ((intmax_t)nbr_cp < 0 && (env->str[env->count] == 'd' || env->str[env->count] == 'i'))
+		nbr_cp = -nbr_cp;
+	if ((intmax_t)nbr_cp == 0)
+		env->nb_digit = 1;
+	else
+		while (nbr_cp /= env->base)
+			nb_digit++;
+	nb_digit -= (env->cont == 0) && (env->precision == 0) && (env->is_precision == 1) &&
+				(env->str[env->count] != 'x') && (env->str[env->count] != 'X') &&
+				(env->str[env->count] != 'o') && ((env->str[env->count] != 'O') ? 1 : 0);
+	env->nb_digit = nb_digit + 1;
+}
+
+/*
+** manage num flags 
+*/
+
+static void		num_flags(t_env *env)
+{
+	env->zero = env->precision != 0 ? 0 : env->zero;
+	set_base(env);
+	set_nb_digit(env);
+	env->caps = env->str[env->count] == 'X' ? 1 : 0;
+	env->grille = env->str[env->count] == 'p' ? 1 : env->grille;
+	if ((env->str[env->count] == 'X' || env->str[env->count] == 'x') && env->grille == 1)
+		env->grille = 2;
+	if (env->str[env->count] == 'u' || env->str[env->count] == 'U' || env->str[env->count] == 'd' ||
+			env->str[env->count] == 'D' || env->str[env->count] == 'i')
+		flag_di(env);
+	if (env->str[env->count] == 'X' || env->str[env->count] == 'x' || env->str[env->count] == 'p')
+		flag_x(env);
+	if (env->str[env->count] == 'o' || env->str[env->count] == 'O')
+		flag_o(env);
+}
+
+/*
 **  find flag e.g. %s %c
 */
 
 void	find_flag_continue(t_env *env, va_list args)
 {
-	if (env->str[env->count] == 'i' || env->str[env->count] == 'd')
-		flag_di(env, args);
-	else if (env->str[env->count] == 'o')
-		flag_o(env, args);
-	else if (env->str[env->count] == 'u')
-		flag_u(env, args);
-	else if (env->str[env->count] == 'x')
-		flag_x(env, args);
-	else if (env->str[env->count] == 'X')
-		flag_x_up(env, args);
-	else if (env->str[env->count] == 's')
+	if (env->str[env->count] == 's')
 		flag_s(env, args);
 	else if (env->str[env->count] == 'c')
 		flag_c(env, args);
 	else if (env->str[env->count] == '%')
 		flag_per(env);
-	else if (env->str[env->count] == 'f')
+	else if (env->str[env->count] == 'f')  // need to connect to num flags !!
 		flag_f(env, args);
+	else if (env->str[env->count] == 'd' || env->str[env->count] == 'D' ||
+		env->str[env->count] == 'u' || env->str[env->count] == 'U' ||
+		env->str[env->count] == 'x' || env->str[env->count] == 'X' ||
+		env->str[env->count] == 'o' || env->str[env->count] == 'O' ||
+		env->str[env->count] == 'p' || env->str[env->count] == 'i' || 
+		env->str[env->count] == 'l' || env->str[env->count] == 'h' ||
+		env->str[env->count] == 'j' || env->str[env->count] == 'z')
+		num_flags(env);
 }
 
 void	find_flag(t_env *env, va_list args)
@@ -62,7 +121,7 @@ void	find_flag(t_env *env, va_list args)
 		env->offset -= 1;
 	else
 		env->offset -= env->space;
-	//length_flags(env, args);
+	length_flags(env, args);
 	find_flag_continue(env, args);
 }
 
@@ -72,13 +131,13 @@ void	find_flag(t_env *env, va_list args)
 
 int		check_flag(char c)
 {
-	if (ft_isdigit(c) || c == 's' || c == 'S' ||
+	if (ft_isdigit(c) || c == 's' ||
 		c == 'p' || c == 'd' || c == 'D' ||
 		c == 'o' || c == 'O' || c == 'u' ||
 		c == 'U' || c == 'x' || c == 'X' ||
-		c == 'c' || c == 'C' || c == '.' ||
-		c == '%' || c == 'h' || c == 'l' ||
-		c == 'i' || c == 'j' || c == 'z' || c == 'f')
+		c == 'c' || c == '.' || c == '%' ||
+		c == 'h' || c == 'l' || c == 'i' ||
+		c == 'j' || c == 'z' || c == 'f')
 		return (1);
 	return (0);
 }

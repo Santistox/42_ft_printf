@@ -12,86 +12,61 @@
 
 #include "ft_printf.h"
 
-char	*ft_itoa_x(unsigned int n)
-{
-	return (base_ft_itoa(n, 'a', 16));
-}
+/*
+** convert DEC to HEX and return as string
+*/
 
-char	*ft_itoa_x_up(unsigned int n)
+char	*flag_x_help(t_env *env)
 {
-	return (base_ft_itoa(n, 'A', 16));
-}
-
-void	flag_x_help(t_env *env, unsigned int num, char **res)
-{
-	if (env->is_precision)
-	{
-		if (env->precision == 0 && num == 0)
-		{
-			free(*res);
-			*res = ft_strdup("");
-		}
-		else
-			*res = precision(env, *res, 0);
-	}
-	if (env->zero && env->grille && num != 0)
-		env->offset = (env->offset > 0) ? env->offset - 2 : env->offset;
-}
-
-void	flag_x(t_env *env, va_list args)
-{
-	unsigned int	num;
+	int				nb_digit;
 	char			*res;
+	int				char_ref;
 
-	if (env->space || env->plus || (env->minus && env->zero))
-		error(404);
-	if (env->zero && env->precision > 0)
-		env->zero = 0;
-	num = va_arg(args, unsigned int);
-	res = ft_itoa_x(num);
-	flag_x_help(env, num, &res);
-	if (env->zero)
+	char_ref = env->caps == 1 ? 55 : 87;
+	set_nb_digit(env);
+	nb_digit = env->nb_digit;
+	if (!(res = (char*)ft_memalloc(sizeof(char) * nb_digit + 1)))
+		error(403);
+	res[nb_digit] = '\0';
+	while (nb_digit--)
 	{
-		res = zero_offset(env, res, 0);
-		if (env->grille && num != 0)
-			res = ft_strjoin("0x", res);
+		if ((env->cont % 16 >= 10 || env->cont % 16 <= 15))
+			res[nb_digit] = char_ref + (env->cont % 16);
+		if (env->cont % 16 < 10)
+			res[nb_digit] = env->cont % 16 + '0';
+		env->cont /= 16;
 	}
-	else if (env->offset)
-	{
-		if (env->grille && num != 0)
-			res = ft_strjoin("0x", res);
-		res = space_offset(env, res, 0, 0);
-	}
-	if (!env->zero && !env->offset && env->grille && num != 0)
-		res = ft_strjoin("0x", res);
-	env->buf = ft_strjoin(env->buf, res);
+	return (res);
 }
 
-void	flag_x_up(t_env *env, va_list args)
-{
-	unsigned int	num;
-	char			*res;
+/*
+** handling x and X flag with additions
+*/
 
-	if (env->space || env->plus || (env->minus && env->zero))
-		error(404);
-	if (env->zero && env->precision > 0)
+void	flag_x(t_env *env)
+{
+	if (env->grille && env->is_precision && env->precision == 0)
 		env->zero = 0;
-	num = va_arg(args, unsigned int);
-	res = ft_itoa_x_up(num);
-	flag_x_help(env, num, &res);
-	if (env->zero)
-	{
-		res = zero_offset(env, res, 0);
-		if (env->grille && num != 0)
-			res = ft_strjoin("0X", res);
-	}
-	else if (env->offset)
-	{
-		if (env->grille && num != 0)
-			res = ft_strjoin("0X", res);
-		res = space_offset(env, res, 0, 0);
-	}
-	if (!env->zero && !env->offset && env->grille && num != 0)
-		res = ft_strjoin("0X", res);
-	env->buf = ft_strjoin(env->buf, res);
+	if (env->grille && ((env->cont != 0) || (env->str[env->count] == 'p')))
+		env->offset -= 2;
+	else
+		env->grille = 0;
+	if (env->cont == 0 && env->precision == 0 && env->is_precision)
+		env->offset++;
+	env->offset -= ((env->precision > env->nb_digit) ? env->precision : env->nb_digit);
+	if (env->grille && env->zero && env->caps)
+		to_buff_str(ft_strdup("0X"), env);
+	if (env->grille && env->zero && !env->caps)
+		to_buff_str(ft_strdup("0x"), env);
+	if (!env->minus)
+		to_buff_offset(env);
+	if (env->grille && env->caps && !env->zero && (env->cont || env->str[env->count] == 'p'))
+		to_buff_str(ft_strdup("0X"), env);
+	if (env->grille && !env->caps && !env->zero && (env->cont || env->str[env->count] == 'p'))
+		to_buff_str(ft_strdup("0x"), env);
+	put_precision(env, env->nb_digit);
+	if (!((env->cont == 0) && (env->precision == 0) && (env->is_precision)))
+		to_buff_str(flag_x_help(env), env);
+	if (env->minus)
+		to_buff_offset(env);
 }
