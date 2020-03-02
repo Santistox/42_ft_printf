@@ -41,6 +41,8 @@ void	set_def(t_env *env)
 	env->minus = 0;
 	env->space = 0;
 	env->is_unicode = 0;
+	env->base = 0;
+	env->nb_digit = 0;
 }
 
 /*

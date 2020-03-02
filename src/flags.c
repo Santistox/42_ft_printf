@@ -82,7 +82,7 @@ void	find_flag_continue(t_env *env, va_list args)
 	if (env->str[env->count] == 's')
 		flag_s(env, args);
 	else if (env->str[env->count] == 'c')
-		flag_c(env, args);
+		flag_c(env);
 	else if (env->str[env->count] == '%')
 		flag_per(env);
 	else if (env->str[env->count] == 'f')  // need to connect to num flags !!

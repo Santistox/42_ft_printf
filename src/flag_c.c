@@ -12,15 +12,12 @@
 
 #include "ft_printf.h"
 
-void	flag_c(t_env *env, va_list args)
+void	flag_c(t_env *env)
 {
-	wchar_t	c;
-
 	env->offset--;
 	if (!env->minus)
 		to_buff_offset(env);
-	c = va_arg(args, unsigned int);
-	if (c == 0)
+	if (!env->cont)
 	{
 		env->count_2 += ft_strlen(env->buf) + 1;
 		to_buff_char('\0', env);
@@ -28,7 +25,7 @@ void	flag_c(t_env *env, va_list args)
 		free(env->buf);
 		env->buf = ft_memalloc(sizeof(char));
 	}
-	to_buff_char(c, env);
+	to_buff_char(env->cont, env);
 	if (env->minus)
 		to_buff_offset(env);
 }

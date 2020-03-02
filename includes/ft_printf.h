@@ -182,7 +182,7 @@ char			*flag_o_help(t_env *env);
 */
 
 void			flag_s(t_env *env, va_list args);
-void			flag_c(t_env *env, va_list args);
+void			flag_c(t_env *env);
 void			flag_per(t_env *env);
 
 /*
