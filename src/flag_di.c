@@ -81,10 +81,10 @@ void	flag_di(t_env *env)
 {
 	env->offset -= env->precision > env->nb_digit ? env->precision : env->nb_digit;
 	env->plus = env->str[env->count] == 'u' || env->str[env->count] == 'U' ? 0 : env->plus;
-	env->offset -= env->plus && (intmax_t)env->cont >= 0 ? 1 : 0;
+	env->offset -= (env->plus && (intmax_t)env->cont >= 0) ? 1 : 0;
 	if ((intmax_t)env->cont < 0 && env->zero)
 		to_buff_char('-', env);
-	env->offset -= (intmax_t)env->cont < 0 ? 1 : 0;
+	env->offset -= ((intmax_t)env->cont < 0  && !env->space)? 1 : 0;
 	if (!env->minus && !env->zero)
 		to_buff_offset(env);
 	if (env->plus && (intmax_t)env->cont >= 0)
