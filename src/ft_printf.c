@@ -43,6 +43,7 @@ void	set_def(t_env *env)
 	env->is_unicode = 0;
 	env->base = 0;
 	env->nb_digit = 0;
+	env->zero = 0;
 }
 
 /*
