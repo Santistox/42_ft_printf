@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:36:33 by rlintill          #+#    #+#             */
-/*   Updated: 2020/02/13 14:43:56 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/03/06 14:16:55 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct	s_env
 	uintmax_t	cont;
 	int			count_2;
 	int			fd;
-	int 		caps;
+	int			caps;
 	int			base;
 	int			nb_digit;
 }				t_env;
@@ -160,18 +160,19 @@ int				paint(t_env *env, char *color, char *color_id);
 void			flag_color(t_env *env);
 
 /*
-** num flags  !!! NEED NORME !!!
+** num flagsi
 */
 
 void			flag_f(t_env *env, va_list args);
 
-
 void			put_precision(t_env *env, int arg_size);
 void			put_zero(t_env *env);
 void			flag_di(t_env *env);
+void			flag_di_util(t_env *env);
 char			*flag_di_help(t_env *env);
 
 void			flag_x(t_env *env);
+void			flag_x_util(t_env *env);
 char			*flag_x_help(t_env *env);
 
 void			flag_o(t_env *env);
@@ -194,5 +195,3 @@ int				ft_isdigit(int c);
 char			*ft_itoa(long long int n);
 
 #endif
-
-

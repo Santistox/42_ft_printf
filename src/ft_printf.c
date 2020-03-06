@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/13 14:51:54 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/03/06 13:49:55 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int		ft_printf_fd(int fd, const char *line, ...)
 }
 
 /*
-**  main function of ft_printf 
+**  main function of ft_printf
 */
 
 int		ft_printf(const char *line, ...)

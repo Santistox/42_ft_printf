@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 13:54:07 by rlintill          #+#    #+#             */
-/*   Updated: 2020/02/13 14:05:00 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/03/06 13:44:49 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,19 @@ void	flag_o(t_env *env)
 {
 	int	print_zero;
 
-	env->zero = (env->str[env->count] == 'O' || env->str[env->count] == 'o') && (env->precision == 0) && ((env->is_precision == 1) ? 0 : env->zero);
-	print_zero = ((env->grille == 1) && (env->precision == 0) && (env->is_precision)) ? 1 : 0;
-	env->grille = ((env->grille == 1) && (env->cont == 0) && (env->is_precision == 0)) ? 0 : env->grille;
-	env->offset -= ((env->precision > env->nb_digit) ? env->precision : env->nb_digit);
+	env->zero = ((env->str[env->count] == 'O' || env->str[env->count] == 'o')
+		&& (env->precision == 0) && (env->is_precision == 1)) ? 0 : env->zero;
+	print_zero = ((env->grille == 1) && (env->precision == 0)
+			&& (env->is_precision)) ? 1 : 0;
+	env->grille = ((env->grille == 1) && (env->cont == 0)
+			&& (env->is_precision == 0)) ? 0 : env->grille;
+	env->offset -= (env->precision > env->nb_digit) ?
+		env->precision : env->nb_digit;
 	env->offset -= ((env->precision > env->nb_digit) ? 0 : env->grille);
 	if (env->grille && env->precision <= env->nb_digit && env->cont)
 		env->precision += env->nb_digit - env->precision + 1;
-	env->offset += ((env->cont == 0) && (env->precision == 0) && (env->is_precision == 1)) ? 1 : 0;
+	env->offset += ((env->cont == 0) && (env->precision == 0)
+			&& (env->is_precision == 1)) ? 1 : 0;
 	if (!env->minus)
 		to_buff_offset(env);
 	put_precision(env, env->nb_digit);

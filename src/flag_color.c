@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/13 14:51:54 by mnidoque         ###   ########.fr       */
+/*   Updated: 2020/03/06 13:18:43 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		paint(t_env *env, char *color, char *color_id)
 	len = ft_strlen(color);
 	if (ft_memcmp(str, color, len) == 0)
 	{
-		while(color_id[i])
+		while (color_id[i])
 		{
 			to_buff_char(color_id[i], env);
 			i++;

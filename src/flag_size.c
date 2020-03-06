@@ -6,7 +6,7 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/13 14:51:54 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/03/06 13:46:01 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,11 @@ static void	length_flags_d_u_o(t_env *env, va_list args)
 	int	temp_count;
 
 	temp_count = env->count;
-	while ((env->str[temp_count] == 'h') || (env->str[temp_count] == 'l') || (env->str[temp_count] == 'j') || (env->str[temp_count] == 'z'))
+	while ((env->str[temp_count] == 'h') || (env->str[temp_count] == 'l')
+			|| (env->str[temp_count] == 'j') || (env->str[temp_count] == 'z'))
 		temp_count++;
-	if ((env->str[temp_count] == 'D') || (env->str[temp_count] == 'U') || (env->str[temp_count] == 'O'))
+	if ((env->str[temp_count] == 'D') || (env->str[temp_count] == 'U')
+			|| (env->str[temp_count] == 'O'))
 		env->count = temp_count;
 	if (env->str[env->count] == 'D')
 		env->cont = (long int)va_arg(args, uintmax_t);
@@ -120,7 +122,8 @@ void		length_flags(t_env *env, va_list args)
 		env->cont = (unsigned long long int)va_arg(args, uintmax_t);
 	else if (env->str[env->count] == 'c')
 		env->cont = (unsigned char)va_arg(args, uintmax_t);
-	else if ((env->str[env->count] == 'u') || (env->str[env->count] == 'o') || (env->str[env->count] == 'X') || (env->str[env->count] == 'x'))
+	else if ((env->str[env->count] == 'u') || (env->str[env->count] == 'o')
+			|| (env->str[env->count] == 'X') || (env->str[env->count] == 'x'))
 		env->cont = (unsigned int)va_arg(args, uintmax_t);
 	else if (env->str[env->count] == 'h')
 		length_flags_h_hh(env, args);

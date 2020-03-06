@@ -6,7 +6,7 @@
 /*   By: rlintill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 14:37:50 by rlintill          #+#    #+#             */
-/*   Updated: 2020/02/13 15:46:34 by rlintill         ###   ########.fr       */
+/*   Updated: 2020/03/06 13:30:30 by rlintill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ char	*flag_di_help(t_env *env)
 
 	if ((unsigned long int)env->cont == -9223372036854775808U)
 		return (ft_strdup("9223372036854775808"));
-	if ((intmax_t)env->cont < 0 && env->str[env->count] != 'u' && env->str[env->count] != 'U')
+	if ((intmax_t)env->cont < 0 && env->str[env->count] != 'u'
+			&& env->str[env->count] != 'U')
 		env->cont = -env->cont;
 	set_nb_digit(env);
 	nb_digit = env->nb_digit;
@@ -77,14 +78,21 @@ void	put_zero(t_env *env)
 ** handling d and i flag with additions
 */
 
+void	flag_di_util(t_env *env)
+{
+	env->offset -= (env->precision > env->nb_digit) ?
+		env->precision : env->nb_digit;
+	env->plus = (env->str[env->count] == 'u'
+			|| env->str[env->count] == 'U') ? 0 : env->plus;
+	env->offset -= (env->plus && (intmax_t)env->cont >= 0) ? 1 : 0;
+}
+
 void	flag_di(t_env *env)
 {
-	env->offset -= env->precision > env->nb_digit ? env->precision : env->nb_digit;
-	env->plus = env->str[env->count] == 'u' || env->str[env->count] == 'U' ? 0 : env->plus;
-	env->offset -= (env->plus && (intmax_t)env->cont >= 0) ? 1 : 0;
+	flag_di_util(env);
 	if ((intmax_t)env->cont < 0 && env->zero)
 		to_buff_char('-', env);
-	env->offset -= ((intmax_t)env->cont < 0  && !env->space)? 1 : 0;
+	env->offset -= ((intmax_t)env->cont < 0 && !env->space) ? 1 : 0;
 	if (!env->minus && !env->zero)
 		to_buff_offset(env);
 	if (env->plus && (intmax_t)env->cont >= 0)
@@ -92,7 +100,8 @@ void	flag_di(t_env *env)
 	if ((intmax_t)env->cont < 0 && !env->zero && env->str[env->count] != 'u' &&
 			env->str[env->count] != 'U')
 		to_buff_char('-', env);
-	if ((env->str[env->count] == 'd' || env->str[env->count] == 'i' || env->str[env->count] == 'D')
+	if ((env->str[env->count] == 'd'
+			|| env->str[env->count] == 'i' || env->str[env->count] == 'D')
 			&& (intmax_t)env->cont >= 0 && env->space && !env->plus)
 		to_buff_char(' ', env);
 	if (env->zero)
