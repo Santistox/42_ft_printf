@@ -33,7 +33,7 @@ void	set_precision(int init_index, t_env *env)
 	if (!(num = ft_memalloc(sizeof(char) * env->count - init_index + 1)))
 		error(403);
 	max = env->count;
-	env->count = env->count - (env->count - init_index);
+	env->count = init_index;
 	ft_memcpy(num, &env->str[env->count], max - env->count);
 	env->count = max;
 	env->precision = ft_atoi(num);
@@ -63,7 +63,7 @@ void	set_offset(int init_index, t_env *env)
 	if (!(num = ft_memalloc(sizeof(char) * env->count - init_index + 1)))
 		error(403);
 	max = env->count;
-	env->count = env->count - (env->count - init_index);
+	env->count = init_index;
 	while (env->count < max)
 		num[i++] = env->str[env->count++];
 	num[i] = '\0';

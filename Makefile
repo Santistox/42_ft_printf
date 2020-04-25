@@ -23,7 +23,6 @@ SRC_FILES =	ft_printf.c \
 			offpre.c \
 			stringfun.c \
 			memfun.c \
-		ft_itoa_o.c \
 		ft_itoa.c \
 		ft_isdigit.c \
 		ft_atoi.c \
