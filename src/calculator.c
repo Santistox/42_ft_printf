@@ -40,7 +40,7 @@ void add_by_column(int *num1, int *num2, int *rez, int bit)
 **  multiplication by a column
 */
 
-void multiplication_by_column(int *num1, int *num2, int *rez, int bit)
+void multiplication_by_column(int *num1, int *num2, int **rez, int bit)
 {
 	int i;
 	int j;
@@ -53,12 +53,12 @@ void multiplication_by_column(int *num1, int *num2, int *rez, int bit)
 	{
 		j = bit;
 		k = i + 1;
-		while (j-- >= 0 && k-- >=0)
+		while (j-- >= 0 && --k >=0)
 		{
-			rez[k] += buf;
-			rez[k] += (num1[j] * num2[i]);
-			buf = rez[k] / 10;
-			rez[k] = rez[k] % 10;
+			(*rez)[k] += buf;
+			(*rez)[k] += (num1[j] * num2[i]);
+			buf = (*rez)[k] / 10;
+			(*rez)[k] = (*rez)[k] % 10;
 		}
 	}
 }

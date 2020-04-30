@@ -198,7 +198,7 @@ char			*ft_itoa(long long int n);
 ** Calculator
 */
 void add_by_column(int *num1, int *num2, int *rez, int bit);
-void multiplication_by_column(int *num1, int *num2, int *rez, int bit);
+void multiplication_by_column(int *num1, int *num2, int **rez, int bit);
 void print_num(int *num, int i, char a);
 
 #endif

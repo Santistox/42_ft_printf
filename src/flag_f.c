@@ -81,7 +81,7 @@ void	flag_f(t_env *env, va_list args)
 	print_num(n, 32, ' ');
 	printf("\n");
 	int *res = new_arr((long long unsigned int)0, 32);
-	multiplication_by_column(arr, n, res, 32);
+	multiplication_by_column(arr, n, &res, 32);
 	print_num(res, 32, ' ');
 	printf("\n");
 }
