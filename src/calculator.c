@@ -62,7 +62,7 @@ void multiplication_by_column(int *num1, int *num2, int *rez, int bit)
 		}
 	}
 }
-
+/*
 int main(void)
 {
 	int num1[] = {0, 0, 0, 0, 0, 0, 0, 1, 2}; // num 1
@@ -76,4 +76,4 @@ int main(void)
 	print_num(rez1, 9, '\n');
 	print_num(rez2, 9, '\n');
 	return(0);
-}
+}*/

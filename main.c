@@ -15,7 +15,8 @@
 int main(void)
 {
 	//printf("{%.9f}\n", -875.000001);
-	ft_printf("{red}TEST{green}COLOR{brown}SYSTEM\n");
-	ft_printf("{yellow}YES{blue}IT{purple}WORK{cyan}FINE{eoc}!\n");
+	//ft_printf("{red}TEST{green}COLOR{brown}SYSTEM\n");
+	//ft_printf("{yellow}YES{blue}IT{purple}WORK{cyan}FINE{eoc}!\n");
+	ft_printf("%f\n", 45.45);
 	return(0);
 }

@@ -1,4 +1,9 @@
 #include "ft_printf.h"
+/*
+void ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
 
 double	ft_pow(double n, int pow)
 {
@@ -18,7 +23,96 @@ int		ft_first(uint64_t n)
 	}
 	return (i);
 }
+*/
+long long unsigned int binpow (int a, int n) {
+	return (n ? a * binpow(a, n - 1) : 1);
+}
 
+int *new_arr(long long unsigned int num, int bit)
+{
+	int i;
+	int *arr;
+
+	i = bit - 1;
+	if (!(arr = malloc(sizeof(int *) * bit)))
+		return (NULL);
+	if (!(arr = ft_memset(arr, 0, bit)))
+		return (NULL);
+	while (i >= 0 && num >= 0)
+	{
+		arr[i] = num % 10;
+		num /= 10;
+		i--;
+	}
+	return (arr);
+}
+
+void	flag_f(t_env *env, va_list args)
+{
+	unsigned int *ptr;
+	unsigned int num;
+	unsigned int exp;
+	unsigned int mant;
+	float	cont;
+	char sign;
+	int ad;
+
+	ad = env->cont;
+
+	
+	cont = va_arg(args, double);
+	ptr = (unsigned int *)&cont;
+	num = *ptr;
+	sign = num >> 31;
+	exp = num << 1;
+	exp = exp >> 24;
+	exp = exp - 127;
+	mant = num & 8388607;
+	mant = mant | 8388608;
+	/* куча проверок */
+	printf("MANT is %u\n", mant); 
+	printf("EXP is %u\n", exp);
+	printf("SIGN is %u\n", sign);
+	int *arr = new_arr((long long unsigned int)mant, 32);
+	int *n = new_arr(binpow(5, 18), 32);
+	printf("BIN is %llu\n",binpow(5, 18));
+	print_num(arr, 32, ' ');
+	printf("\n");
+	print_num(n, 32, ' ');
+	printf("\n");
+	int *res = new_arr((long long unsigned int)0, 32);
+	multiplication_by_column(arr, n, res, 32);
+	print_num(res, 32, ' ');
+	printf("\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 void	flag_f(t_env *env, va_list args)
 {
 //	static const double	powers_of_10[] = {1, 10, 100, 1000, 10000, 100000,
@@ -103,7 +197,7 @@ void	flag_f(t_env *env, va_list args)
 	if (env->space && !minus)
 		res = ft_strjoin(" ", res);
 	env->buf = ft_strjoin(env->buf, res);
-}
+}*/
 /*
 void	flag_f(t_env *env, va_list args)
 {

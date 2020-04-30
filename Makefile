@@ -26,6 +26,7 @@ SRC_FILES =	ft_printf.c \
 		ft_itoa.c \
 		ft_isdigit.c \
 		ft_atoi.c \
+		calculator.c\
 
 
 HEADERS = $(INC_DIR)ft_printf.h
