@@ -1,8 +1,14 @@
 #include <stdio.h>
 
+/*
+**  print int massive
+*/
+
 void print_num(int *num, int i, char a)
 {
-	int k = 0;
+	int k;
+
+	k = 0;
 	while (k != i)
 	{
 		printf("%i", num[k]);
@@ -11,12 +17,16 @@ void print_num(int *num, int i, char a)
 	printf("%c", a);
 }
 
-void add_by_column(int *num1, int *num2, int *rez)
+/*
+**  addition by a column
+*/
+
+void add_by_column(int *num1, int *num2, int *rez, int bit)
 {
 	int i;
 	int buf;
 
-	i = 9;
+	i = bit;
 	buf = 0;
 	while (i-- >= 0)
 	{
@@ -26,25 +36,25 @@ void add_by_column(int *num1, int *num2, int *rez)
 	}
 }
 
-void multiplication_by_column(int *num1, int *num2, int *rez)
+/*
+**  multiplication by a column
+*/
+
+void multiplication_by_column(int *num1, int *num2, int *rez, int bit)
 {
 	int i;
 	int j;
 	int k;
 	int buf;
 	
-
-	i = 9;
+	i = bit;
 	buf = 0;
 	while (i-- >= 0)
 	{
-		j = 9;
+		j = bit;
 		k = i + 1;
 		while (j-- >= 0 && k-- >=0)
 		{
-			//print_num(rez, 9, ' ');
-			//printf("%i ", num1[j]);
-			//printf(" {%i}{%i}{%i} | %i - %i - %i - %i\n", i, j, k, buf, rez[k], num1[j], num2[i]);
 			rez[k] += buf;
 			rez[k] += (num1[j] * num2[i]);
 			buf = rez[k] / 10;
@@ -55,14 +65,14 @@ void multiplication_by_column(int *num1, int *num2, int *rez)
 
 int main(void)
 {
-	int num1[] = {0, 0, 0, 0, 0, 0, 0, 1, 2};
-	int num2[] = {0, 0, 0, 0, 0, 0, 0, 1, 5};
-	int rez1[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-	int rez2[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int num1[] = {0, 0, 0, 0, 0, 0, 0, 1, 2}; // num 1
+	int num2[] = {0, 0, 0, 0, 0, 0, 0, 1, 5}; // num 2
+	int rez1[] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // addition result
+	int rez2[] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // multiplication result
 	print_num(num1, 9, '\n');
 	print_num(num2, 9, '\n');
-	add_by_column(num1, num2, rez1);
-	multiplication_by_column(num1, num2, rez2);
+	add_by_column(num1, num2, rez1, 9);
+	multiplication_by_column(num1, num2, rez2, 9);
 	print_num(rez1, 9, '\n');
 	print_num(rez2, 9, '\n');
 	return(0);
