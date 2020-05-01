@@ -40,7 +40,7 @@ void add_by_column(int *num1, int *num2, int *rez, int bit)
 **  multiplication by a column
 */
 
-void multiplication_by_column(int *num1, int *num2, int **rez, int bit)
+void mult_by_column(int *num1, int *num2, int **rez, int bit)
 {
 	int i;
 	int j;

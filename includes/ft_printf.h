@@ -30,6 +30,9 @@
 # define BUFF_SIZE 1024
 
 /*
+**
+** main struct of printf
+**
 ** buf - buffer
 ** str - input line
 ** count - line coursor str
@@ -79,6 +82,25 @@ typedef struct	s_env
 	int			base;
 	int			nb_digit;
 }				t_env;
+
+/*
+**
+** help struct for flag %f
+**
+** exp - exponent
+** bit - bit size of array
+** sign - sign of number
+** compos - comma position in result
+*/
+
+typedef struct	s_fenv
+{
+	unsigned int 	exp;
+	char			bit;
+	char 			sign;
+	int				compos;
+}				t_fenv;
+
 
 /*
 ** ft_printf.c
@@ -197,8 +219,8 @@ char			*ft_itoa(long long int n);
 /*
 ** Calculator
 */
-void add_by_column(int *num1, int *num2, int *rez, int bit);
-void multiplication_by_column(int *num1, int *num2, int **rez, int bit);
-void print_num(int *num, int i, char a);
+void 			add_by_column(int *num1, int *num2, int *rez, int bit);
+void 			mult_by_column(int *num1, int *num2, int **rez, int bit);
+void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TEST
 
 #endif
