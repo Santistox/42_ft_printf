@@ -46,33 +46,52 @@ int *new_arr(long long unsigned int num, int bit)
 	}
 	return (arr);
 }
+// заранее чукаем чо пресишн есть вообще
+int *prec(int *num, int compos, int prec)
+{
+	int *add;
+	int *res;
+
+	if (prec <= 0 || compos + prec >= 32 || !num) //норм подставить а не 32
+		return (num);
+	if (num[compos + prec] < 5)
+		return (num);
+	add = new_arr(0, compos + prec);
+	add[compos + prec - 1] = 1;
+	res = new_arr(0, compos + prec);
+	add_by_column(num, add, res, compos + prec);
+	free(num);
+	free(add);
+	return (res);
+}
 
 void	flag_f(t_env *env, va_list args)
 {
+	t_fenv *fenv;
 	unsigned int *ptr;
 	unsigned int num;
 	unsigned int exp;
 	unsigned int mant;
 	float	cont;
-	char sign;
-	int ad;
 
-	ad = env->cont;
-
-	
+	if (!(fenv = ft_memalloc(sizeof(t_fenv))))
+		error(403);
 	cont = va_arg(args, double);
 	ptr = (unsigned int *)&cont;
 	num = *ptr;
-	sign = num >> 31;
+	fenv->sign = num >> 31;
 	exp = num << 1;
 	exp = exp >> 24;
-	exp = exp - 127;
+	fenv->exp = exp - 127;
 	mant = num & 8388607;
 	mant = mant | 8388608;
+	fenv->compos = 32 - (23 - fenv->exp);
+
+	printf("COMPOS is %i\n", fenv->compos);
 	/* куча проверок */
 	printf("MANT is %u\n", mant); 
-	printf("EXP is %u\n", exp);
-	printf("SIGN is %u\n", sign);
+	printf("EXP is %u\n", fenv->exp);
+	printf("SIGN is %u\n", fenv->sign);
 	int *arr = new_arr((long long unsigned int)mant, 32);
 	int *n = new_arr(binpow(5, 18), 32);
 	printf("BIN is %llu\n",binpow(5, 18));
@@ -81,9 +100,13 @@ void	flag_f(t_env *env, va_list args)
 	print_num(n, 32, ' ');
 	printf("\n");
 	int *res = new_arr((long long unsigned int)0, 32);
-	multiplication_by_column(arr, n, &res, 32);
+	mult_by_column(arr, n, res, 32);
 	print_num(res, 32, ' ');
 	printf("\n");
+	res = prec(res, fenv->compos, env->precision);
+	print_num(res, fenv->compos + env->precision, ' ');
+	printf("\n");
+	printf("%.6f\n",cont);
 }
 
 

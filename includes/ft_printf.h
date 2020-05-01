@@ -95,7 +95,7 @@ typedef struct	s_env
 
 typedef struct	s_fenv
 {
-	unsigned int 	exp;
+	int 			exp;
 	char			bit;
 	char 			sign;
 	int				compos;
@@ -220,7 +220,7 @@ char			*ft_itoa(long long int n);
 ** Calculator
 */
 void 			add_by_column(int *num1, int *num2, int *rez, int bit);
-void 			mult_by_column(int *num1, int *num2, int **rez, int bit);
+void 			mult_by_column(int *num1, int *num2, int *rez, int bit);
 void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TEST
 
 #endif
