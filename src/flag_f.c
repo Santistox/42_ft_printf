@@ -85,16 +85,21 @@ void	flag_f(t_env *env, va_list args)
 	fenv->exp = exp - 127;
 	mant = num & 8388607;
 	mant = mant | 8388608;
-	fenv->compos = 32 - (23 - fenv->exp);
+	fenv->compos= 32 - (23 - fenv->exp);
 
 	printf("COMPOS is %i\n", fenv->compos);
 	/* куча проверок */
 	printf("MANT is %u\n", mant); 
-	printf("EXP is %u\n", fenv->exp);
+	printf("EXP is %i\n", fenv->exp);
 	printf("SIGN is %u\n", fenv->sign);
 	int *arr = new_arr((long long unsigned int)mant, 32);
-	int *n = new_arr(binpow(5, 18), 32);
-	printf("BIN is %llu\n",binpow(5, 18));
+	int *n;
+	n = NULL;
+	if (23 - fenv->exp >= 0)
+		n = new_arr(binpow(5, 23 - fenv->exp), 32);
+	else
+		n = new_arr(binpow(2, fenv->exp - 23), 32);
+	// printf("BIN is %llu\n",binpow(5, 23 - fenv->exp));
 	print_num(arr, 32, ' ');
 	printf("\n");
 	print_num(n, 32, ' ');
