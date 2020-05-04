@@ -120,7 +120,7 @@ void			find_flag(t_env *env, va_list args)
 	if (env->dot == 0 || env->zero != 0)
 		set_offset(env->count, env);
 	set_precision(env->count, env);
-	if (env->space == 1 && env->offset != 0)
+	if (env->space == 1 && env->offset != 0) //WARNING
 		env->offset -= 1;
 	else
 		env->offset -= env->space;

@@ -110,6 +110,25 @@ void	to_buff_float(t_env *env, t_fenv *fenv, int *num, int bit)
 	}
 }
 
+int 	num_size(t_env *env, t_fenv *fenv, int *num, int bit)
+{
+	int  i;
+	int  k;
+
+	i = 0;
+	k = 0;
+	while (i <= bit && num[i] == 0)
+		i++;
+	while (i < bit && i < fenv->compos + env->precision)
+	{
+		if (i == fenv->compos)
+			k++;
+		k++;
+		i++;
+	}
+	return(k);
+}
+
 t_fenv *init_fenv(int bit, unsigned int num)
 {
 	t_fenv *fenv;
@@ -142,6 +161,7 @@ void	flag_f(t_env *env, va_list args)
 	unsigned int num;
 	unsigned int mant;
 	float	cont;
+	int arg_size;
 
 	cont = va_arg(args, double);
 	ptr = (unsigned int *)&cont;
@@ -180,8 +200,28 @@ void	flag_f(t_env *env, va_list args)
 	/* DEBUG */
 	print_num(res, fenv->compos + env->precision, '\n');
 
+	/* KOLHOZING */
+	arg_size = num_size(env, fenv, res, fenv->bit);
+	env->offset -= arg_size;
+	if (fenv->sign && env->zero) // если у нас есть заполнение нулями и число отрицательное
+		to_buff_char('-', env);  // то загоняем в буфер сначала минус  -00043.12300
+	env->offset -= (fenv->sign && !env->space) ? 1 : 0; // убрираем лишний отступ при отрицательном значении
+	if (!env->minus && !env->zero)
+		to_buff_offset(env); // если отступ положительный, то мы его выводим
+	if (env->plus && !fenv->sign)
+		to_buff_char('+', env); // если число положительное, то выводим "+" 
+	if (fenv->sign && !env->zero)
+		to_buff_char('-', env); // если число отрицательное, то выводим "-" 
+	if (!fenv->sign && env->space && !env->plus)
+		to_buff_char(' ', env); // добиваем пробельчик если отступ пробелами
+	if (env->zero)
+		put_zero(env); // выводим нули перед числом  
 	to_buff_float(env, fenv, res, fenv->bit); // закидываю результат в буфер
-	printf("%.6f\n",cont);
+	if (env->minus)
+		to_buff_offset(env); // выводим отступ после
+
+
+	printf("% 15.6f.\n",cont);
 	free(arr);
 	free(n);
 	free(res);
