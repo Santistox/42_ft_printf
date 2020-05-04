@@ -24,9 +24,32 @@ int		ft_first(uint64_t n)
 	return (i);
 }
 */
-long long unsigned int binpow (int a, int n) {
-	return (n ? a * binpow(a, n - 1) : 1);
+
+/*
+** exponentiation of the number in the array
+*/
+
+int *binpow(int num, int pow, int bit)
+{
+	int *num1;
+	int *num2;
+	int *res;
+
+	num1 = new_arr(num, bit);
+	num2 = new_arr(num, bit);
+	res = new_arr(0, bit);
+	while (pow-- > 1)
+	{
+		res = new_arr(0, bit);
+		mult_by_column(num1, num2, res, bit);
+		num1 = res;
+	}
+	return(res);
 }
+
+/*
+**	create int array and stack each character of number to cell
+*/
 
 int *new_arr(long long unsigned int num, int bit)
 {
@@ -35,9 +58,9 @@ int *new_arr(long long unsigned int num, int bit)
 
 	i = bit - 1;
 	if (!(arr = malloc(sizeof(int *) * bit)))
-		return (NULL);
+		error(403);
 	if (!(arr = ft_memset(arr, 0, bit)))
-		return (NULL);
+		error(403);
 	while (i >= 0 && num >= 0)
 	{
 		arr[i] = num % 10;
@@ -47,12 +70,12 @@ int *new_arr(long long unsigned int num, int bit)
 	return (arr);
 }
 // заранее чукаем чо пресишн есть вообще
-int *prec(int *num, int compos, int prec)
+int *prec(int *num, int prec, int compos, int bit)
 {
 	int *add;
 	int *res;
 
-	if (prec <= 0 || compos + prec >= 32 || !num) //норм подставить а не 32
+	if (prec <= 0 || compos + prec >= bit || !num)
 		return (num);
 	if (num[compos + prec] < 5)
 		return (num);
@@ -63,6 +86,26 @@ int *prec(int *num, int compos, int prec)
 	free(num);
 	free(add);
 	return (res);
+}
+
+/*
+**	move float number to buffer from int array
+*/
+
+void	to_buff_float(t_env *env, t_fenv *fenv, int *num, int bit)
+{
+	int  i;
+
+	i = 0;
+	while (i <= bit && num[i] == 0)
+		i++;
+	while (i < bit && i < fenv->compos + env->precision)
+	{
+		if (i == fenv->compos)
+			to_buff_char('.', env);
+		to_buff_char(num[i] + '0', env);
+		i++;
+	}
 }
 
 void	flag_f(t_env *env, va_list args)
@@ -79,38 +122,46 @@ void	flag_f(t_env *env, va_list args)
 	cont = va_arg(args, double);
 	ptr = (unsigned int *)&cont;
 	num = *ptr;
+	fenv->bit = 32; // задаю изначальную длину массива
 	fenv->sign = num >> 31;
 	exp = num << 1;
 	exp = exp >> 24;
 	fenv->exp = exp - 127;
 	mant = num & 8388607;
 	mant = mant | 8388608;
-	fenv->compos= 32 - (23 - fenv->exp);
+	fenv->compos= fenv->bit - (23 - fenv->exp);
 
+	/* DEBUG */
 	printf("COMPOS is %i\n", fenv->compos);
-	/* куча проверок */
 	printf("MANT is %u\n", mant); 
 	printf("EXP is %i\n", fenv->exp);
 	printf("SIGN is %u\n", fenv->sign);
-	int *arr = new_arr((long long unsigned int)mant, 32);
+
+
+	int *arr = new_arr((long long unsigned int)mant, fenv->bit);
 	int *n;
 	n = NULL;
 	if (23 - fenv->exp >= 0)
-		n = new_arr(binpow(5, 23 - fenv->exp), 32);
+		n = binpow(5, 23 - fenv->exp, fenv->bit);
 	else
-		n = new_arr(binpow(2, fenv->exp - 23), 32);
-	// printf("BIN is %llu\n",binpow(5, 23 - fenv->exp));
-	print_num(arr, 32, ' ');
-	printf("\n");
-	print_num(n, 32, ' ');
-	printf("\n");
-	int *res = new_arr((long long unsigned int)0, 32);
-	mult_by_column(arr, n, res, 32);
-	print_num(res, 32, ' ');
-	printf("\n");
-	res = prec(res, fenv->compos, env->precision);
-	print_num(res, fenv->compos + env->precision, ' ');
-	printf("\n");
+		n = binpow(2, fenv->exp - 23, fenv->bit);
+
+	/* DEBUG */
+	print_num(arr, fenv->bit, '\n');
+	print_num(n, fenv->bit, '\n');
+
+	int *res = new_arr((long long unsigned int)0, fenv->bit);
+	mult_by_column(arr, n, res, fenv->bit);
+
+	/* DEBUG */
+	print_num(res, fenv->bit, '\n');
+
+	res = prec(res, env->precision, fenv->compos, fenv->bit); 
+	
+	/* DEBUG */
+	print_num(res, fenv->compos + env->precision, '\n');
+
+	to_buff_float(env, fenv, res, fenv->bit); // закидываю результат в буфер
 	printf("%.6f\n",cont);
 }
 

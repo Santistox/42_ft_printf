@@ -223,4 +223,11 @@ void 			add_by_column(int *num1, int *num2, int *rez, int bit);
 void 			mult_by_column(int *num1, int *num2, int *rez, int bit);
 void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TEST
 
+/*
+** flag_f.c
+*/
+
+int 			*new_arr(long long unsigned int num, int bit);
+int 			*binpow(int num, int pow, int bit);
+void			to_buff_float(t_env *env, t_fenv *fenv, int *num, int bit);
 #endif
