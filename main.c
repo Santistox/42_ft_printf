@@ -14,9 +14,13 @@
 
 int main(void)
 {
+	//int i;
+
+	//i = 0;
 	//printf("{%.9f}\n", -875.000001);
 	//ft_printf("{red}TEST{green}COLOR{brown}SYSTEM\n");
 	//ft_printf("{yellow}YES{blue}IT{purple}WORK{cyan}FINE{eoc}!\n");
 	ft_printf("% 15.6f.\n", 45.23);
+	//scanf("%i", &i);
 	return(0);
 }

@@ -26,10 +26,34 @@ int		ft_first(uint64_t n)
 */
 
 /*
-** exponentiation of the number in the array
+** function copy numbers form num1 array to num2 array
 */
 
-// Давай потом обсудим эту функцию - тут происходят страшные вещи с точки зрения памяти - она не освобождается ))))
+void copy_int(int *num1, int *num2, int bit)
+{
+	int i;
+
+	i = bit;
+	while (i-- >= 0)
+		num2[i] = num1[i];
+}
+
+/*
+** function reset to 0 numbers form int array
+*/
+
+void reset_int(int *num, int bit)
+{
+	int i;
+
+	i = bit;
+	while (i-- >= 0)
+		num[i] = 0;
+}
+
+/*
+** exponentiation of the number in the array
+*/
 
 int *binpow(int num, int pow, int bit)
 {
@@ -42,10 +66,12 @@ int *binpow(int num, int pow, int bit)
 	res = new_arr(0, bit);
 	while (pow-- > 1)
 	{
-		res = new_arr(0, bit);
+		reset_int(res, bit);
 		mult_by_column(num1, num2, res, bit);
-		num1 = res;
+		copy_int(res, num1, bit);
 	}
+	free(num1);
+	free(num2);
 	return(res);
 }
 
@@ -94,14 +120,14 @@ int *prec(int *num, int prec, int compos, int bit)
 **	move float number to buffer from int array
 */
 
-void	to_buff_float(t_env *env, t_fenv *fenv, int *num, int bit)
+void	to_buff_float(t_env *env, t_fenv *fenv, int *num)
 {
 	int  i;
 
 	i = 0;
-	while (i <= bit && num[i] == 0)
+	while (i <= fenv->bit && num[i] == 0)
 		i++;
-	while (i < bit && i < fenv->compos + env->precision)
+	while (i < fenv->bit && i < fenv->compos + env->precision)
 	{
 		if (i == fenv->compos)
 			to_buff_char('.', env);
@@ -110,16 +136,20 @@ void	to_buff_float(t_env *env, t_fenv *fenv, int *num, int bit)
 	}
 }
 
-int 	num_size(t_env *env, t_fenv *fenv, int *num, int bit)
+/*
+** determines the size of a number
+*/
+
+int 	num_size(t_env *env, t_fenv *fenv, int *num)
 {
 	int  i;
 	int  k;
 
 	i = 0;
 	k = 0;
-	while (i <= bit && num[i] == 0)
+	while (i <= fenv->bit && num[i] == 0)
 		i++;
-	while (i < bit && i < fenv->compos + env->precision)
+	while (i < fenv->bit && i < fenv->compos + env->precision)
 	{
 		if (i == fenv->compos)
 			k++;
@@ -154,6 +184,34 @@ t_fenv *init_fenv(int bit, unsigned int num)
 	return (fenv);
 }
 
+/*
+** write formatted result to buffer
+*/
+
+void	float_output(t_env *env, t_fenv *fenv, int *res)
+{
+	int arg_size;
+
+	arg_size = num_size(env, fenv, res);
+	env->offset -= arg_size;
+	if (fenv->sign && env->zero) // если у нас есть заполнение нулями и число отрицательное
+		to_buff_char('-', env);  // то загоняем в буфер сначала минус  -00043.12300
+	env->offset -= (fenv->sign && !env->space) ? 1 : 0; // убрираем лишний отступ при отрицательном значении
+	if (!env->minus && !env->zero)
+		to_buff_offset(env); // если отступ положительный, то мы его выводим
+	if (env->plus && !fenv->sign)
+		to_buff_char('+', env); // если число положительное, то выводим "+" 
+	if (fenv->sign && !env->zero)
+		to_buff_char('-', env); // если число отрицательное, то выводим "-" 
+	if (!fenv->sign && env->space && !env->plus)
+		to_buff_char(' ', env); // добиваем пробельчик если отступ пробелами
+	if (env->zero)
+		put_zero(env); // выводим нули перед числом  
+	to_buff_float(env, fenv, res); // закидываю результат в буфер
+	if (env->minus)
+		to_buff_offset(env); // выводим отступ после
+}
+
 void	flag_f(t_env *env, va_list args)
 {
 	t_fenv *fenv;
@@ -161,7 +219,6 @@ void	flag_f(t_env *env, va_list args)
 	unsigned int num;
 	unsigned int mant;
 	float	cont;
-	int arg_size;
 
 	cont = va_arg(args, double);
 	ptr = (unsigned int *)&cont;
@@ -201,24 +258,7 @@ void	flag_f(t_env *env, va_list args)
 	print_num(res, fenv->compos + env->precision, '\n');
 
 	/* KOLHOZING */
-	arg_size = num_size(env, fenv, res, fenv->bit);
-	env->offset -= arg_size;
-	if (fenv->sign && env->zero) // если у нас есть заполнение нулями и число отрицательное
-		to_buff_char('-', env);  // то загоняем в буфер сначала минус  -00043.12300
-	env->offset -= (fenv->sign && !env->space) ? 1 : 0; // убрираем лишний отступ при отрицательном значении
-	if (!env->minus && !env->zero)
-		to_buff_offset(env); // если отступ положительный, то мы его выводим
-	if (env->plus && !fenv->sign)
-		to_buff_char('+', env); // если число положительное, то выводим "+" 
-	if (fenv->sign && !env->zero)
-		to_buff_char('-', env); // если число отрицательное, то выводим "-" 
-	if (!fenv->sign && env->space && !env->plus)
-		to_buff_char(' ', env); // добиваем пробельчик если отступ пробелами
-	if (env->zero)
-		put_zero(env); // выводим нули перед числом  
-	to_buff_float(env, fenv, res, fenv->bit); // закидываю результат в буфер
-	if (env->minus)
-		to_buff_offset(env); // выводим отступ после
+	float_output(env, fenv, res);
 
 
 	printf("% 15.6f.\n",cont);
