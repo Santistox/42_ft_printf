@@ -29,6 +29,8 @@ int		ft_first(uint64_t n)
 ** exponentiation of the number in the array
 */
 
+// Давай потом обсудим эту функцию - тут происходят страшные вещи с точки зрения памяти - она не освобождается ))))
+
 int *binpow(int num, int pow, int bit)
 {
 	int *num1;
@@ -69,7 +71,7 @@ int *new_arr(long long unsigned int num, int bit)
 	}
 	return (arr);
 }
-// заранее чукаем чо пресишн есть вообще
+// заранее чeкаем чо пресишн есть вообще
 int *prec(int *num, int prec, int compos, int bit)
 {
 	int *add;
@@ -108,28 +110,45 @@ void	to_buff_float(t_env *env, t_fenv *fenv, int *num, int bit)
 	}
 }
 
+t_fenv *init_fenv(int bit, unsigned int num)
+{
+	t_fenv *fenv;
+
+	if (!(fenv = ft_memalloc(sizeof(t_fenv))))
+		error(403);
+	fenv->bit = bit;
+	if (bit == 32)
+	{
+		fenv->exp_num = 127;
+		fenv->mant_num = 23;
+	}
+	else
+	{
+		fenv->exp_num = 1023; // это не тестила
+		fenv->mant_num = 52;
+	}
+	fenv->sign = num >> (bit - 1);
+	fenv->exp = num << 1; // 
+	fenv->exp = fenv->exp >> (fenv->mant_num + 1);
+	fenv->exp = fenv->exp - (fenv->exp_num);
+	fenv->compos = fenv->bit - (fenv->mant_num - fenv->exp);
+	return (fenv);
+}
+
 void	flag_f(t_env *env, va_list args)
 {
 	t_fenv *fenv;
 	unsigned int *ptr;
 	unsigned int num;
-	unsigned int exp;
 	unsigned int mant;
 	float	cont;
 
-	if (!(fenv = ft_memalloc(sizeof(t_fenv))))
-		error(403);
 	cont = va_arg(args, double);
 	ptr = (unsigned int *)&cont;
 	num = *ptr;
-	fenv->bit = 32; // задаю изначальную длину массива
-	fenv->sign = num >> 31;
-	exp = num << 1;
-	exp = exp >> 24;
-	fenv->exp = exp - 127;
+	fenv = init_fenv(32, *ptr);
 	mant = num & 8388607;
 	mant = mant | 8388608;
-	fenv->compos= fenv->bit - (23 - fenv->exp);
 
 	/* DEBUG */
 	printf("COMPOS is %i\n", fenv->compos);
@@ -163,6 +182,10 @@ void	flag_f(t_env *env, va_list args)
 
 	to_buff_float(env, fenv, res, fenv->bit); // закидываю результат в буфер
 	printf("%.6f\n",cont);
+	free(arr);
+	free(n);
+	free(res);
+	free(fenv);
 }
 
 

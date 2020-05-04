@@ -95,10 +95,12 @@ typedef struct	s_env
 
 typedef struct	s_fenv
 {
-	int 			exp;
+	unsigned int 	exp;
 	char			bit;
 	char 			sign;
 	int				compos;
+	int 			exp_num;
+	int 			mant_num;
 }				t_fenv;
 
 
