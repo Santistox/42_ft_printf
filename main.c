@@ -20,8 +20,8 @@ int main(void)
 	//printf("{%.9f}\n", -875.000001);
 	//ft_printf("{red}TEST{green}COLOR{brown}SYSTEM\n");
 	//ft_printf("{yellow}YES{blue}IT{purple}WORK{cyan}FINE{eoc}!\n");
-	ft_printf("%.9f!!\n", 0.20003);
-	printf("%.9f!!!\n", 0.20003);
+	ft_printf("%+05.0f!!\n", 1.1);
+	printf("%+05.0f!!!\n", 1.1);
 	//scanf("%i", &i);
 	return(0);
 }

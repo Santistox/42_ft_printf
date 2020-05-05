@@ -205,6 +205,7 @@ void	float_output(t_env *env, t_fenv *fenv, int *res)
 		to_buff_char('-', env); // если число отрицательное, то выводим "-" 
 	if (!fenv->sign && env->space && !env->plus)
 		to_buff_char(' ', env); // добиваем пробельчик если отступ пробелами
+	env->offset -= (env->plus && env->zero) ? 1 : 0;
 	if (env->zero)
 		put_zero(env); // выводим нули перед числом  
 	to_buff_float(env, fenv, res); // закидываю результат в буфер
@@ -267,7 +268,7 @@ void	flag_f(t_env *env, va_list args)
 	float_output(env, fenv, res);
 
 
-	printf("%.9f!\n", cont);
+	printf("%+05.0f!\n", cont);
 	free(arr);
 	free(n);
 	free(res);
