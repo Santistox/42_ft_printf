@@ -95,7 +95,7 @@ typedef struct	s_env
 
 typedef struct	s_fenv
 {
-	unsigned int 	exp;
+	long unsigned int 	exp;
 	char			bit;
 	char 			sign;
 	int				compos;
@@ -231,5 +231,5 @@ void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TE
 
 int 			*new_arr(long long unsigned int num, int bit);
 int 			*binpow(int num, int pow, int bit);
-void			to_buff_float(t_env *env, t_fenv *fenv, int *num, int bit);
+void			to_buff_float(t_env *env, t_fenv *fenv, int *num);
 #endif

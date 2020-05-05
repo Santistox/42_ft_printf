@@ -159,7 +159,7 @@ int 	num_size(t_env *env, t_fenv *fenv, int *num)
 	return(k);
 }
 
-t_fenv *init_fenv(int bit, unsigned int num)
+t_fenv *init_fenv(int bit, unsigned long int num)
 {
 	t_fenv *fenv;
 
@@ -178,7 +178,9 @@ t_fenv *init_fenv(int bit, unsigned int num)
 	}
 	fenv->sign = num >> (bit - 1);
 	fenv->exp = num << 1; // 
+//	printf("exp1 %lu\n", fenv->exp);
 	fenv->exp = fenv->exp >> (fenv->mant_num + 1);
+//	printf("exp2 %lu\n", fenv->exp);
 	fenv->exp = fenv->exp - (fenv->exp_num);
 	fenv->compos = fenv->bit - (fenv->mant_num - fenv->exp);
 	return (fenv);
@@ -216,43 +218,52 @@ void	float_output(t_env *env, t_fenv *fenv, int *res)
 void	flag_f(t_env *env, va_list args)
 {
 	t_fenv *fenv;
-	unsigned int *ptr;
-	unsigned int num;
-	unsigned int mant;
-	float	cont;
+	unsigned long int *ptr;
+	unsigned long int num;
+	unsigned long long int mant;
+	double	cont;
 
-	cont = (float)va_arg(args, double);
-	printf("CONT %.9f\n", cont);
-	ptr = (unsigned int *)&cont;
+	cont = (double)va_arg(args, double);
+//	printf("CONT %.9f\n", cont);
+	ptr = (unsigned long int *)&cont;
 	num = *ptr;
-	fenv = init_fenv(32, *ptr);
-	mant = num & 8388607;
-	mant = mant | 8388608;
-
+//	printf("NUM is %lu\n", num);
+	fenv = init_fenv(64, *ptr);
+	mant = 0;
+	if (fenv->bit == 32)
+	{
+		mant = num & 8388607;
+		mant = mant | 8388608;
+	}
+	else
+	{
+		mant = num & 4503599627370495;
+		mant = mant | 4503599627370496;
+	}
 	/* DEBUG */
-	printf("COMPOS is %i\n", fenv->compos);
-	printf("MANT is %u\n", mant); 
-	printf("EXP is %i\n", fenv->exp);
-	printf("SIGN is %u\n", fenv->sign);
+//	printf("COMPOS is %i\n", fenv->compos);
+//	printf("MANT is %llu\n", mant); 
+//	printf("EXP is %lu\n", fenv->exp);
+//	printf("SIGN is %u\n", fenv->sign);
 
 
 	int *arr = new_arr((long long unsigned int)mant, fenv->bit);
 	int *n;
 	n = NULL;
-	if (23 - fenv->exp >= 0)
-		n = binpow(5, 23 - fenv->exp, fenv->bit);
+	if (fenv->mant_num - fenv->exp >= 0)
+		n = binpow(5, fenv->mant_num - fenv->exp, fenv->bit);
 	else
-		n = binpow(2, fenv->exp - 23, fenv->bit);
+		n = binpow(2, fenv->exp - fenv->mant_num, fenv->bit);
 
 	/* DEBUG */
-	print_num(arr, fenv->bit, '\n');
-	print_num(n, fenv->bit, '\n');
+//	print_num(arr, fenv->bit, '\n');
+//	print_num(n, fenv->bit, '\n');
 
 	int *res = new_arr((long long unsigned int)0, fenv->bit);
 	mult_by_column(arr, n, res, fenv->bit);
 
 	/* DEBUG */
-	print_num(res, fenv->bit, '\n');
+//	print_num(res, fenv->bit, '\n');
 	if (!env->is_precision)
 	{
 		env->is_precision = 1;
@@ -262,13 +273,13 @@ void	flag_f(t_env *env, va_list args)
 	res = prec(res, env->precision, fenv->compos, fenv->bit); 
 	
 	/* DEBUG */
-	print_num(res, fenv->compos + env->precision, '\n');
+//	print_num(res, fenv->compos + env->precision, '\n');
 
 	/* KOLHOZING */
 	float_output(env, fenv, res);
 
 
-	printf("%+05.0f!\n", cont);
+//	printf("%f!\n", cont);
 	free(arr);
 	free(n);
 	free(res);
