@@ -103,7 +103,7 @@ int *prec(int *num, int prec, int compos, int bit)
 	int *add;
 	int *res;
 
-	if (prec <= 0 || compos + prec >= bit || !num)
+	if (compos + prec >= bit || !num)
 		return (num);
 	if (num[compos + prec] < 5)
 		return (num);
