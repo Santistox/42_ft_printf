@@ -125,7 +125,7 @@ void	to_buff_float(t_env *env, t_fenv *fenv, int *num)
 	int  i;
 
 	i = 0;
-	while (i <= fenv->bit && num[i] == 0)
+	while (i <= fenv->bit && num[i] == 0 && i + 1 < fenv->compos)
 		i++;
 	while (i < fenv->bit && i < fenv->compos + env->precision)
 	{
@@ -220,7 +220,8 @@ void	flag_f(t_env *env, va_list args)
 	unsigned int mant;
 	float	cont;
 
-	cont = va_arg(args, double);
+	cont = (float)va_arg(args, double);
+	printf("CONT %.9f\n", cont);
 	ptr = (unsigned int *)&cont;
 	num = *ptr;
 	fenv = init_fenv(32, *ptr);
@@ -251,6 +252,11 @@ void	flag_f(t_env *env, va_list args)
 
 	/* DEBUG */
 	print_num(res, fenv->bit, '\n');
+	if (!env->is_precision)
+	{
+		env->is_precision = 1;
+		env->precision = 6;
+	}
 
 	res = prec(res, env->precision, fenv->compos, fenv->bit); 
 	
@@ -261,7 +267,7 @@ void	flag_f(t_env *env, va_list args)
 	float_output(env, fenv, res);
 
 
-	printf("% 15.6f.\n",cont);
+	printf("%.9f!\n", cont);
 	free(arr);
 	free(n);
 	free(res);
