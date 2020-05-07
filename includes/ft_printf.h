@@ -94,13 +94,14 @@ typedef struct	s_env
 */
 
 typedef struct	s_fenv
-{
+{	
+	char				bit;
+	char 				sign;
+	int 				res_bit; // !!!!!
+	int					compos;
+	int 				exp_num;
+	int 				mant_num;
 	long unsigned int 	exp;
-	char			bit;
-	char 			sign;
-	int				compos;
-	int 			exp_num;
-	int 			mant_num;
 }				t_fenv;
 
 

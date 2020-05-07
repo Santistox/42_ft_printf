@@ -97,20 +97,20 @@ int *new_arr(long long unsigned int num, int bit)
 	}
 	return (arr);
 }
-// заранее чeкаем чо пресишн есть вообще
-int *prec(int *num, int prec, int compos, int bit)
+// заранее чeкаем пресишн есть вообще
+int *prec(int *num, int prec, t_fenv *fenv) //int prec, int compos, int bit)
 {
 	int *add;
 	int *res;
 
-	if (compos + prec >= bit || !num)
+	if (fenv->compos + prec >= fenv->res_bit || !num)
 		return (num);
-	if (num[compos + prec] < 5)
+	if (num[fenv->compos + prec] < 5)
 		return (num);
-	add = new_arr(0, compos + prec);
-	add[compos + prec - 1] = 1;
-	res = new_arr(0, compos + prec);
-	add_by_column(num, add, res, compos + prec);
+	add = new_arr(0, fenv->compos + prec);
+	add[fenv->compos + prec - 1] = 1;
+	res = new_arr(0, fenv->compos + prec);
+	add_by_column(num, add, res, fenv->compos + prec);
 	free(num);
 	free(add);
 	return (res);
@@ -166,16 +166,18 @@ t_fenv *init_fenv(int bit, unsigned long int num)
 	if (!(fenv = ft_memalloc(sizeof(t_fenv))))
 		error(403);
 	fenv->bit = bit;
-	if (bit == 32)
+	fenv->res_bit = bit;
+	if (num == 0)
 	{
-		fenv->exp_num = 127;
-		fenv->mant_num = 23;
+		fenv->exp_num = 0; 
+		fenv->mant_num = 0;
+		fenv->sign = 0;
+		fenv->exp = 0;
+		fenv->compos = 1; // насчет этого уже хз 
+		return (fenv);
 	}
-	else
-	{
-		fenv->exp_num = 1023; // это не тестила
-		fenv->mant_num = 52;
-	}
+	fenv->exp_num = 1023; 
+	fenv->mant_num = 52;
 	fenv->sign = num >> (bit - 1);
 	fenv->exp = num << 1; // 
 //	printf("exp1 %lu\n", fenv->exp);
@@ -227,24 +229,19 @@ void	flag_f(t_env *env, va_list args)
 //	printf("CONT %.9f\n", cont);
 	ptr = (unsigned long int *)&cont;
 	num = *ptr;
-//	printf("NUM is %lu\n", num);
+	printf("NUM is %lu\n", num);
 	fenv = init_fenv(64, *ptr);
 	mant = 0;
-	if (fenv->bit == 32)
-	{
-		mant = num & 8388607;
-		mant = mant | 8388608;
-	}
-	else
+	if (fenv->bit == 64 && num != 0)
 	{
 		mant = num & 4503599627370495;
 		mant = mant | 4503599627370496;
 	}
 	/* DEBUG */
-//	printf("COMPOS is %i\n", fenv->compos);
-//	printf("MANT is %llu\n", mant); 
-//	printf("EXP is %lu\n", fenv->exp);
-//	printf("SIGN is %u\n", fenv->sign);
+	printf("COMPOS is %i\n", fenv->compos);
+	printf("MANT is %llu\n", mant); 
+	printf("EXP is %lu\n", fenv->exp);
+	printf("SIGN is %u\n", fenv->sign);
 
 
 	int *arr = new_arr((long long unsigned int)mant, fenv->bit);
@@ -261,6 +258,8 @@ void	flag_f(t_env *env, va_list args)
 
 	int *res = new_arr((long long unsigned int)0, fenv->bit);
 	mult_by_column(arr, n, res, fenv->bit);
+	if (num != 0)
+		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp);
 
 	/* DEBUG */
 //	print_num(res, fenv->bit, '\n');
@@ -270,7 +269,7 @@ void	flag_f(t_env *env, va_list args)
 		env->precision = 6;
 	}
 
-	res = prec(res, env->precision, fenv->compos, fenv->bit); 
+	res = prec(res, env->precision, fenv); 
 	
 	/* DEBUG */
 //	print_num(res, fenv->compos + env->precision, '\n');
