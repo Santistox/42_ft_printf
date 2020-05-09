@@ -233,4 +233,12 @@ void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TE
 int 			*new_arr(long long unsigned int num, int bit);
 int 			*binpow(int num, int pow, int bit);
 void			to_buff_float(t_env *env, t_fenv *fenv, int *num);
+
+/*
+** flag_lf.c
+*/
+
+void			flag_lf(t_env *env, va_list args);
+void			float_flags(t_env *env, va_list args);
+
 #endif

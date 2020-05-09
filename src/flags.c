@@ -92,8 +92,8 @@ void			find_flag_continue(t_env *env, va_list args)
 		flag_c(env);
 	else if (env->str[env->count] == '%')
 		flag_per(env);
-	else if (env->str[env->count] == 'f') // need to connect to num flags !!
-		flag_f(env, args);
+	else if (env->str[env->count] == 'f' || env->str[env->count] == 'L') // need to connect to num flags !!
+		float_flags(env, args);
 	else if (env->str[env->count] == 'd' || env->str[env->count] == 'D' ||
 		env->str[env->count] == 'u' || env->str[env->count] == 'U' ||
 		env->str[env->count] == 'x' || env->str[env->count] == 'X' ||
@@ -140,7 +140,7 @@ int				check_flag(char c)
 		c == 'U' || c == 'x' || c == 'X' ||
 		c == 'c' || c == '.' || c == '%' ||
 		c == 'h' || c == 'l' || c == 'i' ||
-		c == 'j' || c == 'z' || c == 'f')
+		c == 'j' || c == 'z' || c == 'f' || c == 'L')
 		return (1);
 	return (0);
 }
