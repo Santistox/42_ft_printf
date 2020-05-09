@@ -176,6 +176,7 @@ void	float_output(t_env *env, t_fenv *fenv, int *res)
 	if (fenv->sign && env->zero) // если у нас есть заполнение нулями и число отрицательное
 		to_buff_char('-', env);  // то загоняем в буфер сначала минус  -00043.12300
 	env->offset -= (fenv->sign && !env->space) ? 1 : 0; // убрираем лишний отступ при отрицательном значении
+	env->offset -= (!fenv->sign && env->plus) ? 1 : 0;
 	if (!env->minus && !env->zero)
 		to_buff_offset(env); // если отступ положительный, то мы его выводим
 	if (env->plus && !fenv->sign)
@@ -184,10 +185,12 @@ void	float_output(t_env *env, t_fenv *fenv, int *res)
 		to_buff_char('-', env); // если число отрицательное, то выводим "-" 
 	if (!fenv->sign && env->space && !env->plus)
 		to_buff_char(' ', env); // добиваем пробельчик если отступ пробелами
-	env->offset -= (env->plus && env->zero) ? 1 : 0;
 	if (env->zero)
 		put_zero(env); // выводим нули перед числом  
-	to_buff_float(env, fenv, res); // закидываю результат в буфер
+	to_buff_float(env, fenv, res);
+	if (env->precision == 0 && env->grille)
+		to_buff_char('.', env);
+	env->offset -= (env->precision == 0 && env->grille) ? 1 : 0;
 	if (env->minus)
 		to_buff_offset(env); // выводим отступ после
 }
