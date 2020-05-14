@@ -138,9 +138,6 @@ void mult_by_column(int *num1, int *num2, int *rez, int *bit)
 int main(void)
 {
     int bit[3] = {10,15,0};
-    //int num1[] = {0,0,9,9};     // num 1
-    //int num2[] = {0,0,0,0,9,9}; // num 2
-    // int rez[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // multiplication result
     int *num1 = new_arr(9999,bit[0]);
     int *num2 = new_arr(9999,bit[1]);
     bit[2] = bit[0] + bit[1];
