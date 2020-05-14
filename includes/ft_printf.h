@@ -102,6 +102,7 @@ typedef struct	s_fenv
 	int 				exp_num;
 	int 				mant_num;
 	long unsigned int 	exp;
+	int					*bits;
 }				t_fenv;
 
 
@@ -223,8 +224,9 @@ char			*ft_itoa(long long int n);
 ** Calculator
 */
 void 			add_by_column(int *num1, int *num2, int *rez, int bit);
-void 			mult_by_column(int *num1, int *num2, int *rez, int bit);
+void            mult_by_column(int *num1, int *num2, int *rez, int *bit);
 void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TEST
+int             cut_num(int **num, int bit);
 
 /*
 ** flag_f.c
@@ -233,7 +235,7 @@ void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TE
 int 			*new_arr(long long unsigned int num, int bit);
 int 			*binpow(int num, int pow, int bit);
 void			to_buff_float(t_env *env, t_fenv *fenv, int *num);
-
+void 			copy_int(int *num1, int *num2, int bit);
 /*
 ** flag_lf.c
 */

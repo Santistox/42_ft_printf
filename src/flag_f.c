@@ -6,11 +6,11 @@
 
 void copy_int(int *num1, int *num2, int bit)
 {
-	int i;
-
-	i = bit;
-	while (i-- >= 0)
-		num2[i] = num1[i];
+    int i;
+ 
+    i = bit;
+    while (--i >= 0)
+        num1[i] = num2[i];
 }
 
 /*
@@ -35,18 +35,24 @@ int *binpow(int num, int pow, int bit)
 	int *num1;
 	int *num2;
 	int *res;
+	int *bits;
 
-	num1 = new_arr(num, bit);
-	num2 = new_arr(num, bit);
-	res = new_arr(0, bit);
+	bits = new_arr(0,3);
+	bits[0] = bit;
+	bits[1] = bit;
+	bits[2] = bit;
+	num1 = new_arr(num, bits[0]);
+	num2 = new_arr(num, bits[1]);
+	res = new_arr(0, bits[2]);
 	while (pow-- > 1)
 	{
 		reset_int(res, bit);
-		mult_by_column(num1, num2, res, bit);
-		copy_int(res, num1, bit);
+		mult_by_column(num1, num2, res, bits);
+		copy_int(num1, res, bit);
 	}
 	free(num1);
 	free(num2);
+	free(bits);
 	return(res);
 }
 
@@ -169,30 +175,27 @@ t_fenv *init_fenv(int bit, unsigned long int num)
 
 void	float_output(t_env *env, t_fenv *fenv, int *res)
 {
-	int arg_size;
-
-	arg_size = num_size(env, fenv, res);
-	env->offset -= arg_size;
-	if (fenv->sign && env->zero) // если у нас есть заполнение нулями и число отрицательное
-		to_buff_char('-', env);  // то загоняем в буфер сначала минус  -00043.12300
-	env->offset -= (fenv->sign && !env->space) ? 1 : 0; // убрираем лишний отступ при отрицательном значении
+	env->offset -= num_size(env, fenv, res);
+	if (fenv->sign && env->zero)
+		to_buff_char('-', env);
+	env->offset -= (fenv->sign && !env->space) ? 1 : 0;
 	env->offset -= (!fenv->sign && env->plus) ? 1 : 0;
 	if (!env->minus && !env->zero)
-		to_buff_offset(env); // если отступ положительный, то мы его выводим
+		to_buff_offset(env);
 	if (env->plus && !fenv->sign)
-		to_buff_char('+', env); // если число положительное, то выводим "+" 
+		to_buff_char('+', env); 
 	if (fenv->sign && !env->zero)
-		to_buff_char('-', env); // если число отрицательное, то выводим "-" 
+		to_buff_char('-', env); 
 	if (!fenv->sign && env->space && !env->plus)
-		to_buff_char(' ', env); // добиваем пробельчик если отступ пробелами
+		to_buff_char(' ', env);
 	if (env->zero)
-		put_zero(env); // выводим нули перед числом  
+		put_zero(env); 
 	to_buff_float(env, fenv, res);
 	if (env->precision == 0 && env->grille)
 		to_buff_char('.', env);
 	env->offset -= (env->precision == 0 && env->grille) ? 1 : 0;
 	if (env->minus)
-		to_buff_offset(env); // выводим отступ после
+		to_buff_offset(env);
 }
 
 void	flag_f(t_env *env, va_list args)
@@ -216,26 +219,30 @@ void	flag_f(t_env *env, va_list args)
 		mant = mant | 4503599627370496;
 	}
 	/* DEBUG */
-	// printf("COMPOS is %i\n", fenv->compos);
-	// printf("MANT is %llu\n", mant); 
-	// printf("EXP is %lu\n", fenv->exp);
-	// printf("SIGN is %u\n", fenv->sign);
+	printf("COMPOS is %i\n", fenv->compos);
+	printf("MANT is %llu\n", mant); 
+	printf("EXP is %lu\n", fenv->exp);
+	printf("SIGN is %u\n", fenv->sign);
 
 
 	int *arr = new_arr((long long unsigned int)mant, fenv->bit);
 	int *n;
 	n = NULL;
+	int bit = fenv->bit;
 	if (fenv->mant_num - fenv->exp >= 0)
 		n = binpow(5, fenv->mant_num - fenv->exp, fenv->bit);
 	else
 		n = binpow(2, fenv->exp - fenv->mant_num, fenv->bit);
-
-	/* DEBUG */
-//	print_num(arr, fenv->bit, '\n');
-//	print_num(n, fenv->bit, '\n');
+	fenv->bit = bit;
+	fenv->bits = new_arr(0,3);
+	fenv->bits[0] = fenv->bit;
+	fenv->bits[1] = fenv->bit;
+	fenv->bits[2] = fenv->bits[0] + fenv->bits[1];
 
 	int *res = new_arr((long long unsigned int)0, fenv->bit);
-	mult_by_column(arr, n, res, fenv->bit);
+	mult_by_column(arr, n, res, fenv->bits);
+	fenv->bits[2] = cut_num(&res, fenv->bits[2]);
+
 	if (num != 0)
 		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp);
 
@@ -250,10 +257,10 @@ void	flag_f(t_env *env, va_list args)
 	res = prec(res, env->precision, fenv); 
 	
 	/* DEBUG */
-//	print_num(res, fenv->compos + env->precision, '\n');
+	print_num(res, fenv->compos + env->precision, '\n');
 
 	/* KOLHOZING */
-	float_output(env, fenv, res);
+	//float_output(env, fenv, res);
 
 
 //	printf("%f!\n", cont);

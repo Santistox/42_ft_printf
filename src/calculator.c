@@ -1,5 +1,4 @@
-#include <stdio.h>
-# include <stdlib.h>
+#include "ft_printf.h"
 /*
 **  print int massive
 */
@@ -39,7 +38,7 @@ void add_by_column(int *num1, int *num2, int *rez, int bit)
 /*
 **  multiplication by a column
 */
- 
+/*
 void copy_int(int *num1, int *num2, int bit)
 {
     int i;
@@ -48,7 +47,7 @@ void copy_int(int *num1, int *num2, int bit)
     while (--i >= 0)
         num1[i] = num2[i];
 }
- 
+
 void    *ft_memset(void *b, int c, size_t len)
 {
     unsigned char *temp;
@@ -77,7 +76,7 @@ int *new_arr(long long unsigned int num, int bit)
     }
     return (arr);
 }
- 
+*/
 int cut_num(int **num, int bit)
 {
     int i;
@@ -134,7 +133,7 @@ void mult_by_column(int *num1, int *num2, int *rez, int *bit)
         f--;
     }
 }
- 
+/*
 int main(void)
 {
     int bit[3] = {10,15,0};
@@ -149,4 +148,4 @@ int main(void)
     bit[2] = cut_num(&rez, bit[2]);
     print_num(rez, bit[2], '\n');
     return(0);
-}
+}*/
