@@ -19,6 +19,24 @@ void	float_flags(t_env *env, va_list args)
 /*
 ** function of long float
 */
+/*
+int 	valid_float(long long int exp, uintmax_t mant)
+{
+	unsigned char check;
+
+	check = *mant + 3;
+	check = check & 49152;
+	if (exp == 0)
+		if (mant == 0)
+			return (3);
+	else if (exp == 32767)
+	{
+		if (mant == 0)
+			return (2);
+		if (check == 2)
+	}
+	return (0);
+}*/
 
 void	flag_lf(t_env *env, va_list args)
 {	
@@ -29,6 +47,7 @@ void	flag_lf(t_env *env, va_list args)
 	long long int exp;
 	uintmax_t mant;
 	long double	cont;
+	int *arr;
 
 	cont = (long double)va_arg(args, long double);
 	short_ptr = (unsigned short *)&cont;
@@ -45,8 +64,15 @@ void	flag_lf(t_env *env, va_list args)
 	sig = *short_ptr;
 	fenv->sign = sig >> 15;
 	exp = sig & 32767;
-	exp = exp - (fenv->exp_num);
-	fenv->compos = fenv->res_bit - (fenv->mant_num - exp);
+//	if (valid_float(exp, mant) == 0)
+//	{
+		exp = exp - (fenv->exp_num);
+		fenv->compos = fenv->res_bit - (fenv->mant_num - exp);
+		arr = new_arr((long long unsigned int)mant, fenv->bit);
+		print_num(arr, fenv->bit, '\n');
+//	} else {
+
+//	}
 
 //	printf("sign is %i\n", fenv->sign);
 //	printf("mant is %lu\n",mant);

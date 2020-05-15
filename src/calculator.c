@@ -20,19 +20,23 @@ void print_num(int *num, int i, char a)
 **  addition by a column
 */
  
-void add_by_column(int *num1, int *num2, int *rez, int bit)
+void add_by_column(int *num1, int *num2, int *rez, int *bit)
 {
     int i;
+    int j;
     int buf;
  
-    i = bit;
+    i = bit[0];
+    j = bit[1];
     buf = 0;
     while (--i >= 0)
     {
-        rez[i] += buf;
-        rez[i] = (num1[i] + num2[i] + buf) % 10;
-        buf = (num1[i] + num2[i] + buf) / 10;
+        j--;
+        rez[j] += buf;
+        rez[j] = (num1[i] + num2[j] + buf) % 10;
+        buf = (num1[i] + num2[j] + buf) / 10;
     }
+    rez[--j] += buf;
 }
  
 /*

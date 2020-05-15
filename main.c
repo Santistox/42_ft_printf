@@ -22,8 +22,8 @@ int main(void)
 	//ft_printf("{yellow}YES{blue}IT{purple}WORK{cyan}FINE{eoc}!\n");
 	// ft_printf("%Lf - %f\n", -985.765426499l, -985.76);
 	// printf("%Lf - %f\n", -985.765426499l, -985.76);
-	ft_printf("%f\n", 0.0000043);
-	printf("%f", 0.0000043);
+	ft_printf("%f\n",  0.0894255);
+	printf("%f\n",  0.0894255);
 	//scanf("%i", &i);
 	return(0);
 }

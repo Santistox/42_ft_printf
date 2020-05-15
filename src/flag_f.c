@@ -83,17 +83,26 @@ int *prec(int *num, int prec, t_fenv *fenv) //int prec, int compos, int bit)
 {
 	int *add;
 	int *res;
+	int compos;
 
+	compos = (fenv->compos > 0 ? fenv->compos : 0);
 	if (fenv->compos + prec >= fenv->res_bit || !num)
 		return (num);
 	if (num[fenv->compos + prec] < 5)
 		return (num);
-	add = new_arr(0, fenv->compos + prec);
-	add[fenv->compos + prec - 1] = 1;
-	res = new_arr(0, fenv->compos + prec);
-	add_by_column(num, add, res, fenv->compos + prec);
+	add = new_arr(0, compos + prec + 1);
+	add[compos + prec] = 1;
+//	print_num(add, compos + prec + 1, '\n');
+	res = new_arr(0, compos + prec + 1);
+	int *res_bit = new_arr(0, 1);
+	res_bit[0] = compos + prec;
+	res_bit[1] = compos + prec + 1;
+	add_by_column(num, add, res, res_bit);
+//	print_num(res, compos + prec + 1, '\n');
 	free(num);
 	free(add);
+	if (cut_num(&res, compos + prec + 1) == compos + prec + 1)
+		fenv->compos++;
 	return (res);
 }
 
@@ -104,16 +113,38 @@ int *prec(int *num, int prec, t_fenv *fenv) //int prec, int compos, int bit)
 void	to_buff_float(t_env *env, t_fenv *fenv, int *num)
 {
 	int  i;
+	int prec;
 
 	i = 0;
-	while (i <= fenv->bit && num[i] == 0 && i + 1 < fenv->compos)
+	prec = env->precision;
+	/*
+	while (i <= fenv->res_bit && num[i] == 0 && i + 1 < fenv->compos)
 		i++;
-	while (i < fenv->bit && i < fenv->compos + env->precision)
+	*/
+	if (fenv->compos <= 0)
 	{
-		if (i == fenv->compos)
-			to_buff_char('.', env);
-		to_buff_char(num[i] + '0', env);
-		i++;
+		to_buff_char('0', env);
+		to_buff_char('.', env);
+		while ((fenv->compos)++ < 0)
+		{
+			to_buff_char('0', env);
+			prec--;
+		}
+		while (prec-- > 0)
+		{
+			to_buff_char(num[i] + '0', env);
+			i++;
+		}
+	}
+	else
+	{
+		while (i < fenv->res_bit && i < fenv->compos + env->precision)
+		{
+			if (i == fenv->compos)
+				to_buff_char('.', env);
+			to_buff_char(num[i] + '0', env);
+			i++;
+		}
 	}
 }
 
@@ -190,6 +221,9 @@ void	float_output(t_env *env, t_fenv *fenv, int *res)
 		to_buff_char(' ', env);
 	if (env->zero)
 		put_zero(env); 
+//	printf("COMPOS is %i\n", fenv->compos);
+//	printf("PRES is %i\n", env->precision);
+//	printf("RESBIT is %i\n", fenv->res_bit);
 	to_buff_float(env, fenv, res);
 	if (env->precision == 0 && env->grille)
 		to_buff_char('.', env);
@@ -219,10 +253,10 @@ void	flag_f(t_env *env, va_list args)
 		mant = mant | 4503599627370496;
 	}
 	/* DEBUG */
-	printf("COMPOS is %i\n", fenv->compos);
-	printf("MANT is %llu\n", mant); 
-	printf("EXP is %lu\n", fenv->exp);
-	printf("SIGN is %u\n", fenv->sign);
+//	printf("COMPOS is %i\n", fenv->compos);
+//	printf("MANT is %llu\n", mant); 
+//	printf("EXP is %lu\n", fenv->exp);
+//	printf("SIGN is %u\n", fenv->sign);
 
 
 	int *arr = new_arr((long long unsigned int)mant, fenv->bit);
@@ -240,14 +274,17 @@ void	flag_f(t_env *env, va_list args)
 	fenv->bits[2] = fenv->bits[0] + fenv->bits[1];
 
 	int *res = new_arr((long long unsigned int)0, fenv->bit);
+	print_num(arr, fenv->bit, '\n');
+	print_num(n, fenv->bit, '\n');
 	mult_by_column(arr, n, res, fenv->bits);
+	print_num(res, fenv->bits[2], '\n');
 	fenv->bits[2] = cut_num(&res, fenv->bits[2]);
-
+	fenv->res_bit = fenv->bits[2];
 	if (num != 0)
 		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp);
 
 	/* DEBUG */
-//	print_num(res, fenv->bit, '\n');
+	print_num(res, fenv->bit, '\n');
 	if (!env->is_precision)
 	{
 		env->is_precision = 1;
@@ -258,9 +295,11 @@ void	flag_f(t_env *env, va_list args)
 	
 	/* DEBUG */
 	print_num(res, fenv->compos + env->precision, '\n');
-
+	printf("COMPOS is %i\n", fenv->compos);
+	printf("PRES is %i\n", env->precision);
+	printf("RESBIT is %i\n", fenv->res_bit);
 	/* KOLHOZING */
-	//float_output(env, fenv, res);
+	float_output(env, fenv, res);
 
 
 //	printf("%f!\n", cont);
