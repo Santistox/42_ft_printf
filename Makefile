@@ -1,7 +1,9 @@
 NAME = libftprintf.a
 
-CYAN_COLOR     := \x1b[36m
-GRN_COLOR     := \x1b[32;01m
+CYAN_CLR = \x1b[36m
+GRN_CLR  = \x1b[32m
+NO_CLR	 = \x1b[00m
+WRN_CLR	 = \x1b[31m
 
 OBJ_DIR = obj/
 INC_DIR = includes/
@@ -43,9 +45,12 @@ INC = -I $(INC_DIR)
 all: $(NAME)
 
 $(NAME): $(HEADERS) $(OBJ_DIR) $(OBJ)
-	@printf "$(CYAN_COLOR) ZATSHIM!\n"
+	@echo "\n$(CYAN_CLR)BUILD STAUS:\n"
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
+	@echo "$(GRN_CLR)SUCCESS!\n"
+
+
 
 $(OBJ_DIR):
 	@mkdir obj
@@ -57,11 +62,13 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADERS)
 
 clean:
 	@rm -rf $(OBJ_DIR)*
-	@printf "$(GRN_COLOR) CHISTO!\n"
+	@echo "Cleaning" [ $(OBJ_DIR) ] "..." "$(GRN_CLR)OK"
+	@printf "$(NO_CLR)All object files have been $(WRN_CLR)Removed!\n"
 
 fclean: clean
 	@rm -rf $(NAME)
-	@printf "$(GRN_COLOR) SUPER CHISTO!\n"
+	@echo "$(NO_CLR)Cleaning" [ $(NAME) ] "..." "$(GRN_CLR)OK"
+	@printf "$(NO_CLR)$(NAME) have been $(WRN_CLR)Removed!\n"
 
 re: fclean all
 

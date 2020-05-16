@@ -21,8 +21,8 @@ void	ft_putstr(char const *s)
 char	*ft_strdup(const char *s1)
 {
 	char	*dest;
-	int		i;
-	int		length;
+	size_t	i;
+	size_t	length;
 
 	i = 0;
 	length = ft_strlen(s1);
@@ -63,7 +63,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 size_t	ft_strlen(const char *s)
 {
-	int i;
+	size_t i;
 
 	i = 0;
 	while (s[i])
@@ -93,7 +93,7 @@ char	*ft_strncat(char *s1, const char *s2, size_t n)
 char	*ft_strnew(size_t size)
 {
 	char	*str;
-	int		i;
+	size_t	i;
 
 	i = size;
 	if (size >= (size_t)(-1) || (size + 1) >= (size_t)(-1))
