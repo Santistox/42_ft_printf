@@ -266,24 +266,30 @@ void	flag_f(t_env *env, va_list args)
 	int *arr = new_arr((long long unsigned int)mant, fenv->bit);
 	int *n;
 	n = NULL;
-	int bit = fenv->bit;
-	if (fenv->mant_num - fenv->exp_res >= 0)
-		n = binpow(5, fenv->mant_num - fenv->exp_res, fenv->bit);
-	else
-		n = binpow(2, fenv->exp_res - fenv->mant_num, fenv->bit);
-	fenv->bit = bit;
 	fenv->bits = new_arr(0,3);
 	fenv->bits[0] = fenv->bit;
-	fenv->bits[1] = fenv->bit;
+	fenv->bits[1] = 2 * fenv->bit;
 	fenv->bits[2] = fenv->bits[0] + fenv->bits[1];
-
-	int *res = new_arr((long long unsigned int)0, fenv->bit);
+//	write(1, "H\n", 2);
+	int bit = fenv->bit;
+	if (fenv->mant_num - fenv->exp_res >= 0)
+		n = binpow(5, fenv->mant_num - fenv->exp_res, fenv->bits[1]);
+	else
+		n = binpow(2, fenv->exp_res - fenv->mant_num, fenv->bits[1]);
+	fenv->bit = bit;
+	
+//	write(1, "T\n", 2);
+	int *res = new_arr((long long unsigned int)0, fenv->bits[2]);
 //	print_num(arr, fenv->bit, '\n');
 //	print_num(n, fenv->bit, '\n');
+//	write(1, "G\n", 2);
 	mult_by_column(arr, n, res, fenv->bits);
 //	print_num(res, fenv->bits[2], '\n');
+//	write(1, "M\n", 2);
 	fenv->bits[2] = cut_num(&res, fenv->bits[2]);
+//	write(1, "P\n", 2);
 	fenv->res_bit = fenv->bits[2];
+//	write(1, "W\n", 2);
 	if (num != 0)
 		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp_res);
 

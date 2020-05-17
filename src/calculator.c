@@ -125,7 +125,7 @@ void mult_by_column(int *num1, int *num2, int *rez, int *bit)
     {
         j = bit[0];
         k = f;
-        while (j-- >= 0)
+        while (j-- >= 0 && k >= 0)
         {
             rez[k] += buf;
             if (j >= 0 && i >= 0)
