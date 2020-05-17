@@ -102,6 +102,7 @@ typedef struct	s_fenv
 	int 				exp_num;
 	int 				mant_num;
 	long unsigned int 	exp;
+	long long int 		exp_res;
 	int					*bits;
 }				t_fenv;
 

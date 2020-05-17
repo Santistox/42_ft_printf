@@ -83,25 +83,28 @@ int *prec(int *num, int prec, t_fenv *fenv) //int prec, int compos, int bit)
 {
 	int *add;
 	int *res;
+	int extra;
 	int compos;
 
-	compos = (fenv->compos > 0 ? fenv->compos : 0);
+//	compos = (fenv->compos > 0 ? fenv->compos : fenv->compos);
+	compos = fenv->compos;
+	extra = (compos + prec == 0) ? 2 : 1; 
 	if (fenv->compos + prec >= fenv->res_bit || !num)
 		return (num);
 	if (num[fenv->compos + prec] < 5)
 		return (num);
-	add = new_arr(0, compos + prec + 1);
-	add[compos + prec] = 1;
-//	print_num(add, compos + prec + 1, '\n');
-	res = new_arr(0, compos + prec + 1);
+	add = new_arr(0, compos + prec + extra);
+	add[compos + prec + extra - 1] = 1;
+//	print_num(add, compos + prec + extra, '\n');
+	res = new_arr(0, compos + prec + extra);
 	int *res_bit = new_arr(0, 1);
-	res_bit[0] = compos + prec;
-	res_bit[1] = compos + prec + 1;
+	res_bit[0] = compos + prec + extra - 1;
+	res_bit[1] = compos + prec + extra;
 	add_by_column(num, add, res, res_bit);
-//	print_num(res, compos + prec + 1, '\n');
+//	print_num(res, compos + prec + extra, '\n');
 	free(num);
 	free(add);
-	if (cut_num(&res, compos + prec + 1) == compos + prec + 1)
+	if (cut_num(&res, compos + prec + extra) == compos + prec + extra)
 		fenv->compos++;
 	return (res);
 }
@@ -124,8 +127,9 @@ void	to_buff_float(t_env *env, t_fenv *fenv, int *num)
 	if (fenv->compos <= 0)
 	{
 		to_buff_char('0', env);
-		to_buff_char('.', env);
-		while ((fenv->compos)++ < 0)
+		if (prec != 0)
+			to_buff_char('.', env);
+		while ((fenv->compos)++ < 0 && prec > 0)
 		{
 			to_buff_char('0', env);
 			prec--;
@@ -195,8 +199,8 @@ t_fenv *init_fenv(int bit, unsigned long int num)
 //	printf("exp1 %lu\n", fenv->exp);
 	fenv->exp = fenv->exp >> (fenv->mant_num + 1);
 //	printf("exp2 %lu\n", fenv->exp);
-	fenv->exp = fenv->exp - (fenv->exp_num);
-	fenv->compos = fenv->bit - (fenv->mant_num - fenv->exp);
+	fenv->exp_res = fenv->exp - (fenv->exp_num);
+	fenv->compos = fenv->bit - (fenv->mant_num - fenv->exp_res);
 	return (fenv);
 }
 
@@ -255,7 +259,7 @@ void	flag_f(t_env *env, va_list args)
 	/* DEBUG */
 //	printf("COMPOS is %i\n", fenv->compos);
 //	printf("MANT is %llu\n", mant); 
-//	printf("EXP is %lu\n", fenv->exp);
+//	printf("EXP is %lld\n", fenv->mant_num - fenv->exp_res);
 //	printf("SIGN is %u\n", fenv->sign);
 
 
@@ -263,10 +267,10 @@ void	flag_f(t_env *env, va_list args)
 	int *n;
 	n = NULL;
 	int bit = fenv->bit;
-	if (fenv->mant_num - fenv->exp >= 0)
-		n = binpow(5, fenv->mant_num - fenv->exp, fenv->bit);
+	if (fenv->mant_num - fenv->exp_res >= 0)
+		n = binpow(5, fenv->mant_num - fenv->exp_res, fenv->bit);
 	else
-		n = binpow(2, fenv->exp - fenv->mant_num, fenv->bit);
+		n = binpow(2, fenv->exp_res - fenv->mant_num, fenv->bit);
 	fenv->bit = bit;
 	fenv->bits = new_arr(0,3);
 	fenv->bits[0] = fenv->bit;
@@ -274,17 +278,17 @@ void	flag_f(t_env *env, va_list args)
 	fenv->bits[2] = fenv->bits[0] + fenv->bits[1];
 
 	int *res = new_arr((long long unsigned int)0, fenv->bit);
-	print_num(arr, fenv->bit, '\n');
-	print_num(n, fenv->bit, '\n');
+//	print_num(arr, fenv->bit, '\n');
+//	print_num(n, fenv->bit, '\n');
 	mult_by_column(arr, n, res, fenv->bits);
-	print_num(res, fenv->bits[2], '\n');
+//	print_num(res, fenv->bits[2], '\n');
 	fenv->bits[2] = cut_num(&res, fenv->bits[2]);
 	fenv->res_bit = fenv->bits[2];
 	if (num != 0)
-		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp);
+		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp_res);
 
 	/* DEBUG */
-	print_num(res, fenv->bit, '\n');
+//	print_num(res, fenv->bit, '\n');
 	if (!env->is_precision)
 	{
 		env->is_precision = 1;
@@ -294,10 +298,10 @@ void	flag_f(t_env *env, va_list args)
 	res = prec(res, env->precision, fenv); 
 	
 	/* DEBUG */
-	print_num(res, fenv->compos + env->precision, '\n');
-	printf("COMPOS is %i\n", fenv->compos);
-	printf("PRES is %i\n", env->precision);
-	printf("RESBIT is %i\n", fenv->res_bit);
+	//print_num(res, fenv->compos + env->precision, '\n');
+//	printf("COMPOS is %i\n", fenv->compos);
+//	printf("PRES is %i\n", env->precision);
+//	printf("RESBIT is %i\n", fenv->res_bit);
 	/* KOLHOZING */
 	float_output(env, fenv, res);
 
