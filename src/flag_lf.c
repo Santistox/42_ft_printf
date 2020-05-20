@@ -54,7 +54,7 @@ void	flag_lf(t_env *env, va_list args)
 	short_ptr = short_ptr + 4;
 	mant = *ptr;
 	if (!(fenv = ft_memalloc(sizeof(t_fenv))))
-		error(403);
+		malloc_error();
 	fenv->bit = 80;
 	fenv->res_bit = 80;
 	fenv->exp_num = 16383; 

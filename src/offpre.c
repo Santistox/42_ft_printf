@@ -31,7 +31,7 @@ void	set_precision(int init_index, t_env *env)
 		return ;
 	init_index += env->str[init_index] == '.' ? 1 : 0;
 	if (!(num = ft_memalloc(sizeof(char) * env->count - init_index + 1)))
-		error(403);
+		malloc_error();
 	max = env->count;
 	env->count = init_index;
 	ft_memcpy(num, &env->str[env->count], max - env->count);
@@ -61,7 +61,7 @@ void	set_offset(int init_index, t_env *env)
 	while (ft_isdigit(env->str[env->count]))
 		env->count++;
 	if (!(num = ft_memalloc(sizeof(char) * env->count - init_index + 1)))
-		error(403);
+		malloc_error();
 	max = env->count;
 	env->count = init_index;
 	while (env->count < max)

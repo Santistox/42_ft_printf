@@ -67,9 +67,9 @@ int *new_arr(long long unsigned int num, int bit)
 
 	i = bit - 1;
 	if (!(arr = malloc(sizeof(int *) * bit)))
-		error(403);
+		malloc_error();
 	if (!(arr = ft_memset(arr, 0, bit)))
-		error(403);
+		malloc_error();
 	while (i >= 0 && num >= 0)
 	{
 		arr[i] = num % 10;
@@ -180,7 +180,7 @@ t_fenv *init_fenv(int bit, unsigned long int num)
 	t_fenv *fenv;
 
 	if (!(fenv = ft_memalloc(sizeof(t_fenv))))
-		error(403);
+		malloc_error();
 	fenv->bit = bit;
 	fenv->res_bit = bit;
 	if (num == 0)
