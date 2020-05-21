@@ -19,7 +19,7 @@ void	to_buff_offset(t_env *env)
 	if (env->offset > 0)
 	{
 		if (!(offset = ft_memalloc(sizeof(char) * env->offset + 1)))
-			error(403);
+			malloc_error();
 		if (env->zero == 1)
 			ft_memset(offset, '0', env->offset);
 		else
@@ -51,7 +51,7 @@ void	to_buff_char(char c, t_env *env)
 	char	*str_c;
 
 	if (!(str_c = ft_memalloc(sizeof(char) * 2)))
-		error(403);
+		malloc_error();
 	str_c[0] = c;
 	str_c[1] = '\0';
 	to_buff_str(str_c, env);

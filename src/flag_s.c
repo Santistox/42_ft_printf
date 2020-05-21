@@ -26,7 +26,7 @@ void	flag_s(t_env *env, va_list args)
 	{
 		env->offset -= env->precision;
 		if (!(precise_str = ft_memalloc(sizeof(char) * env->precision + 1)))
-			error(403);
+			malloc_error();
 		ft_memcpy(precise_str, next_arg, env->precision);
 	}
 	else

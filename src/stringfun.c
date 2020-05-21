@@ -12,10 +12,10 @@
 
 #include "ft_printf.h"
 
-void	ft_putstr(char const *s)
+void	ft_putstr_fd(char const *s, int fd)
 {
 	if (s)
-		write(1, s, ft_strlen(s));
+		write(fd, s, ft_strlen(s));
 }
 
 char	*ft_strdup(const char *s1)

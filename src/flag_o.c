@@ -26,7 +26,7 @@ char	*flag_o_help(t_env *env)
 	set_nb_digit(env);
 	nb_digit = env->nb_digit;
 	if (!(res = (char*)ft_memalloc(sizeof(char) * nb_digit + 1)))
-		error(403);
+		malloc_error();
 	res[nb_digit] = '\0';
 	while (nb_digit--)
 	{

@@ -111,7 +111,8 @@ typedef struct	s_fenv
 ** ft_printf.c
 */
 
-void			error(int error_id);
+void			malloc_error(void);
+void			combi_error(void);
 void			set_def(t_env *env);
 t_env			*malloc_env(char *str);
 int				ft_printf_fd(int fd, const char *line, ...);
@@ -166,7 +167,7 @@ size_t			ft_strlen(const char *s);
 char			*ft_strdup(const char *s1);
 char			*ft_strncat(char *s1, const char *s2, size_t n);
 char			*ft_strjoin(char const *s1, char const *s2);
-void			ft_putstr(char const *s);
+void			ft_putstr_fd(char const *s, int fd);
 char			*ft_strnew(size_t size);
 
 /*

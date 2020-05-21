@@ -12,20 +12,25 @@
 
 #include "ft_printf.h"
 
-void	error(int error_id)
-{
-	if (error_id == 403)
-	{
-		ft_putstr("error: Malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-	if (error_id == 404)
-	{
-		ft_putstr("error: Combination is not allowed\n");
-		exit(EXIT_FAILURE);
-	}
+/*
+** Malloc error output
+*/
+
+void	malloc_error(void)
+{	
+	ft_putstr_fd("error: Malloc failed\n", 2);
+	exit(EXIT_FAILURE);
 }
 
+/*
+** Combination error output
+*/
+
+void	combi_error(void)
+{
+	ft_putstr_fd("error: Combination is not allowed\n", 2);
+	exit(EXIT_FAILURE);
+}
 /*
 **  reset variables of structure
 */
@@ -55,7 +60,7 @@ t_env	*malloc_env(char *str)
 	t_env	*env;
 
 	if (!(env = ft_memalloc(sizeof(t_env))))
-		error(403);
+		malloc_error();
 	env->buf = (char *)malloc(sizeof(char *));
 	env->str = str;
 	env->count = 0;

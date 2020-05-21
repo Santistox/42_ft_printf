@@ -4,6 +4,7 @@ CYAN_CLR = \x1b[36m
 GRN_CLR  = \x1b[32m
 NO_CLR	 = \x1b[00m
 WRN_CLR	 = \x1b[31m
+HDR_PR = NO
 
 OBJ_DIR = obj/
 INC_DIR = includes/
@@ -45,10 +46,9 @@ INC = -I $(INC_DIR)
 all: $(NAME)
 
 $(NAME): $(HEADERS) $(OBJ_DIR) $(OBJ)
-	@echo "\n$(CYAN_CLR)BUILD STAUS:\n"
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@echo "$(GRN_CLR)SUCCESS!\n"
+	@echo "\n$(GRN_CLR)SUCCESS!$(NO_CLR)\n"
 
 
 
@@ -58,7 +58,13 @@ $(OBJ_DIR):
 ALL_SRC_DIRS = $(SRC_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADERS)
+	@if [ "$(HDR_PR)" = "NO" ]; then \
+		printf "\n$(CYAN_CLR)BUILD STAUS:$(NO_CLR)\n\n"; \
+		$(eval HDR_PR = YES) \
+	fi
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
+	@printf "$(NO_CLR)$(notdir $<) "
+	@printf "$(GRN_CLR)✓$(NO_CLR)\n"
 
 clean:
 	@rm -rf $(OBJ_DIR)*

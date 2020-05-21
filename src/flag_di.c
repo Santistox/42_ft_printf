@@ -29,7 +29,7 @@ char	*flag_di_help(t_env *env)
 	set_nb_digit(env);
 	nb_digit = env->nb_digit;
 	if (!(res = (char*)ft_memalloc(sizeof(char) * nb_digit + 1)))
-		error(403);
+		malloc_error();
 	res[nb_digit] = '\0';
 	while (nb_digit--)
 	{
@@ -50,7 +50,7 @@ void	put_precision(t_env *env, int arg_size)
 	if (env->precision > arg_size)
 	{
 		if (!(prec = ft_memalloc(sizeof(char) * env->precision - arg_size + 1)))
-			error(403);
+			malloc_error();
 		ft_memset(prec, '0', env->precision - arg_size);
 		to_buff_str(prec, env);
 	}
@@ -67,7 +67,7 @@ void	put_zero(t_env *env)
 	if (env->offset > 0)
 	{
 		if (!(zero = ft_memalloc(sizeof(char) * env->offset + 1)))
-			error(403);
+			malloc_error();
 		ft_memset(zero, '0', env->offset);
 		to_buff_str(zero, env);
 	}
