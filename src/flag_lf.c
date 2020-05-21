@@ -19,24 +19,23 @@ void	float_flags(t_env *env, va_list args)
 /*
 ** function of long float
 */
-/*
+
 int 	valid_float(long long int exp, uintmax_t mant)
 {
-	unsigned char check;
-
-	check = *mant + 3;
-	check = check & 49152;
 	if (exp == 0)
-		if (mant == 0)
-			return (3);
-	else if (exp == 32767)
 	{
 		if (mant == 0)
+			return (3);
+		return (0);
+	}
+	else if (exp == 32767)
+	{
+		if (mant == 0 || mant == 9223372036854775808ul)
 			return (2);
-		if (check == 2)
+		return (1);
 	}
 	return (0);
-}*/
+}
 
 void	flag_lf(t_env *env, va_list args)
 {	
@@ -47,7 +46,9 @@ void	flag_lf(t_env *env, va_list args)
 	uintmax_t mant;
 	long double	cont;
 	int *arr;
+	int err;
 
+	arr = NULL;
 	cont = (long double)va_arg(args, long double);
 	short_ptr = (unsigned short *)&cont;
 	ptr = (unsigned long int *)&cont;
@@ -63,15 +64,26 @@ void	flag_lf(t_env *env, va_list args)
 	sig = *short_ptr;
 	fenv->sign = sig >> 15;
 	fenv->exp_res = sig & 32767;
-//	if (valid_float(fenv->exp_res, mant) == 0)
-//	{
+	err = valid_float(fenv->exp_res, mant);
+	if (err == 0)
+	{
 		fenv->exp_res = fenv->exp_res - (fenv->exp_num);
 		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp_res);
 		arr = new_arr((long long unsigned int)mant, fenv->bit);
 //		print_num(arr, fenv->bit, '\n');
-//	} else {
-
-//	}
+	}
+	else if (err == 1)
+	{
+		write(1,"NaN\n", 4);
+	}
+	else if (err == 2)
+	{
+		write(1,"INF\n", 4);
+	}
+	else
+	{
+		write(1, "Zero\n",5);
+	}
 
 //	printf("sign is %i\n", fenv->sign);
 //	printf("mant is %lu\n",mant);
