@@ -61,7 +61,7 @@ t_env	*malloc_env(char *str)
 
 	if (!(env = ft_memalloc(sizeof(t_env))))
 		malloc_error();
-	env->buf = (char *)malloc(sizeof(char *));
+	env->buf = (char *)ft_memalloc(sizeof(char *));
 	env->str = str;
 	env->count = 0;
 	env->count_2 = 0;

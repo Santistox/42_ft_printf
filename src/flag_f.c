@@ -175,6 +175,19 @@ int 	num_size(t_env *env, t_fenv *fenv, int *num)
 	return(k);
 }
 
+void free_fenv(t_fenv *fenv)
+{
+	fenv->bit = 0;
+	fenv->sign = 0;
+	fenv->res_bit = 0;
+	fenv->compos = 0;
+	fenv->exp_num = 0;
+	fenv->mant_num = 0;
+	fenv->exp = 0;
+	fenv->exp_res = 0;
+	fenv->bits = NULL;
+}
+
 t_fenv *init_fenv(int bit, unsigned long int num)
 {
 	t_fenv *fenv;
@@ -236,6 +249,28 @@ void	float_output(t_env *env, t_fenv *fenv, int *res)
 		to_buff_offset(env);
 }
 
+void	float_zero(t_fenv *fenv, t_env *env)
+{
+	int *res;
+	int i;
+
+	i = 0;
+	if (!env->is_precision)
+	{
+		env->is_precision = 1;
+		env->precision = 6;
+	}
+	if (!(res = (int*)malloc(sizeof(int*) * env->precision)))
+		return ;
+	while (i < env->precision)
+	{
+		res[i] = 0;
+		i++;
+	}
+	fenv->compos = -1;
+	float_output(env, fenv, res);
+}
+
 void	flag_f(t_env *env, va_list args)
 {
 	t_fenv *fenv;
@@ -251,6 +286,14 @@ void	flag_f(t_env *env, va_list args)
 	//printf("NUM is %lu\n", num);
 	fenv = init_fenv(64, *ptr);
 	mant = 0;
+	if (num == 0)
+	{
+		float_zero(fenv, env);
+		free_fenv(fenv);
+		free(fenv);
+	}
+	else
+	{
 	if (fenv->bit == 64 && num != 0)
 	{
 		mant = num & 4503599627370495;
@@ -292,7 +335,7 @@ void	flag_f(t_env *env, va_list args)
 //	write(1, "W\n", 2);
 	if (num != 0)
 		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp_res);
-
+//	printf("COMPOS is %i\n\n", fenv->compos);
 	/* DEBUG */
 //	print_num(res, fenv->bit, '\n');
 	if (!env->is_precision)
@@ -304,8 +347,8 @@ void	flag_f(t_env *env, va_list args)
 	res = prec(res, env->precision, fenv); 
 	
 	/* DEBUG */
-	//print_num(res, fenv->compos + env->precision, '\n');
-//	printf("COMPOS is %i\n", fenv->compos);
+//	print_num(res, fenv->compos + env->precision, '\n');
+//	printf("\nCOMPOS is %i\n", fenv->compos);
 //	printf("PRES is %i\n", env->precision);
 //	printf("RESBIT is %i\n", fenv->res_bit);
 	/* KOLHOZING */
@@ -313,8 +356,10 @@ void	flag_f(t_env *env, va_list args)
 
 
 //	printf("%f!\n", cont);
+	free_fenv(fenv);
 	free(arr);
 	free(n);
 	free(res);
 	free(fenv);
+	}
 }
