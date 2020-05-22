@@ -60,7 +60,7 @@ int *binpow(int num, int pow, int bit)
 **	create int array and stack each character of number to cell
 */
 
-int *new_arr(long long unsigned int num, int bit)
+int *new_arr(ull_t num, int bit)
 {
 	int i;
 	int *arr;
@@ -188,7 +188,7 @@ void free_fenv(t_fenv *fenv)
 	fenv->bits = NULL;
 }
 
-t_fenv *init_fenv(int bit, unsigned long int num)
+t_fenv *init_fenv(int bit, ul_t num)
 {
 	t_fenv *fenv;
 
@@ -202,16 +202,14 @@ t_fenv *init_fenv(int bit, unsigned long int num)
 		fenv->mant_num = 0;
 		fenv->sign = 0;
 		fenv->exp = 0;
-		fenv->compos = 1; // насчет этого уже хз 
+		fenv->compos = 1; 
 		return (fenv);
 	}
 	fenv->exp_num = 1023; 
 	fenv->mant_num = 52;
 	fenv->sign = num >> (bit - 1);
 	fenv->exp = num << 1; // 
-//	printf("exp1 %lu\n", fenv->exp);
 	fenv->exp = fenv->exp >> (fenv->mant_num + 1);
-//	printf("exp2 %lu\n", fenv->exp);
 	fenv->exp_res = fenv->exp - (fenv->exp_num);
 	fenv->compos = fenv->bit - (fenv->mant_num - fenv->exp_res);
 	return (fenv);
@@ -238,9 +236,6 @@ void	float_output(t_env *env, t_fenv *fenv, int *res)
 		to_buff_char(' ', env);
 	if (env->zero)
 		put_zero(env); 
-//	printf("COMPOS is %i\n", fenv->compos);
-//	printf("PRES is %i\n", env->precision);
-//	printf("RESBIT is %i\n", fenv->res_bit);
 	to_buff_float(env, fenv, res);
 	if (env->precision == 0 && env->grille)
 		to_buff_char('.', env);
@@ -271,95 +266,86 @@ void	float_zero(t_fenv *fenv, t_env *env)
 	float_output(env, fenv, res);
 }
 
+int 	valid_float(t_fenv *fenv, ull_t mant)
+{
+	if (fenv->mant_num - fenv->exp_res == -972 && mant == 4503599627370496 && fenv->sign == 0)
+		return (1);
+	else if (fenv->mant_num - fenv->exp_res == -972 && mant == 4503599627370496 && fenv->sign == 1)
+		return (2);
+	else if (fenv->mant_num - fenv->exp_res == -972 && mant == 6755399441055744)
+		return (3);
+	return (0);
+}
+
+// эту функцию нужно будет доработать - взаимодействие инф/-инф/нан с разными +-# и тд
+
+void put_unval(t_fenv **fenv, t_env *env, int error)
+{
+	char *str;
+
+	str = (error != 1 ? (error == 2 ? ft_strdup("-inf") : ft_strdup("nan")) : ft_strdup("inf"));
+	to_buff_str(str, env);
+	free_fenv(*fenv);
+	free(*fenv);
+}
+
 void	flag_f(t_env *env, va_list args)
 {
-	t_fenv *fenv;
-	unsigned long int *ptr;
-	unsigned long int num;
-	unsigned long long int mant;
-	double	cont;
+	t_fenv *fenv; // структура флота
+	ul_t *ptr; // указатель на число
+	ull_t mant; // мантисса
+	double	cont; // контейнер с числом, вытаскиваем с ва_аргс
+	int error; // ошибка, для inf/-inf/nan
 
+	error = 0;
 	cont = (double)va_arg(args, double);
-//	printf("CONT %.9f\n", cont);
-	ptr = (unsigned long int *)&cont;
-	num = *ptr;
-	//printf("NUM is %lu\n", num);
+	ptr = (ul_t *)&cont;
 	fenv = init_fenv(64, *ptr);
-	mant = 0;
-	if (num == 0)
+	if (*ptr == 0) // если число == 0
 	{
 		float_zero(fenv, env);
 		free_fenv(fenv);
 		free(fenv);
+		return ;
 	}
-	else
-	{
-	if (fenv->bit == 64 && num != 0)
-	{
-		mant = num & 4503599627370495;
-		mant = mant | 4503599627370496;
-	}
-	/* DEBUG */
-//	printf("COMPOS is %i\n", fenv->compos);
-//	printf("MANT is %llu\n", mant); 
-//	printf("EXP is %lld\n", fenv->mant_num - fenv->exp_res);
-//	printf("SIGN is %u\n", fenv->sign);
+	mant = *ptr & 4503599627370495; // вытаскиваем мантиссу
+	mant = mant | 4503599627370496;
+	error = valid_float(fenv, mant); // проверяем не инф/нан ли это число
+	if (error)
+		return put_unval(&fenv, env, error); // если да, то переходим в другую функцию
 
+	// это можно вынести в новую функцию
 
-	int *arr = new_arr((long long unsigned int)mant, fenv->bit);
-	int *n;
-	n = NULL;
-	fenv->bits = new_arr(0,3);
+	int *arr = new_arr((ull_t)mant, fenv->bit); // массив с манитос, подготовка к умножению
+	int *n; //массив с числом в степени
+	n = NULL; 
+	fenv->bits = new_arr(0,3); // размер массивов
 	fenv->bits[0] = fenv->bit;
 	fenv->bits[1] = 2 * fenv->bit;
 	fenv->bits[2] = fenv->bits[0] + fenv->bits[1];
-//	write(1, "H\n", 2);
-	int bit = fenv->bit;
-	if (fenv->mant_num - fenv->exp_res >= 0)
+	int bit = fenv->bit; 
+	if (fenv->mant_num - fenv->exp_res >= 0) //создаем массив т
 		n = binpow(5, fenv->mant_num - fenv->exp_res, fenv->bits[1]);
 	else
 		n = binpow(2, fenv->exp_res - fenv->mant_num, fenv->bits[1]);
 	fenv->bit = bit;
-	
-//	write(1, "T\n", 2);
-	int *res = new_arr((long long unsigned int)0, fenv->bits[2]);
-//	print_num(arr, fenv->bit, '\n');
-//	print_num(n, fenv->bit, '\n');
-//	write(1, "G\n", 2);
+	int *res = new_arr((ull_t)0, fenv->bits[2]); //результатирующий массив
 	mult_by_column(arr, n, res, fenv->bits);
-//	print_num(res, fenv->bits[2], '\n');
-//	write(1, "M\n", 2);
 	fenv->bits[2] = cut_num(&res, fenv->bits[2]);
-//	write(1, "P\n", 2);
 	fenv->res_bit = fenv->bits[2];
-//	write(1, "W\n", 2);
-	if (num != 0)
-		fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp_res);
-//	printf("COMPOS is %i\n\n", fenv->compos);
-	/* DEBUG */
-//	print_num(res, fenv->bit, '\n');
-	if (!env->is_precision)
+	
+	fenv->compos = fenv->res_bit - (fenv->mant_num - fenv->exp_res);
+	if (!env->is_precision) //задаем присишн
 	{
 		env->is_precision = 1;
 		env->precision = 6;
 	}
-
-	res = prec(res, env->precision, fenv); 
+	res = prec(res, env->precision, fenv); //округление
+	float_output(env, fenv, res); //загоняем в буф
 	
-	/* DEBUG */
-//	print_num(res, fenv->compos + env->precision, '\n');
-//	printf("\nCOMPOS is %i\n", fenv->compos);
-//	printf("PRES is %i\n", env->precision);
-//	printf("RESBIT is %i\n", fenv->res_bit);
-	/* KOLHOZING */
-	float_output(env, fenv, res);
-
-
-//	printf("%f!\n", cont);
-	free_fenv(fenv);
+	free_fenv(fenv); //освобождаем
 	free(arr);
 	free(n);
 	free(res);
 	free(fenv);
-	}
 }
