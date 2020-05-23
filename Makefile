@@ -11,6 +11,7 @@ INC_DIR = includes/
 
 SRC_DIR = src/
 SRC_FILES =	ft_printf.c \
+			error.c \
             flags.c \
             flags_help.c \
 			flag_x.c\

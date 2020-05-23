@@ -13,25 +13,6 @@
 #include "ft_printf.h"
 
 /*
-** Malloc error output
-*/
-
-void	malloc_error(void)
-{	
-	ft_putstr_fd("error: Malloc failed\n", 2);
-	exit(EXIT_FAILURE);
-}
-
-/*
-** Combination error output
-*/
-
-void	combi_error(void)
-{
-	ft_putstr_fd("error: Combination is not allowed\n", 2);
-	exit(EXIT_FAILURE);
-}
-/*
 **  reset variables of structure
 */
 

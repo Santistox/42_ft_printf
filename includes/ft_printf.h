@@ -32,9 +32,7 @@
 # define ul_t unsigned long int
 
 /*
-**
-** main struct of printf
-**
+** main struct of printf:
 ** buf - buffer
 ** str - input line
 ** count - line coursor str
@@ -86,9 +84,7 @@ typedef struct	s_env
 }				t_env;
 
 /*
-**
-** help struct for flag %f
-**
+** help struct for flag %f:
 ** exp - exponent
 ** bit - bit size of array
 ** sign - sign of number
@@ -96,29 +92,33 @@ typedef struct	s_env
 */
 
 typedef struct	s_fenv
-{	
+{
 	char				bit;
-	char 				sign;
-	int 				res_bit; // !!!!!
+	char				sign;
+	int					res_bit;
 	int					compos;
-	int 				exp_num;
-	int 				mant_num;
-	long unsigned int 	exp;
-	long long int 		exp_res;
+	int					exp_num;
+	int					mant_num;
+	long unsigned int	exp;
+	long long int		exp_res;
 	int					*bits;
 }				t_fenv;
-
 
 /*
 ** ft_printf.c
 */
 
-void			malloc_error(void);
-void			combi_error(void);
 void			set_def(t_env *env);
 t_env			*malloc_env(char *str);
 int				ft_printf_fd(int fd, const char *line, ...);
 int				ft_printf(const char *line, ...);
+
+/*
+** error.c
+*/
+
+void			malloc_error(void);
+void			combi_error(void);
 
 /*
 ** buffun.c
@@ -234,23 +234,24 @@ char			*ft_itoa(long long int n);
 /*
 ** Calculator
 */
-void 			add_by_column(int *num1, int *num2, int *rez, int *bit);
-void            mult_by_column(int *num1, int *num2, int *rez, int *bit);
+
+void			add_by_column(int *num1, int *num2, int *rez, int *bit);
+void			mult_by_column(int *num1, int *num2, int *rez, int *bit);
 void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TEST
-int             cut_num(int **num, int bit);
+int				cut_num(int **num, int bit);
 
 /*
 ** flag_f.c
 */
 
-int 			*new_arr(long long unsigned int num, int bit);
-int 			*binpow(int num, int pow, int bit);
+int				*new_arr(long long unsigned int num, int bit);
+int				*binpow(int num, int pow, int bit);
 void			to_buff_float(t_env *env, t_fenv *fenv, int *num);
-void 			copy_int(int *num1, int *num2, int bit);
+void			copy_int(int *num1, int *num2, int bit);
 void			float_output(t_env *env, t_fenv *fenv, int *res);
-int 			*prec(int *num, int prec, t_fenv *fenv);
+int				*prec(int *num, int prec, t_fenv *fenv);
 void			float_zero(t_fenv *fenv, t_env *env);
-void 			free_fenv(t_fenv *fenv);
+void			free_fenv(t_fenv *fenv);
 
 /*
 ** flag_lf.c
