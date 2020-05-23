@@ -139,6 +139,13 @@ int				check_flag(char c);
 void			check_preflag(t_env *env);
 
 /*
+** flags_help.c
+*/
+
+void			set_base(t_env *env);
+void			set_nb_digit(t_env *env);
+
+/*
 ** offpre.c
 */
 
