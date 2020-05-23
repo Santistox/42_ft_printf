@@ -185,7 +185,8 @@ void free_fenv(t_fenv *fenv)
 	fenv->mant_num = 0;
 	fenv->exp = 0;
 	fenv->exp_res = 0;
-	fenv->bits = NULL;
+	free(fenv->bits);
+	//fenv->bits = NULL; эта херня почему-то течет 
 }
 
 t_fenv *init_fenv(int bit, ul_t num)
