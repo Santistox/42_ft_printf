@@ -64,13 +64,20 @@ void	flag_lf(t_env *env, va_list args)
 	fenv->bits[0] = fenv->bit;
 	fenv->bits[1] = 2 * fenv->bit;
 	fenv->bits[2] = fenv->bits[0] + fenv->bits[1];
-	int bit = fenv->bit;
-	if (fenv->mant_num - fenv->exp_res - 1>= 0)
-		n = binpow(5, fenv->mant_num - fenv->exp_res - 1, fenv->bits[1]);
+//	print_num(arr, fenv->bits[0], '\n');
+	int bit = fenv->bit;/*
+	printf("fenv->exp_re is %lli\n", fenv->exp_res);
+    printf("fenv->compos is %d\n", fenv->mant_num); 
+    printf("fenv->mant_num - fenv->exp_res - 1 is %lld\n", fenv->mant_num - fenv->exp_res - 1);
+    printf("fenv->mant_num - fenv->exp_res - 1 is %lld\n", fenv->exp_res - fenv->mant_num - 1);
+	n = new_arr((long long unsigned int)0, bit);*/
+	if (fenv->mant_num - fenv->exp_res - 1 >= 0)
+		n = binpow(5, fenv->mant_num - fenv->exp_res - 1, fenv->bits);
 	else
-		n = binpow(2, fenv->exp_res - fenv->mant_num - 1, fenv->bits[1]);
+		n = binpow(2, fenv->exp_res - fenv->mant_num + 1, fenv->bits);
 	fenv->bit = bit;
-	
+//	print_num(n, fenv->bits[1], '\n');
+	fenv->bits[2] = fenv->bits[0] + fenv->bits[1] + 10;
 	int *res = new_arr((long long unsigned int)0, fenv->bits[2]);
 	mult_by_column(arr, n, res, fenv->bits);
 	fenv->bits[2] = cut_num(&res, fenv->bits[2]);

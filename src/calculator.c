@@ -65,7 +65,7 @@ int		cut_num(int **num, int bit)
 
 	i = 0;
 	tmp = new_arr(0, bit);
-	copy_int(tmp, *num, bit);
+	copy_int(tmp, *num, bit, bit);
 	while ((*num)[i] == 0 && i < bit)
 		i++;
 	free(*num);

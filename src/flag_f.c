@@ -4,13 +4,17 @@
 ** function copy numbers form num1 array to num2 array
 */
 
-void copy_int(int *num1, int *num2, int bit)
+void copy_int(int *num1, int *num2, int bit1, int bit2)
 {
     int i;
+    int j;
  
-    i = bit;
-    while (--i >= 0)
-        num1[i] = num2[i];
+    i = bit1;
+    j = bit2;
+    while (--i >= 0 && --j >= 0)
+    {
+        num1[i] = num2[j];
+   	}
 }
 
 /*
@@ -30,26 +34,47 @@ void reset_int(int *num, int bit)
 ** exponentiation of the number in the array
 */
 
-int *binpow(int num, int pow, int bit)
+int *binpow(int num, int pow, int *bit)
 {
 	int *num1;
 	int *num2;
 	int *res;
 	int *bits;
+	int *tmp;
 
+	tmp = NULL;
 	bits = new_arr(0,3);
-	bits[0] = bit;
-	bits[1] = bit;
-	bits[2] = bit;
+	bits[0] = bit[1];
+	bits[1] = bit[1];
+	bits[2] = bit[1];
 	num1 = new_arr(num, bits[0]);
 	num2 = new_arr(num, bits[1]);
 	res = new_arr(0, bits[2]);
 	while (pow-- > 1)
 	{
-		reset_int(res, bit);
+		if (res[10] == 0)
+		{
+			free(res);
+			res = new_arr(0, bits[2]);
+			//reset_int(res, bits[2]);
+		}
+		else
+		{
+			free(res);
+			bits[2] = bits[2] + bits[2] / 3;
+			res = new_arr(0, bits[2]);
+			tmp = new_arr(0, bits[2]);
+			copy_int(tmp, num1, bits[2], bits[0]);
+			bits[0] = bits[2];
+			free(num1);
+			num1 = new_arr(0, bits[0]);
+			copy_int(num1, tmp, bits[0], bits[0]);
+			free(tmp);
+		}
 		mult_by_column(num1, num2, res, bits);
-		copy_int(num1, res, bit);
+		copy_int(num1, res, bits[0], bits[2]);
 	}
+	bit[1] = bits[2];
 	free(num1);
 	free(num2);
 	free(bits);
@@ -326,10 +351,11 @@ void	flag_f(t_env *env, va_list args)
 	fenv->bits[2] = fenv->bits[0] + fenv->bits[1];
 	int bit = fenv->bit; 
 	if (fenv->mant_num - fenv->exp_res >= 0) //создаем массив т
-		n = binpow(5, fenv->mant_num - fenv->exp_res, fenv->bits[1]);
+		n = binpow(5, fenv->mant_num - fenv->exp_res, fenv->bits);
 	else
-		n = binpow(2, fenv->exp_res - fenv->mant_num, fenv->bits[1]);
+		n = binpow(2, fenv->exp_res - fenv->mant_num, fenv->bits);
 	fenv->bit = bit;
+	fenv->bits[2] = fenv->bits[0] + fenv->bits[1];
 	int *res = new_arr((ull_t)0, fenv->bits[2]); //результатирующий массив
 	mult_by_column(arr, n, res, fenv->bits);
 	fenv->bits[2] = cut_num(&res, fenv->bits[2]);
