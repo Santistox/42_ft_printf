@@ -32,14 +32,10 @@ void	flag_c(t_env *env)
 
 void	flag_per(t_env *env)
 {
-	char *res;
-
-	res = ft_memalloc(sizeof(char) + 1);
-	res[0] = '%';
-	res[1] = '\0';
-	if (env->zero)
-		res = zero_offset(env, res, 0);
-	else if (env->offset)
-		res = space_offset(env, res, 0, 1);
-	env->buf = ft_strjoin(env->buf, res);
+	env->offset--;
+	if (!env->minus)
+		to_buff_offset(env);
+	to_buff_char('%', env);
+	if (env->minus)
+		to_buff_offset(env);
 }
