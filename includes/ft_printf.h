@@ -28,8 +28,8 @@
 # include <stdlib.h>
 
 # define BUFF_SIZE 1024
-# define ull_t unsigned long long int
-# define ul_t unsigned long int
+# define ULL unsigned long long int
+# define UL unsigned long int
 
 /*
 ** main struct of printf:
@@ -250,8 +250,10 @@ void			to_buff_float(t_env *env, t_fenv *fenv, int *num);
 void			copy_int(int *num1, int *num2, int bit1, int bit2);
 void			float_output(t_env *env, t_fenv *fenv, int *res);
 int				*prec(int *num, int prec, t_fenv *fenv);
-void			float_zero(t_fenv *fenv, t_env *env);
+void			float_zero(t_fenv **fenv, t_env *env);
 void			free_fenv(t_fenv *fenv);
+int				*calc_res(ULL mant, t_fenv *fenv, int long_ch);
+void			prec_def(t_env *env);
 
 /*
 ** flag_lf.c
