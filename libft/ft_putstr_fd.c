@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mnidoque <mnidoque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/06 18:42:28 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/04 12:08:19 by rlintill         ###   ########.fr       */
+/*   Created: 2019/09/18 20:56:58 by mnidoque          #+#    #+#             */
+/*   Updated: 2019/09/19 20:14:21 by mnidoque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int		ft_isdigit(int c)
+void	ft_putstr_fd(char const *s, int fd)
 {
-	if ((c >= 48) && (c <= 57))
-		return (1);
-	return (0);
+	if (s)
+		write(fd, s, ft_strlen(s));
 }

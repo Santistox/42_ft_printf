@@ -26,6 +26,7 @@
 # include <wchar.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include "libft.h"
 
 # define BUFF_SIZE 1024
 # define ULL unsigned long long int
@@ -169,27 +170,6 @@ void			plus_minus(t_env *env, char **res, int minus, int num);
 void			space(t_env *env, char **res, int zero);
 
 /*
-** stringfun.c
-*/
-
-size_t			ft_strlen(const char *s);
-char			*ft_strdup(const char *s1);
-char			*ft_strncat(char *s1, const char *s2, size_t n);
-char			*ft_strjoin(char const *s1, char const *s2);
-void			ft_putstr_fd(char const *s, int fd);
-char			*ft_strnew(size_t size);
-
-/*
-** memfun.c
-*/
-
-void			*ft_memset(void *b, int c, size_t len);
-void			*ft_memcpy(void *dst, const void *src, size_t n);
-void			*ft_memalloc(size_t size);
-void			ft_memdel(void **ap);
-int				ft_memcmp(const void *s1, const void *s2, size_t n);
-
-/*
 ** flag_color.c
 */
 
@@ -223,13 +203,6 @@ void			flag_s(t_env *env, va_list args);
 void			flag_c(t_env *env);
 void			flag_per(t_env *env);
 
-/*
-** Libft files
-*/
-
-int				ft_atoi(const char *str);
-int				ft_isdigit(int c);
-char			*ft_itoa(long long int n);
 
 /*
 ** Calculator
