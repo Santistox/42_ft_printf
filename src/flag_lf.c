@@ -16,7 +16,7 @@ void	float_flags(t_env *env, va_list args)
 		flag_f(env, args);
 }
 
-t_fenv	*init_fenv_long(unsigned short	*short_ptr)
+t_fenv	*init_fenv_long(unsigned short *short_ptr)
 {
 	t_fenv	*fenv;
 	UL		sig;
