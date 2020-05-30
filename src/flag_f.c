@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flag_f.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
+/*   Updated: 2020/03/06 13:49:55 by rlintill         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 /*
@@ -34,22 +46,48 @@ void	reset_int(int *num, int bit)
 ** exponentiation of the number in the array
 */
 
+void	wider_arr(int **res, int **num1, int *bits)
+{
+	int *tmp;
+
+	free(*res);
+	bits[2] = bits[2] + bits[2] / 3;
+	*res = new_arr(0, bits[2]);
+	tmp = new_arr(0, bits[2]);
+	copy_int(tmp, *num1, bits[2], bits[0]);
+	bits[0] = bits[2];
+	free(*num1);
+	*num1 = new_arr(0, bits[0]);
+	copy_int(*num1, tmp, bits[0], bits[0]);
+	free(tmp);
+}
+
+void	binpow_help(int *bits, int bit)
+{
+	bits[0] = bit;
+	bits[1] = bit;
+	bits[2] = bit;
+}
+
+void	binpow_help_free(int **num1, int **bits, int **num2)
+{
+	free(*num1);
+	free(*num2);
+	free(*bits);
+}
+
 int		*binpow(int num, int pow, int *bit)
 {
 	int *num1;
 	int *num2;
 	int *res;
 	int *bits;
-	int *tmp;
 
-	tmp = NULL;
-	bits = new_arr(0, 3);
-	bits[0] = bit[1];
-	bits[1] = bit[1];
-	bits[2] = bit[1];
+	bits = new_arr(bit[1], 3);
+	binpow_help(bits, bit[1]);
 	num1 = new_arr(num, bits[0]);
 	num2 = new_arr(num, bits[1]);
-	res = new_arr(0, bits[2]);
+	res = (pow == 0 ? new_arr(1, bits[2]) : new_arr(0, bits[2]));
 	while (pow-- > 1)
 	{
 		if (res[10] == 0)
@@ -58,25 +96,12 @@ int		*binpow(int num, int pow, int *bit)
 			res = new_arr(0, bits[2]);
 		}
 		else
-		{
-			free(res);
-			bits[2] = bits[2] + bits[2] / 3;
-			res = new_arr(0, bits[2]);
-			tmp = new_arr(0, bits[2]);
-			copy_int(tmp, num1, bits[2], bits[0]);
-			bits[0] = bits[2];
-			free(num1);
-			num1 = new_arr(0, bits[0]);
-			copy_int(num1, tmp, bits[0], bits[0]);
-			free(tmp);
-		}
+			wider_arr(&res, &num1, bits);
 		mult_by_column(num1, num2, res, bits);
 		copy_int(num1, res, bits[0], bits[2]);
 	}
 	bit[1] = bits[2];
-	free(num1);
-	free(num2);
-	free(bits);
+	binpow_help_free(&num1, &bits, &num2);
 	return (res);
 }
 
@@ -135,6 +160,25 @@ int		*prec(int *num, int prec, t_fenv *fenv)
 **	move float number to buffer from int array
 */
 
+void	to_buff_float_help(t_env *env, t_fenv *fenv, int *num)
+{
+	int i;
+
+	i = 0;
+	while (i < fenv->res_bit && i < fenv->compos + env->precision)
+	{
+		if (i == fenv->compos)
+			to_buff_char('.', env);
+		to_buff_char(num[i++] + '0', env);
+	}
+	while (i < fenv->compos + env->precision)
+	{
+		if (i++ == fenv->compos)
+			to_buff_char('.', env);
+		to_buff_char('0', env);
+	}
+}
+
 void	to_buff_float(t_env *env, t_fenv *fenv, int *num)
 {
 	int i;
@@ -147,27 +191,13 @@ void	to_buff_float(t_env *env, t_fenv *fenv, int *num)
 		to_buff_char('0', env);
 		if (prec != 0)
 			to_buff_char('.', env);
-		while ((fenv->compos)++ < 0 && prec > 0)
-		{
+		while ((fenv->compos)++ < 0 && prec-- > 0)
 			to_buff_char('0', env);
-			prec--;
-		}
 		while (prec-- > 0)
-		{
-			to_buff_char(num[i] + '0', env);
-			i++;
-		}
+			to_buff_char(num[i++] + '0', env);
 	}
 	else
-	{
-		while (i < fenv->res_bit && i < fenv->compos + env->precision)
-		{
-			if (i == fenv->compos)
-				to_buff_char('.', env);
-			to_buff_char(num[i] + '0', env);
-			i++;
-		}
-	}
+		to_buff_float_help(env, fenv, num);
 }
 
 /*
@@ -181,6 +211,10 @@ int		num_size(t_env *env, t_fenv *fenv, int *num)
 
 	i = 0;
 	k = 0;
+	if (fenv->compos < 0)
+		return (env->precision + 2);
+	if (fenv->compos == 0)
+		k++;
 	while (i <= fenv->bit && num[i] == 0)
 		i++;
 	while (i < fenv->bit && i < fenv->compos + env->precision)
@@ -214,15 +248,6 @@ t_fenv	*init_fenv(int bit, UL num)
 		malloc_error();
 	fenv->bit = bit;
 	fenv->res_bit = bit;
-	if (num == 0)
-	{
-		fenv->exp_num = 0;
-		fenv->mant_num = 0;
-		fenv->sign = 0;
-		fenv->exp = 0;
-		fenv->compos = 1;
-		return (fenv);
-	}
 	fenv->exp_num = 1023;
 	fenv->mant_num = 52;
 	fenv->sign = num >> (bit - 1);
@@ -292,9 +317,11 @@ void	float_zero(t_fenv **fenv, t_env *env)
 
 int		valid_float(t_fenv *fenv, ULL mant)
 {
-	if (fenv->mant_num - fenv->exp_res == -972 && mant == 4503599627370496 && fenv->sign == 0)
+	if (fenv->mant_num - fenv->exp_res == -972
+		&& mant == 4503599627370496 && fenv->sign == 0)
 		return (1);
-	else if (fenv->mant_num - fenv->exp_res == -972 && mant == 4503599627370496 && fenv->sign == 1)
+	else if (fenv->mant_num - fenv->exp_res == -972
+		&& mant == 4503599627370496 && fenv->sign == 1)
 		return (2);
 	else if (fenv->mant_num - fenv->exp_res == -972 && mant == 6755399441055744)
 		return (3);
@@ -305,7 +332,11 @@ void	put_unval(t_fenv **fenv, t_env *env, int error)
 {
 	char	*str;
 
-	str = (error != 1 ? (error == 2 ? ft_strdup("-inf") : ft_strdup("nan")) : ft_strdup("inf"));
+	str = NULL;
+	if (error == 1)
+		str = ft_strdup("inf");
+	else
+		str = (error == 2 ? ft_strdup("-inf") : ft_strdup("nan"));
 	env->offset -= 3;
 	env->offset += (env->space && error != 2) ? 1 : 0;
 	env->offset -= (error == 2 && !env->space) ? 1 : 0;
@@ -347,7 +378,7 @@ int		*calc_res(ULL mant, t_fenv *fenv, int long_ch)
 	return (res);
 }
 
-void prec_def(t_env *env)
+void	prec_def(t_env *env)
 {
 	if (!env->is_precision)
 	{

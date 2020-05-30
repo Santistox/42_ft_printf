@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flag_lf.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/02 15:03:20 by mnidoque          #+#    #+#             */
+/*   Updated: 2020/03/06 13:49:55 by rlintill         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 /*
@@ -16,7 +28,7 @@ void	float_flags(t_env *env, va_list args)
 		flag_f(env, args);
 }
 
-t_fenv	*init_fenv_long(unsigned short	*short_ptr)
+t_fenv	*init_fenv_long(unsigned short *short_ptr)
 {
 	t_fenv	*fenv;
 	UL		sig;

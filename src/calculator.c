@@ -13,23 +13,6 @@
 #include "ft_printf.h"
 
 /*
-**  print int massive
-*/
-
-void	print_num(int *num, int i, char a)
-{
-	int	k;
-
-	k = 0;
-	while (k != i)
-	{
-		printf("%i", num[k]);
-		k++;
-	}
-	printf("%c", a);
-}
-
-/*
 **  addition by a column
 */
 

@@ -11,10 +11,10 @@ OBJ_DIR = obj/
 INC_DIR = includes/
 
 SRC_DIR = src/
-SRC_FILES =	ft_printf.c \
-			error.c \
-            flags.c \
-            flags_help.c \
+SRC_FILES =	ft_printf.c\
+			error.c\
+      flags.c\
+      flags_help.c\
 			flag_x.c\
 			flag_f.c\
 			flag_lf.c\
@@ -25,6 +25,7 @@ SRC_FILES =	ft_printf.c \
 			flag_c.c\
 			flag_size.c\
 			flag_color.c\
+      flag_valid.c\
 			util.c\
 			buffun.c\
 			offpre.c\
@@ -35,7 +36,6 @@ HEADERS = $(INC_DIR)ft_printf.h $(LIB_DIR)libft.h
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
-
 
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
@@ -49,7 +49,6 @@ $(NAME): $(HEADERS) $(OBJ_DIR) $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 	@echo "\n$(GRN_CLR)FT_PRINFT SUCCESS!$(NO_CLR)\n"
-
 
 $(OBJ_DIR):
 	@mkdir obj
