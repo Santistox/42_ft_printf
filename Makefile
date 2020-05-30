@@ -24,6 +24,7 @@ SRC_FILES =	ft_printf.c \
 			flag_c.c\
 			flag_size.c\
 			flag_color.c\
+			flag_valid.c\
 			util.c \
 			buffun.c \
 			offpre.c \
@@ -33,6 +34,7 @@ SRC_FILES =	ft_printf.c \
 		ft_isdigit.c \
 		ft_atoi.c \
 		calculator.c\
+
 
 
 HEADERS = $(INC_DIR)ft_printf.h

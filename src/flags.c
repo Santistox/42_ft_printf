@@ -61,6 +61,10 @@ void			find_flag_continue(t_env *env, va_list args)
 		num_flags(env);
 }
 
+/*
+**  main function of find flag
+*/
+
 void			find_flag(t_env *env, va_list args)
 {
 	set_def(env);

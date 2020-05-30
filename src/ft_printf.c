@@ -70,9 +70,8 @@ int		ft_printf_fd(int fd, const char *line, ...)
 		if (!env->str[env->count])
 			break ;
 		env->count++;
+		flag_valid(env);
 		find_flag(env, args);
-		if (env->unicode_error == 1)
-			break ;
 		env->count++;
 	}
 	rez = ft_strlen(env->buf) + env->count_2;
@@ -103,9 +102,8 @@ int		ft_printf(const char *line, ...)
 		if (!env->str[env->count])
 			break ;
 		env->count++;
+		flag_valid(env);
 		find_flag(env, args);
-		if (env->unicode_error == 1)
-			break ;
 		env->count++;
 	}
 	rez = ft_strlen(env->buf) + env->count_2;

@@ -46,7 +46,6 @@
 ** space - ␣ after %
 ** zero - 0 after %
 ** is_unicode - check is char unicode
-** unicode_error - unicode error
 ** first_char_pos - first char position from start/prev%
 ** percent_pos - position of %
 ** res - count of buf ???
@@ -71,7 +70,6 @@ typedef struct	s_env
 	int			space;
 	int			zero;
 	int			is_unicode;
-	int			unicode_error;
 	int			first_char_pos;
 	int			percent_pos;
 	int			res;
@@ -237,7 +235,6 @@ char			*ft_itoa(long long int n);
 
 void			add_by_column(int *num1, int *num2, int *rez, int *bit);
 void			mult_by_column(int *num1, int *num2, int *rez, int *bit);
-void			print_num(int *num, int i, char a); // WARNIG!! THIS FUNCTION JUST FOR TEST
 int				cut_num(int **num, int bit);
 
 /*
@@ -261,5 +258,6 @@ void			prec_def(t_env *env);
 
 void			flag_lf(t_env *env, va_list args);
 void			float_flags(t_env *env, va_list args);
+void			flag_valid(t_env *env);
 
 #endif
