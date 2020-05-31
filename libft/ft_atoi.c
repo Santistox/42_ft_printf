@@ -6,11 +6,11 @@
 /*   By: mnidoque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 18:59:07 by mnidoque          #+#    #+#             */
-/*   Updated: 2020/02/04 12:07:52 by rlintill         ###   ########.fr       */
+/*   Updated: 2019/09/19 20:14:20 by mnidoque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
 static int	check_symbols(const char *str)
 {
