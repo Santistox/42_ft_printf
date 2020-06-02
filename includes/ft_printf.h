@@ -29,8 +29,6 @@
 # include "libft.h"
 
 # define BUFF_SIZE 1024
-# define ULL unsigned long long int
-# define UL unsigned long int
 
 /*
 ** main struct of printf:
@@ -84,10 +82,15 @@ typedef struct	s_env
 
 /*
 ** help struct for flag %f:
-** exp - exponent
-** bit - bit size of array
+** exp - exponent, unsigned, used to get the exponent number
+** exp_res - result exponent number, signed, is a result of exp - exp_num
+** bit - original bit size of array
+** mant_num - bits for mantisse
+** res_bit - resulting size of array (can be changed while calculating)
+** exp_num - exp in max power minus 1, used to calculate res_exp
 ** sign - sign of number
 ** compos - comma position in result
+** int *bits - array of sizes, used in calcualting
 */
 
 typedef struct	s_fenv
@@ -178,8 +181,6 @@ void			flag_color(t_env *env);
 ** num flagsi
 */
 
-void			flag_f(t_env *env, va_list args);
-
 void			put_precision(t_env *env, int arg_size);
 void			put_zero(t_env *env);
 void			flag_di(t_env *env);
@@ -201,9 +202,8 @@ void			flag_s(t_env *env, va_list args);
 void			flag_c(t_env *env);
 void			flag_per(t_env *env);
 
-
 /*
-** Calculator
+** calculator
 */
 
 void			add_by_column(int *num1, int *num2, int *rez, int *bit);
@@ -211,18 +211,36 @@ void			mult_by_column(int *num1, int *num2, int *rez, int *bit);
 int				cut_num(int **num, int bit);
 
 /*
-** flag_f.c
+** float_output.c
+*/
+
+void			float_zero(t_fenv **fenv, t_env *env);
+void			float_output(t_env *env, t_fenv *fenv, int *res);
+void			put_unval(t_fenv **fenv, t_env *env, int error);
+
+/*
+** float_calc.c
+*/
+
+int				*calc_res(unsigned long long int mant,
+							t_fenv *fenv, int long_ch);
+int				*prec(int *num, int prec, t_fenv *fenv);
+
+/*
+** float_util.c
 */
 
 int				*new_arr(long long unsigned int num, int bit);
-int				*binpow(int num, int pow, int *bit);
-void			to_buff_float(t_env *env, t_fenv *fenv, int *num);
 void			copy_int(int *num1, int *num2, int bit1, int bit2);
-void			float_output(t_env *env, t_fenv *fenv, int *res);
-int				*prec(int *num, int prec, t_fenv *fenv);
-void			float_zero(t_fenv **fenv, t_env *env);
 void			free_fenv(t_fenv *fenv);
-int				*calc_res(ULL mant, t_fenv *fenv, int long_ch);
+int				num_size(t_env *env, t_fenv *fenv, int *num);
+void			wider_arr(int **res, int **num1, int *bits);
+
+/*
+** flag_f.c
+*/
+
+void			flag_f(t_env *env, va_list args);
 void			prec_def(t_env *env);
 
 /*

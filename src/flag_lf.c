@@ -16,7 +16,7 @@
 ** function algorithm selection
 */
 
-void	float_flags(t_env *env, va_list args)
+void			float_flags(t_env *env, va_list args)
 {
 	if (env->str[env->count] == 'L')
 	{
@@ -28,10 +28,10 @@ void	float_flags(t_env *env, va_list args)
 		flag_f(env, args);
 }
 
-t_fenv	*init_fenv_long(unsigned short *short_ptr)
+static t_fenv	*init_fenv_long(unsigned short *short_ptr)
 {
-	t_fenv	*fenv;
-	UL		sig;
+	t_fenv					*fenv;
+	unsigned long int		sig;
 
 	if (!(fenv = ft_memalloc(sizeof(t_fenv))))
 		malloc_error();
@@ -55,17 +55,17 @@ t_fenv	*init_fenv_long(unsigned short *short_ptr)
 ** function of long float
 */
 
-void	flag_lf(t_env *env, va_list args)
+void			flag_lf(t_env *env, va_list args)
 {
-	t_fenv			*fenv;
-	unsigned short	*short_ptr;
-	UL				*ptr;
-	long double		cont;
-	int				*res;
+	t_fenv							*fenv;
+	unsigned short					*short_ptr;
+	unsigned long int				*ptr;
+	long double						cont;
+	int								*res;
 
 	cont = (long double)va_arg(args, long double);
 	short_ptr = (unsigned short *)&cont;
-	ptr = (UL *)&cont;
+	ptr = (unsigned long int *)&cont;
 	short_ptr = short_ptr + 4;
 	if (cont == 0)
 		return (float_zero(&fenv, env));

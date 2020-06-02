@@ -30,6 +30,9 @@ SRC_FILES =	ft_printf.c\
 			buffun.c\
 			offpre.c\
 			calculator.c\
+			float_output.c\
+			float_calc.c \
+			float_util.c\
 
 
 HEADERS = $(INC_DIR)ft_printf.h $(LIB_DIR)libft.h
