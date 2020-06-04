@@ -30,16 +30,27 @@ static int	check_valid_flags(char c)
 	return (0);
 }
 
-static int	valid_size_dbl(int i, char c, char *str)
+static int	valid_size_dbl(int i, char c1, char c2, char *str)
 {
-	if (str[i] == c)
+	if (str[i] == c1 || str[i] == c2)
 	{
 		i++;
-		if (str[i] == c)
+		if (str[i] == c1 || str[i] == c2)
 			i++;
 		if (!(check_valid_flag(str[i])))
 			return (1);
 	}
+	return (0);
+}
+
+static int	valid_size(int i, char *str)
+{
+	if (str[i] == 'h')
+		return (valid_size_dbl(i, 'h', 'h', str) ? 1 : 0);
+	else if (str[i] == 'l' || str[i] == 'L')
+		return (valid_size_dbl(i, 'l', 'L', str) ? 1 : 0);
+	else if (str[i] == 'j' || str[i] == 'z')
+		return (check_valid_flag(str[++i]) ? 0 : 1);
 	return (0);
 }
 
@@ -58,12 +69,9 @@ void		flag_valid(t_env *env)
 	i += (env->str[i] == '.') ? 1 : 0;
 	while (ft_isdigit(env->str[i]))
 		i++;
-	if (env->str[i] == 'h')
-		error = valid_size_dbl(i, 'h', env->str) ? 1 : 0;
-	else if (env->str[i] == 'l')
-		error = valid_size_dbl(i, 'l', env->str) ? 1 : 0;
-	else if (env->str[i] == 'j' || env->str[i] == 'z' || env->str[i] == 'L')
-		error = !(check_valid_flag(env->str[++i])) ? 1 : 0;
+	if (env->str[i] == 'h' || env->str[i] == 'l' || env->str[i] == 'j' ||
+		env->str[i] == 'z' || env->str[i] == 'L')
+		error = valid_size(i, env->str) ? 1 : 0;
 	else
 		error = !(check_valid_flag(env->str[i])) ? 1 : 0;
 	if (error)

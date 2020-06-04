@@ -18,9 +18,11 @@
 
 void			float_flags(t_env *env, va_list args)
 {
-	if (env->str[env->count] == 'L')
+	if (env->str[env->count] == 'L' || env->str[env->count] == 'l')
 	{
 		env->count++;
+		if (env->str[env->count] == 'l' || env->str[env->count] == 'L')
+			env->count++;
 		if (env->str[env->count] == 'f')
 			flag_lf(env, args);
 	}
@@ -67,9 +69,9 @@ void			flag_lf(t_env *env, va_list args)
 	short_ptr = (unsigned short *)&cont;
 	ptr = (unsigned long int *)&cont;
 	short_ptr = short_ptr + 4;
+	fenv = init_fenv_long(short_ptr);
 	if (cont == 0)
 		return (float_zero(&fenv, env));
-	fenv = init_fenv_long(short_ptr);
 	res = calc_res(*ptr, fenv, 1);
 	prec_def(env);
 	fenv->compos = fenv->res_bit - (fenv->mant_num - 1 - fenv->exp_res);
