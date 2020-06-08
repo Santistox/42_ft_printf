@@ -77,6 +77,7 @@ void			flag_lf(t_env *env, va_list args)
 	fenv->compos = fenv->res_bit - (fenv->mant_num - 1 - fenv->exp_res);
 	res = prec(res, env->precision, fenv);
 	float_output(env, fenv, res);
+	free_fenv(fenv);
 	free(res);
 	free(fenv);
 }

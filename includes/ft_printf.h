@@ -233,7 +233,7 @@ int				*prec(int *num, int prec, t_fenv *fenv);
 int				*new_arr(long long unsigned int num, int bit);
 void			copy_int(int *num1, int *num2, int bit1, int bit2);
 void			free_fenv(t_fenv *fenv);
-int				num_size(t_env *env, t_fenv *fenv, int *num);
+int				num_size(t_env *env, t_fenv *fenv);
 void			wider_arr(int **res, int **num1, int *bits);
 
 /*

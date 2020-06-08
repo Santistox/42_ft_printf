@@ -31,8 +31,7 @@ static void	to_buff_float_help(t_env *env, t_fenv *fenv, int *num)
 	{
 		if (i <= fenv->compos && env->precision > 0)
 			to_buff_char('.', env);
-		i = 0;
-		while (i++ < env->precision)
+		while (i++ < fenv->compos + env->precision)
 			to_buff_char('0', env);
 	}
 }
@@ -72,7 +71,7 @@ static void	to_buff_float(t_env *env, t_fenv *fenv, int *num)
 
 void		float_output(t_env *env, t_fenv *fenv, int *res)
 {
-	env->offset -= num_size(env, fenv, res);
+	env->offset -= num_size(env, fenv);
 	if (fenv->sign && env->zero)
 		to_buff_char('-', env);
 	env->offset -= (fenv->sign && !env->space) ? 1 : 0;

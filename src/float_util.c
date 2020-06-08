@@ -76,27 +76,23 @@ void	wider_arr(int **res, int **num1, int *bits)
 ** determines the size of a number
 */
 
-int		num_size(t_env *env, t_fenv *fenv, int *num)
+int		num_size(t_env *env, t_fenv *fenv)
 {
 	int i;
 	int k;
 
 	i = 0;
 	k = 0;
-	if (fenv->compos < 0)
+	if (fenv->compos <= 0)
 		return (env->precision + 2);
-	if (fenv->compos == 0)
+	if (env->is_precision && env->precision > 0)
 		k++;
-	while (i <= fenv->res_bit && num[i] == 0)
-		i++;
-	while (i < fenv->res_bit && i < fenv->compos + env->precision)
+	while (i < fenv->compos)
 	{
-		if (i == fenv->compos)
-			k++;
 		k++;
 		i++;
 	}
-	return (k);
+	return (k + env->precision);
 }
 
 void	free_fenv(t_fenv *fenv)

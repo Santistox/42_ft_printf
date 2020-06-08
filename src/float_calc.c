@@ -59,30 +59,45 @@ static int	*power(int num, int pow, int *bit)
 	return (res);
 }
 
+void print_num(int *num, int i, char a)
+{
+	int k;
+
+	k = 0;
+	while (k != i)
+	{
+		printf("%i", num[k]);
+		k++;
+	}
+	printf("%c", a);
+}
+
 int			*prec(int *num, int prec, t_fenv *fenv)
 {
-	int *add;
 	int *res;
-	int extra;
-	int compos;
-	int *res_bit;
+	int buf;
+	int tmp;
+	int i;
 
-	compos = fenv->compos;
-	extra = (compos + prec == 0) ? 2 : 1;
-	if (fenv->compos + prec >= fenv->res_bit || !num)
+	if (fenv->compos + prec >= fenv->res_bit)
 		return (num);
 	if (num[fenv->compos + prec] < 5)
 		return (num);
-	add = new_arr(0, compos + prec + extra);
-	add[compos + prec + extra - 1] = 1;
-	res = new_arr(0, compos + prec + extra);
-	res_bit = new_arr(0, 1);
-	res_bit[0] = compos + prec + extra - 1;
-	res_bit[1] = compos + prec + extra;
-	add_by_column(num, add, res, res_bit);
+	res = new_arr(0, fenv->res_bit + 1);
+	copy_int(res, num, fenv->res_bit + 1, fenv->res_bit);
+	i = fenv->compos + prec;
+	tmp = (res[i] + 1) % 10;
+	buf = (res[i] + 1) / 10;
+	res[i--] = tmp;
+	while (i >= 0)
+	{
+		tmp = (res[i] + buf) % 10;
+		buf = (res[i] + buf) / 10;
+		res[i] = tmp;
+		i--;
+	}
 	free(num);
-	free(add);
-	if (cut_num(&res, compos + prec + extra) == compos + prec + extra)
+	if (cut_num(&res, fenv->res_bit + 1) == fenv->res_bit + 1)
 		fenv->compos++;
 	return (res);
 }
