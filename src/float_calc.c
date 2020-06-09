@@ -59,19 +59,6 @@ static int	*power(int num, int pow, int *bit)
 	return (res);
 }
 
-void print_num(int *num, int i, char a)
-{
-	int k;
-
-	k = 0;
-	while (k != i)
-	{
-		printf("%i", num[k]);
-		k++;
-	}
-	printf("%c", a);
-}
-
 int			*prec(int *num, int prec, t_fenv *fenv)
 {
 	int *res;
@@ -93,8 +80,7 @@ int			*prec(int *num, int prec, t_fenv *fenv)
 	{
 		tmp = (res[i] + buf) % 10;
 		buf = (res[i] + buf) / 10;
-		res[i] = tmp;
-		i--;
+		res[i--] = tmp;
 	}
 	free(num);
 	if (cut_num(&res, fenv->res_bit + 1) == fenv->res_bit + 1)

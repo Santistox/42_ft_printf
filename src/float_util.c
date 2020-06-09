@@ -26,7 +26,7 @@ int		*new_arr(unsigned long long int num, int bit)
 		malloc_error();
 	if (!(arr = ft_memset(arr, 0, bit)))
 		malloc_error();
-	while (i >= 0 && num >= 0)
+	while (i >= 0)
 	{
 		arr[i] = num % 10;
 		num /= 10;
