@@ -87,7 +87,7 @@ int		num_size(t_env *env, t_fenv *fenv)
 		return (env->precision + 2);
 	if (env->is_precision && env->precision > 0)
 		k++;
-	while (i < fenv->compos)
+	while (i < fenv->compos && i < fenv->res_bit)
 	{
 		k++;
 		i++;

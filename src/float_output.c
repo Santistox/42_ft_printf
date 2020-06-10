@@ -19,6 +19,7 @@
 static void	to_buff_float_help(t_env *env, t_fenv *fenv, int *num)
 {
 	int i;
+	int diff;
 
 	i = 0;
 	while (i < fenv->res_bit && i < fenv->compos + env->precision)
@@ -27,11 +28,14 @@ static void	to_buff_float_help(t_env *env, t_fenv *fenv, int *num)
 			to_buff_char('.', env);
 		to_buff_char(num[i++] + '0', env);
 	}
+	diff = (fenv->res_bit > fenv->compos ?
+		env->precision + fenv->compos - i : env->precision);
 	if (i < fenv->compos + env->precision)
 	{
 		if (i <= fenv->compos && env->precision > 0)
 			to_buff_char('.', env);
-		while (i++ < fenv->compos + env->precision)
+		i = 0;
+		while (i++ < diff)
 			to_buff_char('0', env);
 	}
 }
