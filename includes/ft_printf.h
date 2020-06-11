@@ -26,7 +26,7 @@
 # include <wchar.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include "libft.h"
+# include "../libft/libft.h"
 
 # define BUFF_SIZE 1024
 
@@ -206,7 +206,6 @@ void			flag_per(t_env *env);
 ** calculator
 */
 
-void			add_by_column(int *num1, int *num2, int *rez, int *bit);
 void			mult_by_column(int *num1, int *num2, int *rez, int *bit);
 int				cut_num(int **num, int bit);
 
